@@ -28,7 +28,7 @@ public class Utils {
     public RequestQueue getRequestQueue(Context context){
 
         if (requestQueue==null){
-            requestQueue = Volley.newRequestQueue(context);
+            requestQueue = Volley.newRequestQueue(context,1024*1024*1024);
         }
 
         return requestQueue;
