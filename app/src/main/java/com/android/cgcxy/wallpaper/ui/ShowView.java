@@ -7,4 +7,5 @@ package com.android.cgcxy.wallpaper.ui;
 public interface ShowView {
 
     <T> void setData(T t);
+    <T> void setNextData(T t);
 }

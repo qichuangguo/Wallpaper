@@ -29,6 +29,7 @@ public class MainPresenterImple implements MainPresenter {
     public static final String TAG ="MainPresenterImple" ;
     private ShowView showView;
     private Context mContext;
+    private HompPagerBean hompPagerBean;
 
     private final MainModeImple mainModeImple;
 
@@ -44,6 +45,7 @@ public class MainPresenterImple implements MainPresenter {
         mainModeImple.getHomePageFragmnetDataJson(url, new RefreshListener() {
             @Override
             public <T> void resultListener(T t) {
+                MainPresenterImple.this.hompPagerBean= (HompPagerBean) t;
                 showView.setData(t);
             }
 
@@ -52,5 +54,21 @@ public class MainPresenterImple implements MainPresenter {
 
             }
         });
+    }
+
+    public void getHomePageFragmentNextDatajson(){
+        mainModeImple.getHomePageFragmnetDataJson(hompPagerBean.getLink().getNext(), new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                MainPresenterImple.this.hompPagerBean= (HompPagerBean) t;
+                showView.setNextData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+
     }
 }
