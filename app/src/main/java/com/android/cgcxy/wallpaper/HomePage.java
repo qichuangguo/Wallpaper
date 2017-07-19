@@ -1,6 +1,5 @@
 package com.android.cgcxy.wallpaper;
 
-import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -10,7 +9,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.TabLayout;
 
@@ -19,7 +17,7 @@ import com.android.cgcxy.wallpaper.base.BaseActivity;
 import com.android.cgcxy.wallpaper.ui.BrowseFragment;
 import com.android.cgcxy.wallpaper.ui.ClassifyFragment;
 import com.android.cgcxy.wallpaper.ui.HomePageFragment;
-import com.android.cgcxy.wallpaper.ui.RingtoneFragment;
+import com.android.cgcxy.wallpaper.ui.SearchFragment;
 
 
 import java.util.ArrayList;
@@ -90,7 +88,8 @@ public class HomePage extends BaseActivity {
         fragments.add(new HomePageFragment());
         fragments.add(new ClassifyFragment());
         fragments.add(new BrowseFragment());
-        fragments.add(new RingtoneFragment());
+        fragments.add(new SearchFragment());
+
 
         TitleFragmentPagerAdapter adapter = new TitleFragmentPagerAdapter(getSupportFragmentManager(),fragments);
         viewPager.setAdapter(adapter);

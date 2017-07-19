@@ -1,6 +1,7 @@
 package com.android.cgcxy.wallpaper.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.WindowManager;
 
 import com.android.volley.RequestQueue;
@@ -41,6 +42,16 @@ public class Utils {
         int height = wm.getDefaultDisplay().getHeight();
         int result[] = { width, height };
         return result;
+    }
+
+    public static void saveSharedPreferences(Context context,String key,String ContentKey,String Content){
+        SharedPreferences sp = context.getSharedPreferences(key, Context.MODE_PRIVATE);
+        sp.edit().putString(ContentKey, Content).commit();
+    }
+
+    public static String getStringSharedPreferences(Context context,String key,String ContentKey){
+        SharedPreferences sp = context.getSharedPreferences(key, Context.MODE_PRIVATE);
+        return sp.getString(ContentKey, null);
     }
 
 

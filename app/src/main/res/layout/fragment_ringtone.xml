@@ -1,13 +1,41 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.android.cgcxy.wallpaper.ui.RingtoneFragment">
+    android:orientation="vertical"
+    tools:context="com.android.cgcxy.wallpaper.ui.SearchFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_margin="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="6"
+            android:background="@drawable/edite_bg"
+            android:drawableRight="@mipmap/delete_96px"
+            android:padding="5dp" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@mipmap/search_1025" />
+
+    </LinearLayout>
+
+    <com.android.cgcxy.wallpaper.view.FlowLayout
+        android:id="@+id/flowLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="#FFFFFF"
+        android:layout_marginTop="15dp">
+    </com.android.cgcxy.wallpaper.view.FlowLayout>
 
-</FrameLayout>
+</LinearLayout>

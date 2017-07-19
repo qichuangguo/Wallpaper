@@ -13,7 +13,7 @@ import java.util.List;
 public class TitleFragmentPagerAdapter extends FragmentPagerAdapter {
 
    private List<Fragment> listFragment;
-    private String title[] = new String[]{"首页","分类","彩铃","浏览"};
+    private String title[] = new String[]{"首页","分类","专题","搜索"};
 
     public TitleFragmentPagerAdapter(FragmentManager fm, List<Fragment> listFragment) {
         super(fm);

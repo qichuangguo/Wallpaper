@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
+import com.google.gson.annotations.Until;
 
 import org.json.JSONObject;
 
@@ -71,4 +72,36 @@ public class MainPresenterImple implements MainPresenter {
         });
 
     }
+
+    public void getClassifyFragmnetDatajson(){
+        String url = String.format(Constants.CLASSIFYJSONURL,Utils.getScreenDispaly(mContext)[0],Utils.getScreenDispaly(mContext)[1]);
+        mainModeImple.getClassifyFragmentJsonData(url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                showView.setData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+    }
+
+    public void getSearchJsonData(){
+        String url = String.format(Constants.SEARCHJSONURL,Utils.getScreenDispaly(mContext)[0],Utils.getScreenDispaly(mContext)[1]);
+        mainModeImple.getSearchJsonData(url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                showView.setData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+    }
+
+
 }
