@@ -2,6 +2,7 @@ package com.android.cgcxy.wallpaper;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -10,20 +11,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.support.design.widget.TabLayout;
 
 import com.android.cgcxy.wallpaper.adapter.TitleFragmentPagerAdapter;
-import com.android.cgcxy.wallpaper.base.BaseActivity;
+import com.android.cgcxy.wallpaper.base.BaseFragment;
 import com.android.cgcxy.wallpaper.ui.BrowseFragment;
 import com.android.cgcxy.wallpaper.ui.ClassifyFragment;
 import com.android.cgcxy.wallpaper.ui.HomePageFragment;
 import com.android.cgcxy.wallpaper.ui.SearchFragment;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePage extends BaseActivity {
+public class HomePage extends BaseFragment {
     public static final String TAG ="HomePage" ;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
@@ -32,6 +31,7 @@ public class HomePage extends BaseActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private List<Fragment> fragments = new ArrayList<>();
+
 
     @Override
     public int getLayoutId() {
@@ -52,14 +52,17 @@ public class HomePage extends BaseActivity {
 
     @Override
     public void initView() {
+
+        ((MainActivity) getActivity()).setbarTintEnabled(R.color.toolBar_bg, false);
+
         toolbar.setTitle(getString(R.string.app_name));
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         navigation_view.setItemIconTintList(null);
         setNavigationItemSelectedListener();
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar, R.string.open,R.string.close){
+        getBaseActivity().setSupportActionBar(toolbar);
+        getBaseActivity().getSupportActionBar().setHomeButtonEnabled(true);
+        getBaseActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(getBaseActivity(), drawerLayout, toolbar, R.string.open, R.string.close) {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
@@ -84,18 +87,17 @@ public class HomePage extends BaseActivity {
 
 
     private void initData() {
-
+        fragments.clear();
         fragments.add(new HomePageFragment());
         fragments.add(new ClassifyFragment());
         fragments.add(new BrowseFragment());
         fragments.add(new SearchFragment());
 
-
-        TitleFragmentPagerAdapter adapter = new TitleFragmentPagerAdapter(getSupportFragmentManager(),fragments);
+        TitleFragmentPagerAdapter adapter = new TitleFragmentPagerAdapter(getChildFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
-
+        adapter.notifyDataSetChanged();
 
     }
 

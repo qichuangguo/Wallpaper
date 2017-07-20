@@ -2,8 +2,10 @@ package com.android.cgcxy.wallpaper.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.WindowManager;
 
+import com.android.volley.Cache;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
@@ -28,7 +30,7 @@ public class Utils {
     public RequestQueue getRequestQueue(Context context){
 
         if (requestQueue==null){
-            requestQueue = Volley.newRequestQueue(context);
+            requestQueue = Volley.newRequestQueue(context,1024*1024*1024);
         }
 
         return requestQueue;
@@ -52,6 +54,17 @@ public class Utils {
     public static String getStringSharedPreferences(Context context,String key,String ContentKey){
         SharedPreferences sp = context.getSharedPreferences(key, Context.MODE_PRIVATE);
         return sp.getString(ContentKey, null);
+    }
+
+    public static String getCacheString(RequestQueue requestQueue,String url){
+        Cache.Entry entry = requestQueue.getCache().get("0:"+url);
+        String cachedResponse="";
+        if (entry!=null){
+            cachedResponse = new String(entry.data);
+            return cachedResponse;
+
+        }
+        return null;
     }
 
 

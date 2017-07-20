@@ -1,15 +1,27 @@
 package com.android.cgcxy.wallpaper.base;
 
+import android.nfc.Tag;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.WindowManager;
+
+import com.android.cgcxy.wallpaper.R;
+import com.android.cgcxy.wallpaper.utils.SystemBarTintManager;
 
 /**
  * Created by chuangguo.qi on 2017/7/17.
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
+
+    private String TAG="BaseActivity";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,4 +33,48 @@ public abstract class BaseActivity extends AppCompatActivity {
     public abstract void initView();
     public abstract int getLayoutId();
     public abstract void findView();
+
+
+
+    public void commitFragment(int id, Fragment fragment, boolean keep){
+        commitFragment(id,fragment,null,keep);
+    }
+
+    public void commitFragment(int id, Fragment fragment, String tag,
+                               boolean keep) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(id, fragment);
+        if (keep) {
+            transaction.addToBackStack(tag);
+        } else {
+            transaction.disallowAddToBackStack();
+        }
+        transaction.commitAllowingStateLoss();
+    }
+
+    public void setbarTintEnabled(int color1,boolean isFontColor) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //透明导航栏
+            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            SystemBarTintManager tintManager = new SystemBarTintManager(this);
+            // 激活状态栏
+            tintManager.setStatusBarTintEnabled(true);
+            tintManager.setStatusBarAlpha(255);
+            if (tintManager.FlymeSetStatusBarLightMode(getWindow(), isFontColor) || tintManager.MIUISetStatusBarLightMode(getWindow(), isFontColor)) {
+                tintManager.setStatusBarTintResource(color1);
+            } else {
+                if (isFontColor) {
+                    //tintManager.setStatusBarTintResource(R.color.none_color);
+                } else {
+                    tintManager.setStatusBarTintResource(color1);
+
+                }
+            }
+
+
+        }
+    }
 }

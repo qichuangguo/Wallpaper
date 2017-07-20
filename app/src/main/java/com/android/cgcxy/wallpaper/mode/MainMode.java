@@ -6,7 +6,8 @@ package com.android.cgcxy.wallpaper.mode;
 
 public interface MainMode {
 
-    void getHomePageFragmnetDataJson(String url,RefreshListener refreshListener);
+    void getHomePageFragmnetDataJson(String url,RefreshListener refreshListener,boolean isCache);
     void getClassifyFragmentJsonData(String url,RefreshListener refreshListener);
-    void getSearchJsonData(String url,RefreshListener refreshListener);
+    void getSearchJsonData(String url,RefreshListener refreshListener,boolean isCache);
+    void getHomePageHeadJsonData(String url,RefreshListener refreshListener);
 }

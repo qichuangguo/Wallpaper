@@ -54,7 +54,7 @@ public class MainPresenterImple implements MainPresenter {
             public <E> void onError(E e) {
 
             }
-        });
+        },true);
     }
 
     public void getHomePageFragmentNextDatajson(){
@@ -69,7 +69,7 @@ public class MainPresenterImple implements MainPresenter {
             public <E> void onError(E e) {
 
             }
-        });
+        },false);
 
     }
 
@@ -88,9 +88,24 @@ public class MainPresenterImple implements MainPresenter {
         });
     }
 
-    public void getSearchJsonData(){
+    public void getSearchJsonData(boolean isCache){
         String url = String.format(Constants.SEARCHJSONURL,Utils.getScreenDispaly(mContext)[0],Utils.getScreenDispaly(mContext)[1]);
         mainModeImple.getSearchJsonData(url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                showView.setData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        },isCache);
+    }
+
+    public void getHomePageHeadJsonData(String url){
+
+        mainModeImple.getHomePageHeadJsonData(url, new RefreshListener() {
             @Override
             public <T> void resultListener(T t) {
                 showView.setData(t);

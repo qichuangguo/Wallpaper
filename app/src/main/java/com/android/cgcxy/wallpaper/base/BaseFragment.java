@@ -3,10 +3,13 @@ package com.android.cgcxy.wallpaper.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.cgcxy.wallpaper.HomePage;
 import com.android.cgcxy.wallpaper.R;
 
 /**
@@ -16,6 +19,8 @@ import com.android.cgcxy.wallpaper.R;
 public abstract class BaseFragment extends Fragment {
 
     private View mView;
+    private BaseActivity baseActivity;
+    private String TAG="BaseFragment";
 
     @Nullable
     @Override
@@ -25,6 +30,13 @@ public abstract class BaseFragment extends Fragment {
         findView();
         initView();
         return mView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
     }
 
     public abstract int getLayoutId();
@@ -38,4 +50,29 @@ public abstract class BaseFragment extends Fragment {
         }
         return null;
     }
+
+    protected BaseActivity getBaseActivity(){
+        if(baseActivity == null){
+            baseActivity = (BaseActivity)getActivity();
+        }
+        return baseActivity;
+    }
+
+    public void commitFragment(int id, Fragment fragment,boolean keep){
+        commitFragment(id,fragment,null,keep);
+    }
+
+    public void commitFragment(int id, Fragment fragment, String tag,
+                               boolean keep) {
+        FragmentTransaction transaction =  getChildFragmentManager().beginTransaction();
+        transaction.replace(id, fragment);
+        if (keep) {
+            transaction.addToBackStack(tag);
+        } else {
+            transaction.disallowAddToBackStack();
+        }
+        transaction.commitAllowingStateLoss();
+    }
+
+
 }

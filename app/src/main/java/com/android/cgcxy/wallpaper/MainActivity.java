@@ -4,13 +4,24 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.android.cgcxy.wallpaper.base.BaseActivity;
+import com.android.cgcxy.wallpaper.ui.HomePageFragment;
+
+public class MainActivity extends BaseActivity {
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public void initView() {
+        commitFragment(R.id.fragmeLaout,new HomePage(),true);
+    }
 
-        startActivity(new Intent(this,HomePage.class));
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    public void findView() {
+
     }
 }

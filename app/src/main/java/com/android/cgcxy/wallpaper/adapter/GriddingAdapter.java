@@ -61,6 +61,7 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.imageViewPoint = imageViewPoint;
     }
 
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType==TYPE_HEADER){
@@ -132,8 +133,8 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
 
             }
-            Log.i(TAG, "MyViewPager: itemView"+imageViewPoint.size());
             setViewPagerChangLiner(viewPager);
+
         }
     }
 
@@ -209,6 +210,19 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         });
 
+    }
+
+
+    private OnClickLiner onClickLiner;
+    private interface OnClickLiner{
+
+        void onClick(View view);
+        void handOnclick(View view,int point);
+
+    }
+
+    public void setOnClick(OnClickLiner onClickLiner){
+        this.onClickLiner= onClickLiner;
     }
 
 

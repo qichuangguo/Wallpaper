@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#FFFFFF"
     tools:context="com.android.cgcxy.wallpaper.ui.SearchFragment">
 
     <LinearLayout
@@ -12,23 +13,35 @@
         android:gravity="center_vertical">
 
         <EditText
+            android:id="@+id/edit_query"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:layout_margin="15dp"
             android:layout_marginTop="15dp"
             android:layout_weight="6"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/edite_bg"
-            android:drawableRight="@mipmap/delete_96px"
-            android:padding="5dp" />
+            android:drawableRight="@mipmap/delete_01"
+            android:padding="5dp"
+            android:hint="请输入关键字"/>
 
         <ImageButton
+            android:id="@+id/ib_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:src="@mipmap/search_1025" />
+            android:src="@mipmap/search_127"
+           android:layout_margin="10dp"/>
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="摇一摇更新标签"
+        android:gravity="center"
+        android:textSize="18sp"/>
 
     <com.android.cgcxy.wallpaper.view.FlowLayout
         android:id="@+id/flowLayout"

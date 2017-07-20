@@ -5,16 +5,21 @@ import android.util.Log;
 
 import com.android.cgcxy.wallpaper.base.Constants;
 import com.android.cgcxy.wallpaper.bean.ClassifyBean;
+import com.android.cgcxy.wallpaper.bean.HomePageHeadBean;
 import com.android.cgcxy.wallpaper.bean.HompPagerBean;
 import com.android.cgcxy.wallpaper.bean.SearchBean;
+import com.android.cgcxy.wallpaper.utils.MyJsonObjectRequest;
+import com.android.cgcxy.wallpaper.utils.MyStringRequest;
 import com.android.cgcxy.wallpaper.utils.Utils;
 import com.android.volley.Cache;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -38,28 +43,19 @@ public class MainModeImple implements MainMode {
     private Context mContext;
     private RequestQueue requestQueue;
 
+
     public MainModeImple(Context context) {
         this.mContext = context;
         requestQueue = Utils.getUtils().getRequestQueue(mContext);
+
     }
 
     @Override
-    public void getHomePageFragmnetDataJson(String url, final RefreshListener refreshListener) {
-        //Log.i(TAG, "getHomePageFragmnetDataJson: " + url);
-       /* final String content = Utils.getStringSharedPreferences(mContext, Constants.HOMESHAREKEY, "content");
-        Log.i(TAG, "getHomePageFragmnetDataJson: "+content);
-
-        if (content!=null){
-            Gson gson = new Gson();
-            HompPagerBean hompPagerBean = gson.fromJson(content, HompPagerBean.class);
-            refreshListener.resultListener(hompPagerBean);
-            Log.i(TAG, "getHomePageFragmnetDataJson: "+hompPagerBean.getSlider().size());
-            return;
-        }*/
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+    public void getHomePageFragmnetDataJson(final String url, final RefreshListener refreshListener,boolean isCache) {
+        MyJsonObjectRequest jsonObjectRequest = new MyJsonObjectRequest(Request.Method.GET, url, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
-               // Utils.saveSharedPreferences(mContext,Constants.HOMESHAREKEY,"content",jsonObject.toString());
+
                 Gson gson = new Gson();
                 HompPagerBean hompPagerBean = gson.fromJson(jsonObject.toString(), HompPagerBean.class);
                 refreshListener.resultListener(hompPagerBean);
@@ -68,44 +64,53 @@ public class MainModeImple implements MainMode {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                refreshListener.onError(volleyError);
+                String cacheString = Utils.getCacheString(requestQueue, url);
+                if (cacheString!=null) {
+                    Gson gson = new Gson();
+                    HompPagerBean hompPagerBean = gson.fromJson(cacheString, HompPagerBean.class);
+                    refreshListener.resultListener(hompPagerBean);
+                }else {
+                    refreshListener.onError(volleyError);
+                }
             }
         });
-
-
-        Cache.Entry entry = requestQueue.getCache().get(url);
-        Log.i(TAG, "getHomePageFragmnetDataJson: entry"+entry);
-        if (entry!=null){
-            String cachedResponse = new String(requestQueue.getCache().get(url).data);
-            Log.i(TAG, "getHomePageFragmnetDataJson: "+cachedResponse);
-        }
+        jsonObjectRequest.setShouldCache(isCache);
         requestQueue.add(jsonObjectRequest);
-
     }
 
     @Override
-    public void getClassifyFragmentJsonData(String url, final RefreshListener refreshListener) {
-        Log.i(TAG, "getClassifyFragmentJsonData: " + url);
-        StringRequest str = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+    public void getClassifyFragmentJsonData(final String url, final RefreshListener refreshListener) {
+
+        MyStringRequest str = new MyStringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
 
                 List<ClassifyBean> listFromJSON = getListFromJSON(s, ClassifyBean[].class);
                 refreshListener.resultListener(listFromJSON);
-                Log.i(TAG, "onResponse: " + listFromJSON.size());
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Log.i(TAG, "onErrorResponse: " + volleyError.getMessage());
+                String cacheString = Utils.getCacheString(requestQueue, url);
+                if (cacheString!=null){
+                    List<ClassifyBean> listFromJSON = getListFromJSON(cacheString, ClassifyBean[].class);
+                    refreshListener.resultListener(listFromJSON);
+                }else {
+
+                    refreshListener.onError(volleyError);
+                }
+
             }
         });
+
         requestQueue.add(str);
     }
 
     @Override
-    public void getSearchJsonData(String url, final RefreshListener refreshListener) {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+    public void getSearchJsonData(final String url, final RefreshListener refreshListener,boolean isCache) {
+        Log.i(TAG, "getSearchJsonData: "+url);
+        MyStringRequest stringRequest = new MyStringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
                 List<SearchBean> listFromJSON = getListFromJSON(s, SearchBean[].class);
@@ -115,11 +120,36 @@ public class MainModeImple implements MainMode {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                String cacheString = Utils.getCacheString(requestQueue, url);
+                if (cacheString!=null){
+                    List<SearchBean> listFromJSON = getListFromJSON(cacheString, SearchBean[].class);
+                    refreshListener.resultListener(listFromJSON);
+                }else {
+                    refreshListener.onError(volleyError);
+                }
+            }
+        });
+        stringRequest.setShouldCache(isCache);
+        requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void getHomePageHeadJsonData(String url, final RefreshListener refreshListener) {
+        MyStringRequest myStringRequest = new MyStringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                Gson gson = new Gson();
+                HomePageHeadBean homePageHeadBean = gson.fromJson(s, HomePageHeadBean.class);
+                refreshListener.resultListener(homePageHeadBean);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
 
             }
         });
 
-        requestQueue.add(stringRequest);
+        requestQueue.add(myStringRequest);
     }
 
 
