@@ -72,6 +72,7 @@ public class MainModeImple implements MainMode {
             }
         });
 
+
         Cache.Entry entry = requestQueue.getCache().get(url);
         Log.i(TAG, "getHomePageFragmnetDataJson: entry"+entry);
         if (entry!=null){
