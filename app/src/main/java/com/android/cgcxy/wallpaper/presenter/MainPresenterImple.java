@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.android.cgcxy.wallpaper.base.Constants;
+import com.android.cgcxy.wallpaper.bean.HomePageHeadBean;
 import com.android.cgcxy.wallpaper.bean.HompPagerBean;
 import com.android.cgcxy.wallpaper.mode.MainMode;
 import com.android.cgcxy.wallpaper.mode.MainModeImple;
@@ -33,6 +34,7 @@ public class MainPresenterImple implements MainPresenter {
     private HompPagerBean hompPagerBean;
 
     private final MainModeImple mainModeImple;
+    private HomePageHeadBean headBean;
 
     public MainPresenterImple(ShowView showView, Context context){
         this.showView=showView;
@@ -108,6 +110,7 @@ public class MainPresenterImple implements MainPresenter {
         mainModeImple.getHomePageHeadJsonData(url, new RefreshListener() {
             @Override
             public <T> void resultListener(T t) {
+                headBean = (HomePageHeadBean) t;
                 showView.setData(t);
             }
 
@@ -116,6 +119,24 @@ public class MainPresenterImple implements MainPresenter {
 
             }
         });
+    }
+
+    public void getHomePageNextHeadJsonData(){
+
+        String url = headBean.getLink().getNext();
+        mainModeImple.getHomePageHeadJsonData(url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                headBean = (HomePageHeadBean) t;
+                showView.setNextData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+
     }
 
 
