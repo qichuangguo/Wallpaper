@@ -95,12 +95,16 @@ public class HomePageFragment extends BaseFragment implements ShowView{
         });
 
 
-        griddingAdapter.setOnClick(new GriddingAdapter.OnClickListener() {
+        griddingAdapter.setOnClick(new GriddingAdapter.OnClickLiner() {
             @Override
             public void onClick(View view) {
 
             }
 
+            @Override
+            public void handOnclick(View view, int point) {
+
+            }
         });
 
 

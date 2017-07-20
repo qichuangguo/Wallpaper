@@ -3,6 +3,7 @@ package com.android.cgcxy.wallpaper.ui.homepageui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.cgcxy.wallpaper.R;
+import com.android.cgcxy.wallpaper.adapter.HomePageHeadAdapter;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
+import com.android.cgcxy.wallpaper.bean.HomePageHeadBean;
 import com.android.cgcxy.wallpaper.mode.MainMode;
 import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
 import com.android.cgcxy.wallpaper.ui.ShowView;
@@ -26,14 +29,17 @@ public class HomePageHeadFragment extends BaseFragment implements ShowView {
     private Toolbar toolbar;
     private String url;
     private String title;
-    private String TAG="HomePageHeadFragment";
+    private String TAG = "HomePageHeadFragment";
     private RecyclerView recycle;
+    private HomePageHeadAdapter adapter;
+    private boolean isLoading = false;
+    private GridLayoutManager gridLayoutManager;
 
-    public static HomePageHeadFragment newInstance(String url,String tilte) {
+    public static HomePageHeadFragment newInstance(String url, String tilte) {
 
         Bundle args = new Bundle();
-        args.putString("url",url);
-        args.putString("title",tilte);
+        args.putString("url", url);
+        args.putString("title", tilte);
         HomePageHeadFragment fragment = new HomePageHeadFragment();
         fragment.setArguments(args);
         return fragment;
@@ -50,7 +56,7 @@ public class HomePageHeadFragment extends BaseFragment implements ShowView {
         url = arguments.getString("url");
         title = arguments.getString("title");
 
-        Log.i(TAG, "findView: url"+url);
+        Log.i(TAG, "findView: url" + url);
 
         toolbar = findViewById(R.id.toolbar);
         recycle = findViewById(R.id.recycleView);
@@ -58,7 +64,7 @@ public class HomePageHeadFragment extends BaseFragment implements ShowView {
 
     @Override
     public void initView() {
-        MainPresenterImple presenter = new MainPresenterImple(this,getContext());
+        final MainPresenterImple presenter = new MainPresenterImple(this, getContext());
         presenter.getHomePageHeadJsonData(url);
 
         toolbar.setTitle(title);
@@ -72,15 +78,66 @@ public class HomePageHeadFragment extends BaseFragment implements ShowView {
                 getBaseActivity().onBackPressed();
             }
         });
+
+        gridLayoutManager = new GridLayoutManager(getContext(), 3);
+        recycle.setLayoutManager(gridLayoutManager);
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if (position == 0) {
+                    return 3;
+                } else if (adapter.getItemCount()-1==position){
+
+                    return 3;
+
+                }else {
+                    return 1;
+                }
+            }
+        });
+        adapter = new HomePageHeadAdapter();
+        recycle.setAdapter(adapter);
+
+        recycle.setOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            int lastVisibleItem = 0;
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                Log.i(TAG, "onScrollStateChanged: lastVisibleItem:" + lastVisibleItem + "::" + adapter.getItemCount() + "::" + isLoading);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount() && !isLoading) {
+                    isLoading = true;
+                    presenter.getHomePageNextHeadJsonData();
+                    Log.i(TAG, "onScrollStateChanged: ");
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = gridLayoutManager.findLastVisibleItemPosition();
+            }
+        });
+
+
     }
 
     @Override
     public <T> void setData(T t) {
 
+        HomePageHeadBean headBean = (HomePageHeadBean) t;
+        adapter.setData(headBean);
+        adapter.notifyDataSetChanged();
+        // Log.i(TAG, "setData: "+headBean.getData().size());
+
     }
 
     @Override
     public <T> void setNextData(T t) {
-
+        HomePageHeadBean headBean = (HomePageHeadBean) t;
+        adapter.getHomePageHeadBean().getData().addAll(headBean.getData());
+        adapter.notifyDataSetChanged();
+        isLoading = false;
     }
 }

@@ -111,6 +111,12 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
             tv_title = (TextView) itemView.findViewById(R.id.tv_title);
             imageView= (ImageView) itemView.findViewById(R.id.imageView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickLiner.onClick(v);
+                }
+            });
         }
     }
 
@@ -214,7 +220,7 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
     private OnClickLiner onClickLiner;
-    private interface OnClickLiner{
+    public interface OnClickLiner{
 
         void onClick(View view);
         void handOnclick(View view,int point);

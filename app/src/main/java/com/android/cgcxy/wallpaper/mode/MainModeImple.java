@@ -135,11 +135,14 @@ public class MainModeImple implements MainMode {
 
     @Override
     public void getHomePageHeadJsonData(String url, final RefreshListener refreshListener) {
+        Log.i(TAG, "getHomePageHeadJsonData: "+url);
         MyStringRequest myStringRequest = new MyStringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
                 Gson gson = new Gson();
+                Log.i(TAG, "onResponse: ======");
                 HomePageHeadBean homePageHeadBean = gson.fromJson(s, HomePageHeadBean.class);
+                Log.i(TAG, "onResponse: "+homePageHeadBean.getData().size());
                 refreshListener.resultListener(homePageHeadBean);
             }
         }, new Response.ErrorListener() {
