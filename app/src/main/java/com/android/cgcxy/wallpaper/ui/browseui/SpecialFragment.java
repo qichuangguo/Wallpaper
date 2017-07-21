@@ -16,16 +16,18 @@ import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.adapter.SpecialAdapter;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
 import com.android.cgcxy.wallpaper.base.Constants;
+import com.android.cgcxy.wallpaper.base.OnClickListener;
 import com.android.cgcxy.wallpaper.bean.SpeCialBean;
 import com.android.cgcxy.wallpaper.presenter.MainPresenter;
 import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
 import com.android.cgcxy.wallpaper.ui.ShowView;
+import com.android.cgcxy.wallpaper.ui.homepageui.HomePageHeadFragment;
 import com.android.cgcxy.wallpaper.utils.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SpecialFragment extends BaseFragment implements ShowView {
+public class SpecialFragment extends BaseFragment implements ShowView ,OnClickListener{
 
 
     private Toolbar toolbar;
@@ -56,8 +58,8 @@ public class SpecialFragment extends BaseFragment implements ShowView {
     @Override
     public void initAttach() {
         mainPresenterImple = new MainPresenterImple(this,getContext());
-        String url = String.format(Constants.BROWSESPECIAL, Utils.getScreenDispaly(getContext())[0],Utils.getScreenDispaly(getContext())[1]);
-        mainPresenterImple.getSpeCialJsonData(url);
+
+
 
     }
 
@@ -69,8 +71,8 @@ public class SpecialFragment extends BaseFragment implements ShowView {
 
     @Override
     public void initView() {
-
-
+        String url = String.format(Constants.BROWSESPECIAL, Utils.getScreenDispaly(getContext())[0],Utils.getScreenDispaly(getContext())[1]);
+        mainPresenterImple.getSpeCialJsonData(url);
         toolbar.setTitle("壁纸专题");
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getBaseActivity().setSupportActionBar(toolbar);
@@ -84,6 +86,7 @@ public class SpecialFragment extends BaseFragment implements ShowView {
         });
 
         specialAdapter = new SpecialAdapter();
+        specialAdapter.setOnClickListener(this);
         layoutManager = new GridLayoutManager(getContext(),1);
         recycle.setLayoutManager(layoutManager);
         recycle.setAdapter(specialAdapter);
@@ -129,5 +132,10 @@ public class SpecialFragment extends BaseFragment implements ShowView {
     @Override
     public <T> void setNextData(T t) {
 
+    }
+
+    @Override
+    public void clickListener(View view, int position) {
+        getBaseActivity().commitFragment(R.id.fragmeLaout, HomePageHeadFragment.newInstance( specialAdapter.getSpeCialBean().getData().get(position).getDetail(),specialAdapter.getSpeCialBean().getData().get(position).getName()),true);
     }
 }

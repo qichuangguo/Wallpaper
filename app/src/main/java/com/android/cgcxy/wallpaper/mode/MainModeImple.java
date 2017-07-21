@@ -226,6 +226,7 @@ public class MainModeImple implements MainMode {
 
     @Override
     public void getSpeCialJsonData(String url, final RefreshListener refreshListener) {
+        Log.i(TAG, "getSpeCialJsonData: "+url);
         MyStringRequest myStringRequest = new MyStringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {

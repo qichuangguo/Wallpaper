@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.cgcxy.wallpaper.R;
+import com.android.cgcxy.wallpaper.base.OnClickListener;
 import com.android.cgcxy.wallpaper.bean.SpeCialBean;
 import com.squareup.picasso.Picasso;
 
@@ -22,6 +23,7 @@ public class SpecialAdapter extends RecyclerView.Adapter {
     private final int TYPE_FOOT = 1;
     private SpeCialBean speCialBean;
     private Context mContext;
+    private OnClickListener onClickListener;
     public void setData(SpeCialBean speCialBean) {
         this.speCialBean = speCialBean;
     }
@@ -45,7 +47,7 @@ public class SpecialAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (speCialBean!=null){
             if (getItemViewType(position)==TYPE_FOOT){
 
@@ -53,6 +55,12 @@ public class SpecialAdapter extends RecyclerView.Adapter {
                 String image = speCialBean.getData().get(position).getImage();
                 Picasso.with(mContext).load(image).placeholder(R.mipmap.image_load).error(R.mipmap.image_erry).into(((MyItemHold)holder).imageView);
                 ((MyItemHold)holder).textView.setText(speCialBean.getData().get(position).getDescription());
+                ((MyItemHold)holder).itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onClickListener.clickListener(v,position);
+                    }
+                });
             }
         }
 
@@ -96,4 +104,7 @@ public class SpecialAdapter extends RecyclerView.Adapter {
         }
     }
 
+    public void setOnClickListener(OnClickListener onClickListener){
+        this.onClickListener=onClickListener;
+    }
 }
