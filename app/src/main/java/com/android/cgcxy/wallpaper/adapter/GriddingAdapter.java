@@ -88,7 +88,7 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 HompPagerBean.DataBean dataBean = hompPagerBean.getData().get(position-1);
                 String small = dataBean.getImage().getSmall();
                 String[] url = small.split(",");
-                small = url[0] + ",200,300." + url[url.length - 1].split("\\.")[1];
+               // small = url[0] + ",200,300." + url[url.length - 1].split("\\.")[1];
                 Picasso.with(mContext).load(small).placeholder(R.mipmap.image_load).error(R.mipmap.image_erry).into(((MyViewHole)holder).imageView);
                 ((MyViewHole)holder).tv_title.setText(dataBean.getTags().get(0).getName());
             }

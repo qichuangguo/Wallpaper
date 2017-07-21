@@ -16,6 +16,7 @@ import com.android.cgcxy.wallpaper.adapter.GriddingAdapter;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
 import com.android.cgcxy.wallpaper.bean.HompPagerBean;
 import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
+import com.android.cgcxy.wallpaper.ui.browseui.SpecialFragment;
 import com.android.cgcxy.wallpaper.ui.homepageui.HomePageHeadFragment;
 import com.squareup.picasso.Picasso;
 
@@ -46,12 +47,17 @@ public class HomePageFragment extends BaseFragment implements ShowView{
         return R.layout.fragment_blank;
     }
 
+    @Override
+    public void initAttach() {
+
+    }
+
 
     @Override
     public void initView() {
-
         mainPresenterImple = new MainPresenterImple(this,getContext());
         mainPresenterImple.getHomePageFragmnetDataJson();
+
         final GridLayoutManager gridLayoutManager = new  GridLayoutManager(getActivity(),3);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -160,9 +166,8 @@ public class HomePageFragment extends BaseFragment implements ShowView{
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HomePageHeadFragment headFragment = new HomePageHeadFragment();
-
                 getBaseActivity().commitFragment(R.id.fragmeLaout,HomePageHeadFragment.newInstance(url,title),true);
+
             }
         });
 

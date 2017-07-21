@@ -22,11 +22,13 @@ import com.google.gson.annotations.Until;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by chuangguo.qi on 2017/7/18.
  */
 
-public class MainPresenterImple implements MainPresenter {
+public class MainPresenterImple implements MainPresenter,Serializable{
 
     public static final String TAG ="MainPresenterImple" ;
     private ShowView showView;
@@ -129,6 +131,82 @@ public class MainPresenterImple implements MainPresenter {
             public <T> void resultListener(T t) {
                 headBean = (HomePageHeadBean) t;
                 showView.setNextData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+
+    }
+
+    public void getClassifySubJsonData(String url){
+
+        mainModeImple.getClassifySubJsonData(url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                showView.setData(t);
+                Log.i(TAG, "resultListener: ");
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+    }
+
+    public void getClassifyNestSubJsonData(String url){
+        mainModeImple.getClassifyNestSubJsonData(url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+               showView.setNextData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+    }
+
+    public void getClassifyChildishSubJsonData(String url){
+
+        mainModeImple.getClassifyChildishSubJsonData(url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                showView.setData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+    }
+
+    public void getClassifyChildishSubNextJsonData(String url){
+
+        mainModeImple.getClassifyChildishSubJsonData(url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                showView.setNextData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+    }
+
+    public void getSpeCialJsonData(String url){
+
+        mainModeImple.getSpeCialJsonData(url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                showView.setData(t);
             }
 
             @Override

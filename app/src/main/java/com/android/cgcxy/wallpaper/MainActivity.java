@@ -1,12 +1,6 @@
 package com.android.cgcxy.wallpaper;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 import com.android.cgcxy.wallpaper.base.BaseActivity;
-import com.android.cgcxy.wallpaper.ui.HomePageFragment;
-
 public class MainActivity extends BaseActivity {
 
 

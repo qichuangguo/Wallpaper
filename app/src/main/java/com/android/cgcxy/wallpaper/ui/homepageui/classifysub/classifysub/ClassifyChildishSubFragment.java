@@ -1,6 +1,7 @@
-package com.android.cgcxy.wallpaper.ui.homepageui;
+package com.android.cgcxy.wallpaper.ui.homepageui.classifysub.classifysub;
 
-
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,58 +9,59 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.cgcxy.wallpaper.R;
+import com.android.cgcxy.wallpaper.adapter.ClassifySubNewsAdapter;
 import com.android.cgcxy.wallpaper.adapter.HomePageHeadAdapter;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
-import com.android.cgcxy.wallpaper.bean.HomePageHeadBean;
-import com.android.cgcxy.wallpaper.mode.MainMode;
+import com.android.cgcxy.wallpaper.bean.ClassifyChildiSubBean;
+import com.android.cgcxy.wallpaper.bean.ClassifySubBean;
+import com.android.cgcxy.wallpaper.presenter.MainPresenter;
 import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
 import com.android.cgcxy.wallpaper.ui.ShowView;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Use the {@link ClassifyChildishSubFragment#newInstance} factory method to
+ * create an instance of this fragment.
  */
-public class HomePageHeadFragment extends BaseFragment implements ShowView {
+public class ClassifyChildishSubFragment extends BaseFragment implements ShowView{
 
-
+    private static final String TAG = "ClassifyChildishSubFragment";
+    private MainPresenterImple mainPresenterImple;
     private Toolbar toolbar;
-    private String url;
-    private String title;
-    private String TAG = "HomePageHeadFragment";
     private RecyclerView recycle;
-    private HomePageHeadAdapter adapter;
-    private boolean isLoading = false;
+    private boolean isLoading=false;
+    private String name;
     private GridLayoutManager gridLayoutManager;
-    private MainPresenterImple presenter;
+    private ClassifySubNewsAdapter adapter;
+    private String nextUrl = "";
 
-    public static HomePageHeadFragment newInstance(String url, String tilte) {
-
+    public ClassifyChildishSubFragment() {
+        // Required empty public constructor
+    }
+    public static ClassifyChildishSubFragment newInstance(String url,String name) {
+        ClassifyChildishSubFragment fragment = new ClassifyChildishSubFragment();
         Bundle args = new Bundle();
-        args.putString("url", url);
-        args.putString("title", tilte);
-        HomePageHeadFragment fragment = new HomePageHeadFragment();
+        args.putString("url",url);
+        args.putString("name",name);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_home_page_head;
+        return R.layout.fragment_classify_childish_sub;
     }
 
     @Override
     public void initAttach() {
-
-        Bundle arguments = getArguments();
-        url = arguments.getString("url");
-        title = arguments.getString("title");
-
-        presenter = new MainPresenterImple(this, getContext());
-        presenter.getHomePageHeadJsonData(url);
+        String url = getArguments().getString("url");
+        name = getArguments().getString("name");
+        mainPresenterImple = new MainPresenterImple(this,getContext());
+        mainPresenterImple.getClassifyChildishSubJsonData(url);
+        Log.i(TAG, "initAttach: "+url);
     }
 
     @Override
@@ -72,8 +74,7 @@ public class HomePageHeadFragment extends BaseFragment implements ShowView {
     @Override
     public void initView() {
 
-
-        toolbar.setTitle(title);
+        toolbar.setTitle(name);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getBaseActivity().setSupportActionBar(toolbar);
         getBaseActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -87,22 +88,22 @@ public class HomePageHeadFragment extends BaseFragment implements ShowView {
 
         gridLayoutManager = new GridLayoutManager(getContext(), 3);
         recycle.setLayoutManager(gridLayoutManager);
+
+
+
+        adapter = new ClassifySubNewsAdapter();
+        recycle.setAdapter(adapter);
+
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                if (position == 0) {
+                if (position==adapter.getItemCount()-1){
                     return 3;
-                } else if (adapter.getItemCount()-1==position){
-
-                    return 3;
-
                 }else {
                     return 1;
                 }
             }
         });
-        adapter = new HomePageHeadAdapter();
-        recycle.setAdapter(adapter);
 
         recycle.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -111,10 +112,12 @@ public class HomePageHeadFragment extends BaseFragment implements ShowView {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                Log.i(TAG, "onScrollStateChanged: lastVisibleItem:" + lastVisibleItem + "::" + adapter.getItemCount() + "::" + isLoading);
+
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount() && !isLoading) {
                     isLoading = true;
-                    presenter.getHomePageNextHeadJsonData();
+                    if (nextUrl!=null && !nextUrl.isEmpty()){
+                        mainPresenterImple.getClassifyChildishSubNextJsonData(nextUrl);
+                    }
                     Log.i(TAG, "onScrollStateChanged: ");
                 }
             }
@@ -131,19 +134,19 @@ public class HomePageHeadFragment extends BaseFragment implements ShowView {
 
     @Override
     public <T> void setData(T t) {
-
-        HomePageHeadBean headBean = (HomePageHeadBean) t;
-        adapter.setData(headBean);
+        ClassifySubBean bean = (ClassifySubBean) t;
+        nextUrl=bean.getLink().getNext();
+        adapter.setData(bean);
         adapter.notifyDataSetChanged();
-        // Log.i(TAG, "setData: "+headBean.getData().size());
 
     }
 
     @Override
     public <T> void setNextData(T t) {
-        HomePageHeadBean headBean = (HomePageHeadBean) t;
-        adapter.getHomePageHeadBean().getData().addAll(headBean.getData());
+        ClassifySubBean bean = (ClassifySubBean) t;
+        adapter.getClassifySubBean().getData().addAll(bean.getData());
         adapter.notifyDataSetChanged();
-        isLoading = false;
+        nextUrl=bean.getLink().getNext();
+        isLoading=false;
     }
 }

@@ -1,5 +1,6 @@
 package com.android.cgcxy.wallpaper.base;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,7 +26,7 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+        Log.i(TAG, "onCreateView: ");
         mView = inflater.inflate(getLayoutId(), container, false);
         findView();
         initView();
@@ -33,15 +34,24 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.i(TAG, "onAttach: ");
+        initAttach();
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        Log.i(TAG, "onActivityCreated: ");
 
     }
 
     public abstract int getLayoutId();
+    public  abstract void initAttach();
     public abstract void findView();
     public abstract void initView();
+
 
     public <T extends View> T findViewById(int id){
 

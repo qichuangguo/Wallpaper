@@ -1,13 +1,17 @@
 package com.android.cgcxy.wallpaper.mode;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
 import com.android.cgcxy.wallpaper.base.Constants;
 import com.android.cgcxy.wallpaper.bean.ClassifyBean;
+import com.android.cgcxy.wallpaper.bean.ClassifyChildiSubBean;
+import com.android.cgcxy.wallpaper.bean.ClassifySubBean;
 import com.android.cgcxy.wallpaper.bean.HomePageHeadBean;
 import com.android.cgcxy.wallpaper.bean.HompPagerBean;
 import com.android.cgcxy.wallpaper.bean.SearchBean;
+import com.android.cgcxy.wallpaper.bean.SpeCialBean;
 import com.android.cgcxy.wallpaper.utils.MyJsonObjectRequest;
 import com.android.cgcxy.wallpaper.utils.MyStringRequest;
 import com.android.cgcxy.wallpaper.utils.Utils;
@@ -29,6 +33,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.reflect.Type;
+import java.nio.channels.NotYetBoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -80,7 +85,7 @@ public class MainModeImple implements MainMode {
 
     @Override
     public void getClassifyFragmentJsonData(final String url, final RefreshListener refreshListener) {
-
+        Log.i(TAG, "getClassifyFragmentJsonData: "+url);
         MyStringRequest str = new MyStringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
@@ -152,6 +157,90 @@ public class MainModeImple implements MainMode {
             }
         });
 
+        requestQueue.add(myStringRequest);
+    }
+
+    @Override
+    public void getClassifySubJsonData(String url, final RefreshListener refreshListener) {
+        Log.i(TAG, "getClassifySubJsonData: "+url);
+        MyStringRequest stringRequest = new MyStringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+
+                Gson gson = new Gson();
+                ClassifySubBean classifySubBean = gson.fromJson(s, ClassifySubBean.class);
+                refreshListener.resultListener(classifySubBean);
+                Log.i(TAG, "onResponse: ======");
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+        stringRequest.setShouldCache(false);
+        requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void getClassifyNestSubJsonData(String url, final RefreshListener refreshListener) {
+
+        MyStringRequest stringRequest = new MyStringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                Gson gson = new Gson();
+                ClassifySubBean classifySubBean = gson.fromJson(s, ClassifySubBean.class);
+                refreshListener.resultListener(classifySubBean);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+        stringRequest.setShouldCache(false);
+        requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void getClassifyChildishSubJsonData(String url, final RefreshListener refreshListener) {
+        MyStringRequest myStringRequest = new MyStringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                Gson gson = new Gson();
+                ClassifySubBean classifyChildiSubBean = gson.fromJson(s, ClassifySubBean.class);
+                refreshListener.resultListener(classifyChildiSubBean);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+
+        myStringRequest.setShouldCache(false);
+        requestQueue.add(myStringRequest);
+    }
+
+    @Override
+    public void getSpeCialJsonData(String url, final RefreshListener refreshListener) {
+        MyStringRequest myStringRequest = new MyStringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                Gson gson = new Gson();
+                SpeCialBean speCialBean = gson.fromJson(s, SpeCialBean.class);
+                refreshListener.resultListener(speCialBean);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+
+        myStringRequest.setShouldCache(true);
         requestQueue.add(myStringRequest);
     }
 

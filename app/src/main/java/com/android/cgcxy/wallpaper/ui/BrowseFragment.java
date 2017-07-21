@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.RelativeLayout;
 
 import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
+import com.android.cgcxy.wallpaper.ui.browseui.SpecialFragment;
 import com.android.cgcxy.wallpaper.utils.Utils;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -29,6 +31,7 @@ import com.squareup.picasso.Picasso;
 public class BrowseFragment extends BaseFragment implements View.OnClickListener {
 
 
+    private static final String TAG ="BrowseFragment" ;
     private LinearLayout linearLayout;
     private RelativeLayout relayout_special;
     private RelativeLayout relayout_gamepad;
@@ -43,6 +46,11 @@ public class BrowseFragment extends BaseFragment implements View.OnClickListener
     @Override
     public int getLayoutId() {
         return R.layout.fragment_browse;
+    }
+
+    @Override
+    public void initAttach() {
+
     }
 
     @Override
@@ -95,7 +103,9 @@ public class BrowseFragment extends BaseFragment implements View.OnClickListener
         }else if (id==R.id.relayout_update){
            // 每日更新
         }else if (id==R.id.relayout_special){
-            //壁纸专题
+            Log.i(TAG, "onClick: ");
+            SpecialFragment specialFragment = SpecialFragment.newInstance();
+            getBaseActivity().commitFragment(R.id.fragmeLaout,specialFragment,true);
         }
     }
 }

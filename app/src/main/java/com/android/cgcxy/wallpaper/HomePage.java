@@ -31,11 +31,17 @@ public class HomePage extends BaseFragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private List<Fragment> fragments = new ArrayList<>();
+    private String[] title = new String[]{"首页","分类","专题","搜索"};
 
 
     @Override
     public int getLayoutId() {
         return R.layout.activity_home_page;
+    }
+
+    @Override
+    public void initAttach() {
+
     }
 
 
@@ -58,7 +64,6 @@ public class HomePage extends BaseFragment {
         toolbar.setTitle(getString(R.string.app_name));
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         navigation_view.setItemIconTintList(null);
-        setNavigationItemSelectedListener();
         getBaseActivity().setSupportActionBar(toolbar);
         getBaseActivity().getSupportActionBar().setHomeButtonEnabled(true);
         getBaseActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -79,7 +84,7 @@ public class HomePage extends BaseFragment {
             }
         };
         actionBarDrawerToggle.syncState();
-       drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
         initData();
 
     }
@@ -94,22 +99,29 @@ public class HomePage extends BaseFragment {
         fragments.add(new SearchFragment());
 
         TitleFragmentPagerAdapter adapter = new TitleFragmentPagerAdapter(getChildFragmentManager(), fragments);
+        adapter.setTitle(title);
         viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager);
-
+        tabLayout.setupWithViewPager(viewPager,false);
         adapter.notifyDataSetChanged();
 
-    }
-
-    public void setNavigationItemSelectedListener(){
-        navigation_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Log.i(TAG, "onNavigationItemSelected: "+item.getItemId());
-                return false;
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition(),false);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
 
     }
+
 
 }

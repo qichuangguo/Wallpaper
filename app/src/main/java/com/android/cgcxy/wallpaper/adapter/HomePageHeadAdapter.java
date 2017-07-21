@@ -77,7 +77,7 @@ public class HomePageHeadAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 HomePageHeadBean.DataBean dataBean = homePageHeadBean.getData().get(position-1);
                 String small = dataBean.getImage().getSmall();
                 String[] url = small.split(",");
-                small = url[0] + ",300,200." + url[url.length - 1].split("\\.")[1];
+               // small = url[0] + ",300,300." + url[url.length - 1].split("\\.")[1];
                 Picasso.with(mContext).load(small).placeholder(R.mipmap.image_load).error(R.mipmap.image_erry).into(((MyViewHold) holder).imageView);
                 ((MyViewHold)holder).tv_title.setText(dataBean.getTags().get(1).getName());
             }else if (getItemViewType(position) == HEAD_FOOT){

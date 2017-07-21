@@ -2,6 +2,7 @@ package com.android.cgcxy.wallpaper.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.base.OnClickListener;
 import com.android.cgcxy.wallpaper.bean.ClassifyBean;
+import com.android.cgcxy.wallpaper.bean.ClassifySubBean;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -19,13 +21,13 @@ import java.util.List;
  * Created by chuangguo.qi on 2017/7/19.
  */
 
-public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.MyViewHold> {
+public class ClassifySubAdapter extends RecyclerView.Adapter<ClassifySubAdapter.MyViewHold> {
 
-    private List<ClassifyBean> datas;
+    private List<ClassifySubBean.TagsBeanX> datas;
     private Context mContext;
     private OnClickListener onClickListener;
 
-    public void setData(List<ClassifyBean> datas) {
+    public void setData(List<ClassifySubBean.TagsBeanX> datas) {
         this.datas = datas;
     }
 
@@ -41,7 +43,7 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.MyView
         if (datas != null && datas.size() > 0) {
 
             holder.tv_title.setText(datas.get(position).getName());
-            Picasso.with(mContext).load(datas.get(position).getIcon()).placeholder(R.mipmap.image_load).into(holder.imageView);
+            Picasso.with(mContext).load(datas.get(position).getImage()).placeholder(R.mipmap.image_load).into(holder.imageView);
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -52,6 +52,7 @@ public class SearchFragment extends BaseFragment implements ShowView, View.OnCli
     private Vibrator vibrator;
     private EditText edit_query;
     private ImageButton ib_search;
+    private MainPresenterImple mainPresenterImple;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -64,7 +65,16 @@ public class SearchFragment extends BaseFragment implements ShowView, View.OnCli
     }
 
     @Override
+    public void initAttach() {
+
+    }
+
+    @Override
     public void findView() {
+
+        mainPresenterImple = new MainPresenterImple(this,getContext());
+        mainPresenterImple.getSearchJsonData(true);
+
         from = LayoutInflater.from(getContext());
         flowLayout = findViewById(R.id.flowLayout);
         edit_query = findViewById(R.id.edit_query);
@@ -79,8 +89,7 @@ public class SearchFragment extends BaseFragment implements ShowView, View.OnCli
     @Override
     public void initView() {
 
-        final MainPresenterImple mainPresenterImple = new MainPresenterImple(this,getContext());
-        mainPresenterImple.getSearchJsonData(true);
+
 
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
