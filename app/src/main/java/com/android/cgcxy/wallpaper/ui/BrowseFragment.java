@@ -79,7 +79,7 @@ public class BrowseFragment extends BaseFragment implements View.OnClickListener
             @Override
             public void onResponse(Bitmap bitmap) {
                 Drawable drawable =new BitmapDrawable(bitmap);
-                linearLayout.setBackground(drawable);
+               // linearLayout.setBackground(drawable);
             }
         }, Utils.getScreenDispaly(getContext())[0], Utils.getScreenDispaly(getContext())[1], ImageView.ScaleType.FIT_XY, Bitmap.Config.RGB_565, new Response.ErrorListener() {
             @Override
