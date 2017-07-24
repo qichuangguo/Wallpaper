@@ -1,17 +1,25 @@
 package com.android.cgcxy.wallpaper.base;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.Window;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.android.cgcxy.wallpaper.HomePage;
 import com.android.cgcxy.wallpaper.R;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
 
 /**
  * Created by chuangguo.qi on 2017/7/18.
@@ -22,12 +30,14 @@ public abstract class BaseFragment extends Fragment {
     private View mView;
     private BaseActivity baseActivity;
     private String TAG="BaseFragment";
+    private ViewGroup container;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
         mView = inflater.inflate(getLayoutId(), container, false);
+        this.container=container;
         findView();
         initView();
         return mView;
@@ -38,12 +48,19 @@ public abstract class BaseFragment extends Fragment {
         super.onAttach(context);
         Log.i(TAG, "onAttach: ");
         initAttach();
+
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "onActivityCreated: ");
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
 
     }
 

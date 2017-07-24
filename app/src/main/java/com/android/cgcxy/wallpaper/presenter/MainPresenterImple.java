@@ -17,6 +17,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Until;
 
@@ -217,5 +218,81 @@ public class MainPresenterImple implements MainPresenter,Serializable{
 
     }
 
+    public void getEveryDayJosnData(){
+
+        String url = String.format(Constants.EVERYDAYURL,Utils.getScreenDispaly(mContext)[0],Utils.getScreenDispaly(mContext)[1]);
+        mainModeImple.getEveryDayJosnData(url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                showView.setData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+
+    }
+
+    public void getEveryDaySubJosnData(String url){
+
+        mainModeImple.getEveryDaySubJosnData(url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                showView.setData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+    }
+
+    public void getRankingDownLoadJsonData(String url){
+        mainModeImple.getRankingDownLoadJsonData(url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                showView.setData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+    }
+
+    public void getLuckGiveJsonData(){
+        String url = String.format(Constants.LUCKGIVEURL,Utils.getScreenDispaly(mContext)[0],Utils.getScreenDispaly(mContext)[1]);
+        mainModeImple.getLuckGiveJsonData(url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                showView.setData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+
+    }
+
+    public void getLabelSearchJsonData(String url){
+
+        mainModeImple.getLabelSearchJsonData(url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                showView.setData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+    }
 
 }

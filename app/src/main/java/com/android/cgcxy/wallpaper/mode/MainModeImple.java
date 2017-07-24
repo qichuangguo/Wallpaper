@@ -8,9 +8,14 @@ import com.android.cgcxy.wallpaper.base.Constants;
 import com.android.cgcxy.wallpaper.bean.ClassifyBean;
 import com.android.cgcxy.wallpaper.bean.ClassifyChildiSubBean;
 import com.android.cgcxy.wallpaper.bean.ClassifySubBean;
+import com.android.cgcxy.wallpaper.bean.EveryDaySubBean;
+import com.android.cgcxy.wallpaper.bean.EveryDaybean;
 import com.android.cgcxy.wallpaper.bean.HomePageHeadBean;
 import com.android.cgcxy.wallpaper.bean.HompPagerBean;
+import com.android.cgcxy.wallpaper.bean.LuckGiveBean;
+import com.android.cgcxy.wallpaper.bean.RankingBean;
 import com.android.cgcxy.wallpaper.bean.SearchBean;
+import com.android.cgcxy.wallpaper.bean.SearchLabelBean;
 import com.android.cgcxy.wallpaper.bean.SpeCialBean;
 import com.android.cgcxy.wallpaper.utils.MyJsonObjectRequest;
 import com.android.cgcxy.wallpaper.utils.MyStringRequest;
@@ -37,6 +42,7 @@ import java.nio.channels.NotYetBoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * Created by chuangguo.qi on 2017/7/18.
@@ -243,6 +249,112 @@ public class MainModeImple implements MainMode {
 
         myStringRequest.setShouldCache(true);
         requestQueue.add(myStringRequest);
+    }
+
+    @Override
+
+    public void getEveryDayJosnData(String url, final RefreshListener refreshListener) {
+        Log.i(TAG, "getEveryDayJosnData: url:"+url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+
+                List<EveryDaybean> listFromJSON = getListFromJSON(s, EveryDaybean[].class);
+                Log.i(TAG, "onResponse: listFromJSON"+listFromJSON.size());
+                refreshListener.resultListener(listFromJSON);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+        stringRequest.setShouldCache(false);
+        requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void getEveryDaySubJosnData(String url, final RefreshListener refreshListener) {
+
+        Log.i(TAG, "getEveryDaySubJosnData: "+url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+
+                Gson gson = new Gson();
+                EveryDaySubBean everyDaySubBean = gson.fromJson(s, EveryDaySubBean.class);
+                refreshListener.resultListener(everyDaySubBean);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+        stringRequest.setShouldCache(false);
+        requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void getRankingDownLoadJsonData(String url, final RefreshListener refreshListener) {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                Gson gson = new Gson();
+                RankingBean rankingBean = gson.fromJson(s, RankingBean.class);
+                refreshListener.resultListener(rankingBean);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+        stringRequest.setShouldCache(false);
+        requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void getLuckGiveJsonData(String url, final RefreshListener refreshListener) {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                Gson gson = new Gson();
+                LuckGiveBean luckGiveBean = gson.fromJson(s, LuckGiveBean.class);
+                refreshListener.resultListener(luckGiveBean);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+        stringRequest.setShouldCache(false);
+        requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void getLabelSearchJsonData(String url, final RefreshListener refreshListener) {
+        StringRequest stringRequest   = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+
+                Gson gson = new Gson();
+                EveryDaySubBean searchLabelBean = gson.fromJson(s, EveryDaySubBean.class);
+                refreshListener.resultListener(searchLabelBean);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+        stringRequest.setShouldCache(false);
+        requestQueue.add(stringRequest);
     }
 
 

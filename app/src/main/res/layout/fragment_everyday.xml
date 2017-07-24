@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.android.cgcxy.wallpaper.ui.browseui.EverydayFragment">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayou"
+        android:theme="@style/toolbar_theme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/toolBar_bg">
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/appBarLayou"
+            app:tabMode="scrollable"
+            android:background="@color/toolBar_bg"
+            app:tabSelectedTextColor="#ffffff"
+            app:tabTextColor="#6effffff">
+        </android.support.design.widget.TabLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tabLayout"
+            android:background="#FFFFFF">
+        </android.support.v4.view.ViewPager>
+
+    </android.support.design.widget.AppBarLayout>
+
+</RelativeLayout>

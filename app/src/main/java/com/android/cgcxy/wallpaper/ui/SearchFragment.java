@@ -4,39 +4,27 @@ package com.android.cgcxy.wallpaper.ui;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-import android.hardware.SensorEventCallback;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
-import com.android.cgcxy.wallpaper.bean.HompPagerBean;
 import com.android.cgcxy.wallpaper.bean.SearchBean;
-import com.android.cgcxy.wallpaper.presenter.MainPresenter;
 import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
+import com.android.cgcxy.wallpaper.ui.search.SearchLabelFragment;
 import com.android.cgcxy.wallpaper.view.FlowLayout;
 
 import java.util.List;
-
-import static android.content.Context.SENSOR_SERVICE;
-import static android.content.Context.VIBRATOR_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -143,8 +131,10 @@ public class SearchFragment extends BaseFragment implements ShowView, View.OnCli
         List<SearchBean> searchBeanS = (List<SearchBean>) t;
         flowLayout.removeAllViews();
         for (int i = 0; i < searchBeanS.size(); i++) {
+
             TextView textView = (TextView) from.inflate(R.layout.search_label_tv,flowLayout,false);
             textView.setText(searchBeanS.get(i).getName());
+            setOnLabelOnclick(textView,searchBeanS.get(i).getTid());
             flowLayout.addView(textView);
         }
     }
@@ -154,11 +144,23 @@ public class SearchFragment extends BaseFragment implements ShowView, View.OnCli
 
     }
 
+    public void setOnLabelOnclick(final TextView tv, final int index){
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SearchLabelFragment searchFragment = SearchLabelFragment.newInstance(tv.getText().toString(),index);
+                getBaseActivity().commitFragment(R.id.fragmeLaout,searchFragment,true);
+            }
+        });
+
+    }
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
         if (id==R.id.ib_search){
             if (!edit_query.getText().toString().isEmpty()){
+
 
 
             }else {

@@ -14,4 +14,9 @@ public interface MainMode {
     void getClassifyNestSubJsonData(String url,RefreshListener refreshListener);
     void getClassifyChildishSubJsonData(String url,RefreshListener refreshListener);
     void getSpeCialJsonData(String url,RefreshListener refreshListener);
+    void getEveryDayJosnData(String url,RefreshListener refreshListener);
+    void getEveryDaySubJosnData(String url,RefreshListener refreshListener);
+    void getRankingDownLoadJsonData(String url,RefreshListener refreshListener);
+    void getLuckGiveJsonData(String url,RefreshListener refreshListener);
+    void getLabelSearchJsonData(String url,RefreshListener refreshListener);
 }

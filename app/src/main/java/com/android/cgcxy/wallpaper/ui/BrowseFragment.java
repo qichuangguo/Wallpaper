@@ -17,6 +17,9 @@ import android.widget.RelativeLayout;
 
 import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
+import com.android.cgcxy.wallpaper.ui.browseui.EverydayFragment;
+import com.android.cgcxy.wallpaper.ui.browseui.LuckGiveFragment;
+import com.android.cgcxy.wallpaper.ui.browseui.RankingFragment;
 import com.android.cgcxy.wallpaper.ui.browseui.SpecialFragment;
 import com.android.cgcxy.wallpaper.utils.Utils;
 import com.android.volley.RequestQueue;
@@ -96,12 +99,20 @@ public class BrowseFragment extends BaseFragment implements View.OnClickListener
         int id = v.getId();
         if (id==R.id.relayout_seniority){
             //排行榜
+            RankingFragment rankingFragment = RankingFragment.newInstance();
+            getBaseActivity().commitFragment(R.id.fragmeLaout,rankingFragment,true);
+
         }else if (id==R.id.relayout_gamepad) {
             //游戏
         }else if (id==R.id.relayout_gesture){
             //试试手气
+            LuckGiveFragment luckGiveFragment = LuckGiveFragment.newInstance();
+            getBaseActivity().commitFragment(R.id.fragmeLaout,luckGiveFragment,true);
+
         }else if (id==R.id.relayout_update){
            // 每日更新
+            EverydayFragment everydayFragment = EverydayFragment.newInstance();
+            getBaseActivity().commitFragment(R.id.fragmeLaout,everydayFragment,true);
         }else if (id==R.id.relayout_special){
             Log.i(TAG, "onClick: ");
             SpecialFragment specialFragment = SpecialFragment.newInstance();
