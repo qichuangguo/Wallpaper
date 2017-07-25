@@ -1,6 +1,7 @@
 package com.android.cgcxy.wallpaper.ui;
 
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.adapter.GriddingAdapter;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
+import com.android.cgcxy.wallpaper.base.OnClickListener;
 import com.android.cgcxy.wallpaper.bean.HompPagerBean;
 import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
 import com.android.cgcxy.wallpaper.ui.browseui.SpecialFragment;
@@ -104,15 +106,13 @@ public class HomePageFragment extends BaseFragment {
             }
         });
 
-
-        griddingAdapter.setOnClick(new GriddingAdapter.OnClickLiner() {
+        griddingAdapter.setOnclick(new OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void clickListener(View view, int position) {
 
-            }
-
-            @Override
-            public void handOnclick(View view, int point) {
+                Intent intent = new Intent(getBaseActivity(),SetWallpaperActivity.class);
+                intent.putExtra("url",griddingAdapter.getHompPagerBean().getData().get(position-1).getImage().getVip_original());
+                startActivity(intent);
 
             }
         });

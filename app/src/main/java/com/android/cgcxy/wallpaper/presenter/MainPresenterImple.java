@@ -295,4 +295,18 @@ public class MainPresenterImple implements MainPresenter,Serializable{
         });
     }
 
+    public void getSearchInputJsonData(String url){
+        mainModeImple.getSearchInputJsonData(url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                showView.setData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+    }
+
 }

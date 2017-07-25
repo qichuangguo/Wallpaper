@@ -25,14 +25,14 @@
             android:padding="5dp"
             android:hint="请输入关键字"/>
 
-        <ImageButton
+        <TextView
             android:id="@+id/ib_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:src="@mipmap/search_127"
-           android:layout_margin="10dp"/>
+            android:text="搜索"
+            android:textSize="18sp"
+           />
 
     </LinearLayout>
 
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="30dp">
     </com.android.cgcxy.wallpaper.view.FlowLayout>
 
 </LinearLayout>

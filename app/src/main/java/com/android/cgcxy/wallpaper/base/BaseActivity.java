@@ -30,6 +30,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
+
         findView();
         initView();
 
@@ -68,7 +69,13 @@ public abstract class BaseActivity extends AppCompatActivity {
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
             // 激活状态栏
             tintManager.setStatusBarTintEnabled(true);
-            tintManager.setStatusBarAlpha(255);
+            if (color1==R.color.transparency){
+                tintManager.setStatusBarAlpha(0);
+                tintManager.setStatusBarTintEnabled(false);
+            }else {
+                tintManager.setStatusBarAlpha(255);
+                tintManager.setStatusBarTintEnabled(true);
+            }
             if (tintManager.FlymeSetStatusBarLightMode(getWindow(), isFontColor) || tintManager.MIUISetStatusBarLightMode(getWindow(), isFontColor)) {
                 tintManager.setStatusBarTintResource(color1);
             } else {

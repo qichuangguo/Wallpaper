@@ -2,6 +2,7 @@ package com.android.cgcxy.wallpaper.base;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,13 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.android.cgcxy.wallpaper.HomePage;
+import com.android.cgcxy.wallpaper.MainActivity;
 import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.ui.BrowseFragment;
+
 import com.android.cgcxy.wallpaper.ui.ShowView;
 import com.android.cgcxy.wallpaper.ui.browseui.RankingFragment;
 import com.android.cgcxy.wallpaper.ui.homepageui.classifysub.ClassifySubClassifyFragment;

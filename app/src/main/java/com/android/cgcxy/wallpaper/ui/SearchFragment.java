@@ -21,6 +21,7 @@ import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
 import com.android.cgcxy.wallpaper.bean.SearchBean;
 import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
+import com.android.cgcxy.wallpaper.ui.search.SearchInputFragment;
 import com.android.cgcxy.wallpaper.ui.search.SearchLabelFragment;
 import com.android.cgcxy.wallpaper.view.FlowLayout;
 
@@ -39,7 +40,7 @@ public class SearchFragment extends BaseFragment implements  View.OnClickListene
     private SensorManager sensorManager;
     private Vibrator vibrator;
     private EditText edit_query;
-    private ImageButton ib_search;
+    private TextView ib_search;
     private MainPresenterImple mainPresenterImple;
 
     public SearchFragment() {
@@ -164,9 +165,8 @@ public class SearchFragment extends BaseFragment implements  View.OnClickListene
         int id = v.getId();
         if (id==R.id.ib_search){
             if (!edit_query.getText().toString().isEmpty()){
-
-
-
+                SearchInputFragment searchInputFragment = SearchInputFragment.newInstance(edit_query.getText().toString());
+                getBaseActivity().commitFragment(R.id.fragmeLaout,searchInputFragment,true);
             }else {
 
                 Toast.makeText(getContext(),"请输入要查询的内容",Toast.LENGTH_SHORT).show();

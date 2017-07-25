@@ -15,6 +15,7 @@ import com.android.cgcxy.wallpaper.bean.HompPagerBean;
 import com.android.cgcxy.wallpaper.bean.LuckGiveBean;
 import com.android.cgcxy.wallpaper.bean.RankingBean;
 import com.android.cgcxy.wallpaper.bean.SearchBean;
+import com.android.cgcxy.wallpaper.bean.SearchInoutBean;
 import com.android.cgcxy.wallpaper.bean.SearchLabelBean;
 import com.android.cgcxy.wallpaper.bean.SpeCialBean;
 import com.android.cgcxy.wallpaper.utils.MyJsonObjectRequest;
@@ -346,6 +347,25 @@ public class MainModeImple implements MainMode {
                 EveryDaySubBean searchLabelBean = gson.fromJson(s, EveryDaySubBean.class);
                 refreshListener.resultListener(searchLabelBean);
 
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+        stringRequest.setShouldCache(false);
+        requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void getSearchInputJsonData(String url, final RefreshListener refreshListener) {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                Gson gson = new Gson();
+                SearchInoutBean searchInoutBean = gson.fromJson(s, SearchInoutBean.class);
+                refreshListener.resultListener(searchInoutBean);
             }
         }, new Response.ErrorListener() {
             @Override

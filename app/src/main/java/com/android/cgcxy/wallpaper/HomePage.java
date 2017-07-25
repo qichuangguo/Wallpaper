@@ -62,9 +62,7 @@ public class HomePage extends BaseFragment {
 
     @Override
     public void initView() {
-
         ((MainActivity) getActivity()).setbarTintEnabled(R.color.toolBar_bg, false);
-
         toolbar.setTitle(getString(R.string.app_name));
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         navigation_view.setItemIconTintList(null);

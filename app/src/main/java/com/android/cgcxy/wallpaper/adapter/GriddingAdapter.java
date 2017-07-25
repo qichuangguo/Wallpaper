@@ -16,6 +16,7 @@ import android.widget.MediaController;
 import android.widget.TextView;
 
 import com.android.cgcxy.wallpaper.R;
+import com.android.cgcxy.wallpaper.base.OnClickListener;
 import com.android.cgcxy.wallpaper.bean.HompPagerBean;
 import com.squareup.picasso.Picasso;
 
@@ -30,6 +31,11 @@ import java.util.logging.Handler;
 public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG ="GriddingAdapter" ;
+
+    public HompPagerBean getHompPagerBean() {
+        return hompPagerBean;
+    }
+
     private HompPagerBean hompPagerBean;
     private Context mContext;
     private static final int TYPE_HEADER = 1, TYPE_ITEM = 2,TYPE_FOOT=3;
@@ -50,6 +56,7 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             this.hompPagerBean.getData().addAll(hompPagerBean.getData());
         }
     }
+
 
 
     public void setHandData(List<ImageView> imageViews){
@@ -80,7 +87,7 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (hompPagerBean!=null){
             if (holder.getItemViewType()==TYPE_HEADER) {
 
@@ -91,6 +98,12 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                // small = url[0] + ",200,300." + url[url.length - 1].split("\\.")[1];
                 Picasso.with(mContext).load(small).placeholder(R.mipmap.image_load).error(R.mipmap.image_erry).into(((MyViewHole)holder).imageView);
                 ((MyViewHole)holder).tv_title.setText(dataBean.getTags().get(0).getName());
+                ((MyViewHole)holder).itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onClickListener.clickListener(v,position);
+                    }
+                });
             }
         }
     }
@@ -111,12 +124,6 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
             tv_title = (TextView) itemView.findViewById(R.id.tv_title);
             imageView= (ImageView) itemView.findViewById(R.id.imageView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onClickLiner.onClick(v);
-                }
-            });
         }
     }
 
@@ -218,17 +225,9 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-
-    private OnClickLiner onClickLiner;
-    public interface OnClickLiner{
-
-        void onClick(View view);
-        void handOnclick(View view,int point);
-
-    }
-
-    public void setOnClick(OnClickLiner onClickLiner){
-        this.onClickLiner= onClickLiner;
+    private OnClickListener onClickListener;
+    public void setOnclick(OnClickListener onClickListener){
+        this.onClickListener = onClickListener;
     }
 
 
