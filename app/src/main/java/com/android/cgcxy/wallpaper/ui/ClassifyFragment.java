@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ClassifyFragment extends BaseFragment implements ShowView,OnClickListener{
+public class ClassifyFragment extends BaseFragment implements OnClickListener{
 
 
     private MainPresenterImple mainPresenterImple;
@@ -43,14 +43,19 @@ public class ClassifyFragment extends BaseFragment implements ShowView,OnClickLi
 
     @Override
     public void initAttach() {
+        mainPresenterImple = new MainPresenterImple(this,getContext());
+    }
 
+    @Override
+    protected void lazyLoad() {
+        super.lazyLoad();
+        mainPresenterImple.getClassifyFragmnetDatajson();
     }
 
 
     @Override
     public void findView() {
-        mainPresenterImple = new MainPresenterImple(this,getContext());
-        mainPresenterImple.getClassifyFragmnetDatajson();
+
 
         recycle = findViewById(R.id.recycleView);
     }
@@ -73,6 +78,7 @@ public class ClassifyFragment extends BaseFragment implements ShowView,OnClickLi
 
     @Override
     public <T> void setData(T t) {
+        super.setData(t);
         datas = (List<ClassifyBean>) t;
         classifyAdapter.setData(datas);
         classifyAdapter.notifyDataSetChanged();

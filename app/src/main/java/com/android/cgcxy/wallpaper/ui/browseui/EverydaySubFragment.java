@@ -62,9 +62,15 @@ public class EverydaySubFragment extends BaseFragment implements ShowView{
     }
 
     @Override
+    protected void lazyLoad() {
+        super.lazyLoad();
+        mainPresenterImple.getEveryDaySubJosnData(url);
+    }
+
+    @Override
     public void initView() {
 
-        mainPresenterImple.getEveryDaySubJosnData(url);
+
 
         toolbar.setTitle(name);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
@@ -122,7 +128,7 @@ public class EverydaySubFragment extends BaseFragment implements ShowView{
 
     @Override
     public <T> void setData(T t) {
-
+        super.setData(t);
         EveryDaySubBean everyDaySubBean = (EveryDaySubBean) t;
         nextUrl = everyDaySubBean.getLink().getNext();
         if (adapter.getEveryDaySubBean()==null) {

@@ -37,6 +37,7 @@ public class SpecialFragment extends BaseFragment implements ShowView ,OnClickLi
     private boolean isLoading=false;
     private GridLayoutManager layoutManager;
     private String nextUrl;
+    private String url;
 
     public SpecialFragment() {
         // Required empty public constructor
@@ -58,9 +59,6 @@ public class SpecialFragment extends BaseFragment implements ShowView ,OnClickLi
     @Override
     public void initAttach() {
         mainPresenterImple = new MainPresenterImple(this,getContext());
-
-
-
     }
 
     @Override
@@ -70,9 +68,16 @@ public class SpecialFragment extends BaseFragment implements ShowView ,OnClickLi
     }
 
     @Override
-    public void initView() {
-        String url = String.format(Constants.BROWSESPECIAL, Utils.getScreenDispaly(getContext())[0],Utils.getScreenDispaly(getContext())[1]);
+    protected void lazyLoad() {
+        super.lazyLoad();
+        url = String.format(Constants.BROWSESPECIAL, Utils.getScreenDispaly(getContext())[0],Utils.getScreenDispaly(getContext())[1]);
         mainPresenterImple.getSpeCialJsonData(url);
+    }
+
+    @Override
+    public void initView() {
+
+
         toolbar.setTitle("壁纸专题");
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getBaseActivity().setSupportActionBar(toolbar);
@@ -117,6 +122,7 @@ public class SpecialFragment extends BaseFragment implements ShowView ,OnClickLi
 
     @Override
     public <T> void setData(T t) {
+        super.setData(t);
         SpeCialBean speCialBean = (SpeCialBean) t;
         nextUrl = speCialBean.getLink().getNext();
         if (specialAdapter.getSpeCialBean()==null) {

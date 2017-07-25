@@ -29,6 +29,8 @@ public class RankingLoveFragment extends BaseFragment implements ShowView {
     private RankingAdapter rankingAdapter;
     private boolean isLoading=false;
     private String nextUrl;
+    private String url;
+
     public static RankingLoveFragment newInstance() {
 
         Bundle args = new Bundle();
@@ -48,7 +50,13 @@ public class RankingLoveFragment extends BaseFragment implements ShowView {
     @Override
     public void initAttach() {
         mainPresenterImple = new MainPresenterImple(this, getContext());
-        String url = String.format(Constants.RANKINGLOVEURL, Utils.getScreenDispaly(getContext())[0],Utils.getScreenDispaly(getContext())[1]);
+        url = String.format(Constants.RANKINGLOVEURL, Utils.getScreenDispaly(getContext())[0],Utils.getScreenDispaly(getContext())[1]);
+
+    }
+
+    @Override
+    protected void lazyLoad() {
+        super.lazyLoad();
         mainPresenterImple.getRankingDownLoadJsonData(url);
     }
 
@@ -103,6 +111,7 @@ public class RankingLoveFragment extends BaseFragment implements ShowView {
 
     @Override
     public <T> void setData(T t) {
+        super.setData(t);
         RankingBean rankingBean = (RankingBean) t;
         if (rankingAdapter.getRankingBean()==null){
             rankingAdapter.setData(rankingBean);

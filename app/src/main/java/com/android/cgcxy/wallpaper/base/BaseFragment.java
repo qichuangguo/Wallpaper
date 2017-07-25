@@ -19,25 +19,35 @@ import android.widget.RelativeLayout;
 
 import com.android.cgcxy.wallpaper.HomePage;
 import com.android.cgcxy.wallpaper.R;
+import com.android.cgcxy.wallpaper.ui.BrowseFragment;
+import com.android.cgcxy.wallpaper.ui.ShowView;
+import com.android.cgcxy.wallpaper.ui.browseui.RankingFragment;
+import com.android.cgcxy.wallpaper.ui.homepageui.classifysub.ClassifySubClassifyFragment;
+import com.android.cgcxy.wallpaper.ui.homepageui.classifysub.ClassifySubNewsFragment;
+import com.android.cgcxy.wallpaper.view.MyDialog;
 import com.github.ybq.android.spinkit.style.DoubleBounce;
 
 /**
  * Created by chuangguo.qi on 2017/7/18.
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements ShowView{
 
     private View mView;
     private BaseActivity baseActivity;
     private String TAG="BaseFragment";
     private ViewGroup container;
+    private MyDialog dialog;
+    private boolean isInit=false;
+    private boolean isLoad=false;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.i(TAG, "onCreateView: ");
         mView = inflater.inflate(getLayoutId(), container, false);
         this.container=container;
+        isInit=true;
+        isCanLoadData();
         findView();
         initView();
         return mView;
@@ -46,28 +56,64 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.i(TAG, "onAttach: ");
         initAttach();
 
+    }
+    private void isCanLoadData(){
+        if (!isInit){
+            return;
+        }
+        if (this instanceof HomePage ||
+                this instanceof BrowseFragment ||
+                this instanceof ClassifySubNewsFragment ||
+                this instanceof ClassifySubClassifyFragment ||
+                this instanceof RankingFragment){
+            return;
+        }
+
+        if (getUserVisibleHint() && !isLoad){
+            Log.i(TAG, "isCanLoadData: "+this);
+            lazyLoad();
+            isLoad=true;
+        }else {
+            if (isLoad){
+                stopLoad();
+            }
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        isInit = false;
+        isLoad = false;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        isCanLoadData();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.i(TAG, "onActivityCreated: ");
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
+    protected void lazyLoad(){
+        Log.i(TAG, "lazyLoad: 加载数据");
+        dialog = new MyDialog(getContext());
+        dialog.showDialog();
     }
 
     public abstract int getLayoutId();
     public  abstract void initAttach();
     public abstract void findView();
     public abstract void initView();
+    protected void stopLoad() {
+    }
+
 
 
     public <T extends View> T findViewById(int id){
@@ -101,5 +147,16 @@ public abstract class BaseFragment extends Fragment {
         transaction.commitAllowingStateLoss();
     }
 
+    @Override
+    public <T> void setData(T t) {
+        Log.i(TAG, "setData: "+dialog.isShowing());
+        if (dialog!=null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
 
+    @Override
+    public <T> void setNextData(T t) {
+
+    }
 }

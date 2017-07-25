@@ -82,17 +82,16 @@ public class EverydayFragment extends BaseFragment implements ShowView{
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        //daybeen=savedInstanceState.getParcelableArrayList("Data");
-        Log.i(TAG, "onActivityCreated: ");
+    protected void lazyLoad() {
+        super.lazyLoad();
+        mainPresenterImple.getEveryDayJosnData();
     }
 
     @Override
     public void initView() {
         viewPageViews.clear();
         titles.clear();
-        mainPresenterImple.getEveryDayJosnData();
+
 
         toolbar.setTitle("每日更新");
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
@@ -116,6 +115,7 @@ public class EverydayFragment extends BaseFragment implements ShowView{
 
     @Override
     public <T> void setData(T t) {
+        super.setData(t);
         daybeen = (List<EveryDaybean>) t;
         for (int i = 0; i <daybeen.size() ; i++) {
             viewPageItemView = LayoutInflater.from(getContext()).inflate(R.layout.every_day_viewpager_item,null);

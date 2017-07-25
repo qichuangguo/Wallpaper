@@ -56,6 +56,7 @@ public class BrowseFragment extends BaseFragment implements View.OnClickListener
 
     }
 
+
     @Override
     public void findView() {
 

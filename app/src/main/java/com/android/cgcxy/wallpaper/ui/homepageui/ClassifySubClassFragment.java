@@ -83,11 +83,17 @@ public class ClassifySubClassFragment extends BaseFragment implements ShowView {
 
         Log.i(TAG, "initAttach: ");
         presenterImple = new MainPresenterImple(this,getContext());
-        presenterImple.getClassifySubJsonData(url);
+
 
         classifySubNewsFragment = ClassifySubNewsFragment.newInstance(presenterImple);
         classifySubClassifyFragment = ClassifySubClassifyFragment.newInstance(presenterImple);
 
+    }
+
+    @Override
+    protected void lazyLoad() {
+        super.lazyLoad();
+        presenterImple.getClassifySubJsonData(url);
     }
 
     @Override
@@ -148,7 +154,7 @@ public class ClassifySubClassFragment extends BaseFragment implements ShowView {
 
     @Override
     public <T> void setData(T t) {
-        Log.i(TAG, "setData: ");
+        super.setData(t);
         classifySubBean = (ClassifySubBean) t;
         classifySubNewsFragment.getData(classifySubBean);
         classifySubClassifyFragment.getData(classifySubBean);

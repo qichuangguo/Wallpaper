@@ -37,6 +37,7 @@ public class ClassifyChildishSubFragment extends BaseFragment implements ShowVie
     private GridLayoutManager gridLayoutManager;
     private ClassifySubNewsAdapter adapter;
     private String nextUrl = "";
+    private String url;
 
     public ClassifyChildishSubFragment() {
         // Required empty public constructor
@@ -57,11 +58,17 @@ public class ClassifyChildishSubFragment extends BaseFragment implements ShowVie
 
     @Override
     public void initAttach() {
-        String url = getArguments().getString("url");
+        url = getArguments().getString("url");
         name = getArguments().getString("name");
         mainPresenterImple = new MainPresenterImple(this,getContext());
+
+        Log.i(TAG, "initAttach: "+ url);
+    }
+
+    @Override
+    protected void lazyLoad() {
+        super.lazyLoad();
         mainPresenterImple.getClassifyChildishSubJsonData(url);
-        Log.i(TAG, "initAttach: "+url);
     }
 
     @Override
@@ -134,6 +141,7 @@ public class ClassifyChildishSubFragment extends BaseFragment implements ShowVie
 
     @Override
     public <T> void setData(T t) {
+        super.setData(t);
         ClassifySubBean bean = (ClassifySubBean) t;
         nextUrl=bean.getLink().getNext();
         adapter.setData(bean);

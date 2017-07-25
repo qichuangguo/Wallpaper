@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends BaseFragment implements ShowView, View.OnClickListener {
+public class SearchFragment extends BaseFragment implements  View.OnClickListener {
 
 
     private FlowLayout flowLayout;
@@ -54,14 +54,17 @@ public class SearchFragment extends BaseFragment implements ShowView, View.OnCli
 
     @Override
     public void initAttach() {
+        mainPresenterImple = new MainPresenterImple(this,getContext());
+    }
 
+    @Override
+    protected void lazyLoad() {
+        super.lazyLoad();
+        mainPresenterImple.getSearchJsonData(true);
     }
 
     @Override
     public void findView() {
-
-        mainPresenterImple = new MainPresenterImple(this,getContext());
-        mainPresenterImple.getSearchJsonData(true);
 
         from = LayoutInflater.from(getContext());
         flowLayout = findViewById(R.id.flowLayout);
@@ -128,6 +131,7 @@ public class SearchFragment extends BaseFragment implements ShowView, View.OnCli
 
     @Override
     public <T> void setData(T t) {
+        super.setData(t);
         List<SearchBean> searchBeanS = (List<SearchBean>) t;
         flowLayout.removeAllViews();
         for (int i = 0; i < searchBeanS.size(); i++) {

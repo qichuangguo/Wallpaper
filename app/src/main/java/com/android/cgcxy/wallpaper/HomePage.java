@@ -1,5 +1,6 @@
 package com.android.cgcxy.wallpaper;
 
+import android.app.Dialog;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -9,8 +10,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import com.android.cgcxy.wallpaper.adapter.TitleFragmentPagerAdapter;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
@@ -43,7 +48,6 @@ public class HomePage extends BaseFragment {
     public void initAttach() {
 
     }
-
 
     @Override
     public void findView() {
@@ -97,6 +101,7 @@ public class HomePage extends BaseFragment {
         fragments.add(new ClassifyFragment());
         fragments.add(new BrowseFragment());
         fragments.add(new SearchFragment());
+        viewPager.setOffscreenPageLimit(4);
 
         TitleFragmentPagerAdapter adapter = new TitleFragmentPagerAdapter(getChildFragmentManager(), fragments);
         adapter.setTitle(title);

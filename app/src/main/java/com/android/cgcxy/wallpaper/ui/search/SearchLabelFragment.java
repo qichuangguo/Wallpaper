@@ -66,10 +66,16 @@ public class SearchLabelFragment extends BaseFragment implements ShowView{
 
     @Override
     public void findView() {
-        mainPresenterImple.getLabelSearchJsonData(url);
+
         toolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recycleView);
 
+    }
+
+    @Override
+    protected void lazyLoad() {
+        super.lazyLoad();
+        mainPresenterImple.getLabelSearchJsonData(url);
     }
 
     @Override
@@ -133,7 +139,7 @@ public class SearchLabelFragment extends BaseFragment implements ShowView{
 
     @Override
     public <T> void setData(T t) {
-
+        super.setData(t);
         EveryDaySubBean everyDaySubBean= (EveryDaySubBean) t;
         nextUrl = everyDaySubBean.getLink().getNext();
         if (adapter.getEveryDaySubBean()==null) {

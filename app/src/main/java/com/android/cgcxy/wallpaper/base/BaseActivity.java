@@ -1,5 +1,6 @@
 package com.android.cgcxy.wallpaper.base;
 
+import android.app.Dialog;
 import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,10 +10,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.utils.SystemBarTintManager;
+import com.android.cgcxy.wallpaper.view.MyDialog;
 
 /**
  * Created by chuangguo.qi on 2017/7/17.
@@ -28,6 +32,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutId());
         findView();
         initView();
+
+
     }
 
     public abstract void initView();

@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomePageFragment extends BaseFragment implements ShowView{
+public class HomePageFragment extends BaseFragment {
 
 
     private MainPresenterImple mainPresenterImple;
@@ -49,14 +49,18 @@ public class HomePageFragment extends BaseFragment implements ShowView{
 
     @Override
     public void initAttach() {
+        mainPresenterImple = new MainPresenterImple(this,getContext());
+    }
 
+    @Override
+    protected void lazyLoad() {
+        super.lazyLoad();
+        mainPresenterImple.getHomePageFragmnetDataJson();
     }
 
 
     @Override
     public void initView() {
-        mainPresenterImple = new MainPresenterImple(this,getContext());
-        mainPresenterImple.getHomePageFragmnetDataJson();
 
         final GridLayoutManager gridLayoutManager = new  GridLayoutManager(getActivity(),3);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -125,6 +129,7 @@ public class HomePageFragment extends BaseFragment implements ShowView{
 
     @Override
     public <T> void setData(T t) {
+        super.setData(t);
         griddingAdapter.setData((HompPagerBean) t);
 
         List<HompPagerBean.SliderBean> slider = ((HompPagerBean) t).getSlider();
@@ -156,6 +161,7 @@ public class HomePageFragment extends BaseFragment implements ShowView{
 
     @Override
     public <T> void setNextData(T t) {
+
         isLoading = false;
         griddingAdapter.setData((HompPagerBean) t);
         griddingAdapter.notifyDataSetChanged();

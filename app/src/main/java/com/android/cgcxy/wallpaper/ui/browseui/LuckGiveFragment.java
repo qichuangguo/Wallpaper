@@ -66,9 +66,15 @@ public class LuckGiveFragment extends BaseFragment implements ShowView{
     }
 
     @Override
+    protected void lazyLoad() {
+        super.lazyLoad();
+        mainPresenterImple.getLuckGiveJsonData();
+    }
+
+    @Override
     public void initView() {
 
-        mainPresenterImple.getLuckGiveJsonData();
+
         toolbar.setTitle("试试手气");
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getBaseActivity().setSupportActionBar(toolbar);
@@ -89,7 +95,7 @@ public class LuckGiveFragment extends BaseFragment implements ShowView{
 
     @Override
     public <T> void setData(T t) {
-
+        super.setData(t);
         LuckGiveBean luckGiveBean = (LuckGiveBean) t;
         adapter.setData(luckGiveBean);
         adapter.notifyDataSetChanged();

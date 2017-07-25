@@ -59,6 +59,12 @@ public class HomePageHeadFragment extends BaseFragment implements ShowView {
         title = arguments.getString("title");
 
         presenter = new MainPresenterImple(this, getContext());
+
+    }
+
+    @Override
+    protected void lazyLoad() {
+        super.lazyLoad();
         presenter.getHomePageHeadJsonData(url);
     }
 
@@ -131,7 +137,7 @@ public class HomePageHeadFragment extends BaseFragment implements ShowView {
 
     @Override
     public <T> void setData(T t) {
-
+        super.setData(t);
         HomePageHeadBean headBean = (HomePageHeadBean) t;
         adapter.setData(headBean);
         adapter.notifyDataSetChanged();

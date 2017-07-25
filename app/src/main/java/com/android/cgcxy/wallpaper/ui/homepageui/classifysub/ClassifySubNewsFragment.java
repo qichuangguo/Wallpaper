@@ -63,8 +63,6 @@ public class ClassifySubNewsFragment extends BaseFragment implements RefreshList
 
     @Override
     public void initView() {
-
-
         classifySubNewsAdapter = new ClassifySubNewsAdapter();
         final GridLayoutManager layoutManage = new GridLayoutManager(getContext(),3);
         layoutManage.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
