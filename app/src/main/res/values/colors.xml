@@ -6,4 +6,5 @@
     <color name="textColor">#000000</color>
     <color name="toolBar_bg">#309b9f</color>
     <color name="transparency">#00ffffff</color>
+    <color name="wall_title">#39000000</color>
 </resources>

@@ -1,21 +1,42 @@
-<FrameLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
     xmlns:app="http://schemas.android.com/apk/res-auto"
    >
 
+    <HorizontalScrollView
+        android:layout_width="5000dp"
+        android:layout_height="match_parent">
+
     <!-- TODO: Update blank fragment layout -->
-    <com.android.cgcxy.wallpaper.view.MyImageView
+    <ImageView
         android:id="@+id/imageView"
         android:adjustViewBounds="true"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent" />
+    </HorizontalScrollView>
 
-    <ImageView
-        android:id="@+id/scal_iv"
-        android:layout_width="80dp"
-        android:layout_height="80dp" />
+    <Button
+        android:id="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:padding="5dp"
+        android:background="@drawable/button_shap"
+        android:textColor="#c4000000"
+        android:layout_marginBottom="20dp"
+        android:onClick="setting"
+        android:text="设置壁纸"/>
 
-</FrameLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_centerInParent="true"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

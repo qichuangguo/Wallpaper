@@ -58,6 +58,7 @@ public class MyDialog extends Dialog {
         Sprite sprite = getSpriteContainer(random.nextInt(12));
         sprite.setColor(getContext().getResources().getColor(R.color.colorAccent));
         progressBar.setIndeterminateDrawable(sprite);
+        progressBar.setVisibility(View.VISIBLE);
         this.show();
     }
 
