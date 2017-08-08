@@ -139,7 +139,7 @@ public class SearchFragment extends BaseFragment implements  View.OnClickListene
 
             TextView textView = (TextView) from.inflate(R.layout.search_label_tv,flowLayout,false);
             textView.setText(searchBeanS.get(i).getName());
-            setOnLabelOnclick(textView,searchBeanS.get(i).getTid());
+            setOnLabelOnclick(textView,searchBeanS.get(i).getUrl());
             flowLayout.addView(textView);
         }
     }
@@ -149,11 +149,12 @@ public class SearchFragment extends BaseFragment implements  View.OnClickListene
 
     }
 
-    public void setOnLabelOnclick(final TextView tv, final int index){
+    public void setOnLabelOnclick(final TextView tv, final String url){
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SearchLabelFragment searchFragment = SearchLabelFragment.newInstance(tv.getText().toString(),index);
+
+                SearchLabelFragment searchFragment = SearchLabelFragment.newInstance(tv.getText().toString(),url);
                 getBaseActivity().commitFragment(R.id.fragmeLaout,searchFragment,true);
             }
         });

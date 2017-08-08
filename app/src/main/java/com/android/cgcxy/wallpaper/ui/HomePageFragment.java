@@ -111,7 +111,7 @@ public class HomePageFragment extends BaseFragment {
             public void clickListener(View view, int position) {
 
                 Intent intent = new Intent(getBaseActivity(),SetWallpaperActivity.class);
-                intent.putExtra("url",griddingAdapter.getHompPagerBean().getData().get(position-1).getImage().getSmall());
+                intent.putExtra("url",griddingAdapter.getHompPagerBean().getData().get(position-1).getImage().getBig());
                 startActivity(intent);
 
             }

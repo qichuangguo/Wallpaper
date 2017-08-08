@@ -38,11 +38,11 @@ public class SearchLabelFragment extends BaseFragment implements ShowView{
         // Required empty public constructor
     }
 
-    public static SearchLabelFragment newInstance(String name,int tid) {
+    public static SearchLabelFragment newInstance(String name,String url) {
         
         Bundle args = new Bundle();
         args.putString("name",name);
-        args.putInt("tid",tid);
+        args.putString("url",url);
         SearchLabelFragment fragment = new SearchLabelFragment();
         fragment.setArguments(args);
         return fragment;
@@ -58,8 +58,8 @@ public class SearchLabelFragment extends BaseFragment implements ShowView{
 
         Bundle arguments = getArguments();
         name = arguments.getString("name");
-        tid = arguments.getInt("tid");
-        url = String.format(Constants.LABELSERACHJSONULR,tid,name, Utils.getScreenDispaly(getContext())[0],Utils.getScreenDispaly(getContext())[1]);
+        url = arguments.getString("url");
+       // url = String.format(Constants.LABELSERACHJSONULR,tid,name, Utils.getScreenDispaly(getContext())[0],Utils.getScreenDispaly(getContext())[1]);
         mainPresenterImple = new MainPresenterImple(this,getContext());
 
     }

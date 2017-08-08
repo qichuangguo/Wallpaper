@@ -70,8 +70,10 @@ public class SpecialFragment extends BaseFragment implements ShowView ,OnClickLi
     @Override
     protected void lazyLoad() {
         super.lazyLoad();
-        url = String.format(Constants.BROWSESPECIAL, Utils.getScreenDispaly(getContext())[0],Utils.getScreenDispaly(getContext())[1]);
+       // url = String.format(Constants.BROWSESPECIAL, Utils.getScreenDispaly(getContext())[0],Utils.getScreenDispaly(getContext())[1]);
+        url = getBaseActivity().getTotalBean().getBrowse().get(0).getApi();
         mainPresenterImple.getSpeCialJsonData(url);
+
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.android.cgcxy.wallpaper.bean.SearchBean;
 import com.android.cgcxy.wallpaper.bean.SearchInoutBean;
 import com.android.cgcxy.wallpaper.bean.SearchLabelBean;
 import com.android.cgcxy.wallpaper.bean.SpeCialBean;
+import com.android.cgcxy.wallpaper.bean.TotalBean;
 import com.android.cgcxy.wallpaper.utils.MyJsonObjectRequest;
 import com.android.cgcxy.wallpaper.utils.MyStringRequest;
 import com.android.cgcxy.wallpaper.utils.Utils;
@@ -44,6 +45,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
+
+import javax.xml.transform.stream.StreamResult;
 
 /**
  * Created by chuangguo.qi on 2017/7/18.
@@ -374,6 +377,29 @@ public class MainModeImple implements MainMode {
 
             }
         });
+        stringRequest.setShouldCache(false);
+        requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void getTotalUrl(String url, final RefreshListener refreshListener) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+
+                TotalBean totalBean = new Gson().fromJson(s,TotalBean.class);
+                refreshListener.resultListener(totalBean);
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+
         stringRequest.setShouldCache(false);
         requestQueue.add(stringRequest);
     }

@@ -7,18 +7,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
    >
 
-    <HorizontalScrollView
-        android:scrollbars="none"
-        android:layout_width="5000dp"
-        android:layout_height="match_parent">
-
     <!-- TODO: Update blank fragment layout -->
     <ImageView
         android:id="@+id/imageView"
         android:adjustViewBounds="true"
         android:layout_width="wrap_content"
         android:layout_height="match_parent" />
-    </HorizontalScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,8 +36,11 @@
 
         <Button
             android:id="@+id/set_wallpaper"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:layout_width="0dp"
+            android:text="壁纸设置"
+            android:textColor="#FFFFFF"
+            android:background="@color/toolBar_bg"
             android:layout_height="wrap_content" />
         <ImageButton
             android:id="@+id/ib_dewnlaod"

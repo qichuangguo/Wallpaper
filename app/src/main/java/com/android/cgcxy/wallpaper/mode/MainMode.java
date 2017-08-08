@@ -20,4 +20,5 @@ public interface MainMode {
     void getLuckGiveJsonData(String url,RefreshListener refreshListener);
     void getLabelSearchJsonData(String url,RefreshListener refreshListener);
     void getSearchInputJsonData(String url,RefreshListener refreshListener);
+    void getTotalUrl(String url, RefreshListener refreshListener);
 }

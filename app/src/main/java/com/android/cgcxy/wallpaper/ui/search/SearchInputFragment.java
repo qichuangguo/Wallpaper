@@ -61,8 +61,9 @@ public class SearchInputFragment extends BaseFragment implements OnClickListener
     public void initAttach() {
         Bundle arguments = getArguments();
         inputText = arguments.getString("inputText");
-        url = String.format(Constants.INPUTSERACHJSONURL,inputText, Utils.getScreenDispaly(getContext())[0],Utils.getScreenDispaly(getContext())[1]);
-        Log.i(TAG, "initAttach: "+url);
+        //url = String.format(Constants.INPUTSERACHJSONURL,inputText, Utils.getScreenDispaly(getContext())[0],Utils.getScreenDispaly(getContext())[1]);
+        url = getBaseActivity().getTotalBean().getTag().getImage2();
+        url = url.replace("{kw}",inputText);
         mainPresenterImple = new MainPresenterImple(this,getContext());
     }
 

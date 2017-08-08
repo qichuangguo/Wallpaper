@@ -16,6 +16,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -43,6 +44,7 @@ import com.squareup.picasso.Transformation;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.UUID;
 
 import static android.app.WallpaperManager.FLAG_LOCK;
 import static android.content.pm.ApplicationInfo.FLAG_SYSTEM;
@@ -86,6 +88,9 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
          dialog.showDialog();
          registerIntentReceivers();
 
+
+
+
     }
 
     public void setting(View view){
@@ -115,7 +120,7 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
     public void initView() {
         if (url!=null) {
             String[] newUrl = url.split(",");
-           url = newUrl[0] + ","+ (Utils.getScreenDispaly(this)[0])+","+ (Utils.getScreenDispaly(this)[1]/2)+"." + newUrl[newUrl.length - 1].split("\\.")[1];
+           //url = newUrl[0] + ","+ (Utils.getScreenDispaly(this)[0])+","+ (Utils.getScreenDispaly(this)[1]/2)+"." + newUrl[newUrl.length - 1].split("\\.")[1];
             Log.i(TAG, "initView: "+url);
         }
 
@@ -123,17 +128,6 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onResponse(Bitmap bitmap) {
                 SetWallpaperActivity.this.bitmap=bitmap;
-         /*       Log.i(TAG, "onResponse:  bitmap.getWidth()"+ bitmap.getWidth()+"======"+ bitmap.getHeight());
-                Matrix m = new Matrix();
-                int width = bitmap.getWidth();
-                int height = bitmap.getHeight();
-                float newWidth = (float) (Utils.getScreenDispaly(SetWallpaperActivity.this)[0]/width);
-                float newHeight =  (float) (Utils.getScreenDispaly(SetWallpaperActivity.this)[1]/height);
-                Log.i(TAG, "onResponse: newWidth"+newWidth+"===="+newHeight);
-                m.postScale(newWidth,newHeight);
-                Bitmap newbm = Bitmap.createBitmap(bitmap, 0, 0, width, height, m, true);
-                Log.i(TAG, "onResponse: newbm"+newbm.getWidth()+"======"+newbm.getHeight());
-                Bitmap newBitmap=Bitmap.createScaledBitmap(bitmap, Utils.getScreenDispaly(SetWallpaperActivity.this)[0], Utils.getScreenDispaly(SetWallpaperActivity.this)[1], true);*/
                 imageView.setImageBitmap(bitmap);
                 dialog.dismiss();
             }

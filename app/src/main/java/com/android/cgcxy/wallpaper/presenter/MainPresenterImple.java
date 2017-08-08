@@ -3,9 +3,11 @@ package com.android.cgcxy.wallpaper.presenter;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.cgcxy.wallpaper.base.BaseActivity;
 import com.android.cgcxy.wallpaper.base.Constants;
 import com.android.cgcxy.wallpaper.bean.HomePageHeadBean;
 import com.android.cgcxy.wallpaper.bean.HompPagerBean;
+import com.android.cgcxy.wallpaper.bean.RankingBean;
 import com.android.cgcxy.wallpaper.mode.MainMode;
 import com.android.cgcxy.wallpaper.mode.MainModeImple;
 import com.android.cgcxy.wallpaper.mode.RefreshListener;
@@ -46,8 +48,7 @@ public class MainPresenterImple implements MainPresenter,Serializable{
     }
 
     public void getHomePageFragmnetDataJson(){
-        int[] screenDispaly = Utils.getScreenDispaly(mContext);
-        String url = String.format(Constants.HOMEPAGEJSONURL,screenDispaly[0]+"",screenDispaly[1]+"");
+       String  url = ((BaseActivity)mContext).getTotalBean().getHome();
         mainModeImple.getHomePageFragmnetDataJson(url, new RefreshListener() {
             @Override
             public <T> void resultListener(T t) {
@@ -79,7 +80,8 @@ public class MainPresenterImple implements MainPresenter,Serializable{
     }
 
     public void getClassifyFragmnetDatajson(){
-        String url = String.format(Constants.CLASSIFYJSONURL,Utils.getScreenDispaly(mContext)[0],Utils.getScreenDispaly(mContext)[1]);
+        //String url = String.format(Constants.CLASSIFYJSONURL,Utils.getScreenDispaly(mContext)[0],Utils.getScreenDispaly(mContext)[1]);
+       String url = ((BaseActivity)mContext).getTotalBean().getBrowse().get(2).getApi();
         mainModeImple.getClassifyFragmentJsonData(url, new RefreshListener() {
             @Override
             public <T> void resultListener(T t) {
@@ -94,7 +96,8 @@ public class MainPresenterImple implements MainPresenter,Serializable{
     }
 
     public void getSearchJsonData(boolean isCache){
-        String url = String.format(Constants.SEARCHJSONURL,Utils.getScreenDispaly(mContext)[0],Utils.getScreenDispaly(mContext)[1]);
+        //String url = String.format(Constants.SEARCHJSONURL,Utils.getScreenDispaly(mContext)[0],Utils.getScreenDispaly(mContext)[1]);
+        String url = ((BaseActivity)mContext).getTotalBean().getTag().getCloud();
         mainModeImple.getSearchJsonData(url, new RefreshListener() {
             @Override
             public <T> void resultListener(T t) {
@@ -220,7 +223,8 @@ public class MainPresenterImple implements MainPresenter,Serializable{
 
     public void getEveryDayJosnData(){
 
-        String url = String.format(Constants.EVERYDAYURL,Utils.getScreenDispaly(mContext)[0],Utils.getScreenDispaly(mContext)[1]);
+        //String url = String.format(Constants.EVERYDAYURL,Utils.getScreenDispaly(mContext)[0],Utils.getScreenDispaly(mContext)[1]);
+       String url = ((BaseActivity)mContext).getTotalBean().getBrowse().get(1).getApi();
         mainModeImple.getEveryDayJosnData(url, new RefreshListener() {
             @Override
             public <T> void resultListener(T t) {
@@ -265,7 +269,8 @@ public class MainPresenterImple implements MainPresenter,Serializable{
     }
 
     public void getLuckGiveJsonData(){
-        String url = String.format(Constants.LUCKGIVEURL,Utils.getScreenDispaly(mContext)[0],Utils.getScreenDispaly(mContext)[1]);
+        //String url = String.format(Constants.LUCKGIVEURL,Utils.getScreenDispaly(mContext)[0],Utils.getScreenDispaly(mContext)[1]);
+        String url = ((BaseActivity)mContext).getTotalBean().getTryluck();
         mainModeImple.getLuckGiveJsonData(url, new RefreshListener() {
             @Override
             public <T> void resultListener(T t) {
@@ -307,6 +312,23 @@ public class MainPresenterImple implements MainPresenter,Serializable{
 
             }
         });
+    }
+
+    public void getTotalUrl(String url){
+
+        mainModeImple.getTotalUrl(url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                showView.setData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+
+
     }
 
 }

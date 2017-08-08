@@ -53,8 +53,8 @@ public class RankingDownLoadFragment extends BaseFragment implements ShowView{
     @Override
     public void initAttach() {
         mainPresenterImple = new MainPresenterImple(this, getContext());
-        url = String.format(Constants.RANKINGDOWNLOADURL, Utils.getScreenDispaly(getContext())[0],Utils.getScreenDispaly(getContext())[1]);
-
+       // url = String.format(Constants.RANKINGDOWNLOADURL, Utils.getScreenDispaly(getContext())[0],Utils.getScreenDispaly(getContext())[1]);
+        url = getBaseActivity().getTotalBean().getBrowse().get(3).getApi();
     }
 
     @Override
