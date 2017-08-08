@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.android.cgcxy.wallpaper.R;
+import com.android.cgcxy.wallpaper.bean.TotalBean;
 import com.android.cgcxy.wallpaper.utils.SystemBarTintManager;
 import com.android.cgcxy.wallpaper.view.MyDialog;
 
@@ -25,6 +26,12 @@ import com.android.cgcxy.wallpaper.view.MyDialog;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private String TAG="BaseActivity";
+
+    public TotalBean getTotalBean() {
+        return totalBean;
+    }
+
+    public TotalBean totalBean;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
