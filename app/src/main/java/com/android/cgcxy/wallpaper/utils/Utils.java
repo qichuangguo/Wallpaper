@@ -2,12 +2,17 @@ package com.android.cgcxy.wallpaper.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.os.Environment;
 import android.util.Log;
 import android.view.WindowManager;
 
 import com.android.volley.Cache;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * Created by chuangguo.qi on 2017/7/18.
@@ -65,6 +70,35 @@ public class Utils {
 
         }
         return null;
+    }
+
+    public static boolean seave(Bitmap bitmap,String name){
+
+        try {
+            String path = Environment.getExternalStorageDirectory().getPath()+File.separator+"酷爱";
+            File file = new File(path);
+            if (!file.exists()){
+                file.mkdir();
+                File file1 = new File(path+File.separator+name);
+                FileOutputStream out = new FileOutputStream(file1);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                out.flush();
+                out.close();
+                return true;
+            }else {
+                File file1 = new File(path+File.separator+name);
+                FileOutputStream out = new FileOutputStream(file1);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                out.flush();
+                out.close();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
     }
 
 

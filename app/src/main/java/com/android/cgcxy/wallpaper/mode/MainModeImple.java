@@ -64,6 +64,7 @@ public class MainModeImple implements MainMode {
 
     @Override
     public void getHomePageFragmnetDataJson(final String url, final RefreshListener refreshListener,boolean isCache) {
+        Log.i(TAG, "getHomePageFragmnetDataJson: "+url);
         MyJsonObjectRequest jsonObjectRequest = new MyJsonObjectRequest(Request.Method.GET, url, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {

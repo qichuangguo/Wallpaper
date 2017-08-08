@@ -8,6 +8,7 @@
    >
 
     <HorizontalScrollView
+        android:scrollbars="none"
         android:layout_width="5000dp"
         android:layout_height="match_parent">
 
@@ -19,18 +20,47 @@
         android:layout_height="match_parent" />
     </HorizontalScrollView>
 
-    <Button
-        android:id="@+id/button"
-        android:layout_centerHorizontal="true"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:padding="5dp"
-        android:background="@drawable/button_shap"
-        android:textColor="#c4000000"
-        android:layout_marginBottom="20dp"
-        android:onClick="setting"
-        android:text="设置壁纸"/>
+        android:gravity="center_vertical"
+        android:background="#5c000000">
+
+        <ImageButton
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:background="@null"
+            android:src="@drawable/ic_share_white_24dp"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:background="@null"
+            android:src="@drawable/ic_collections_bookmark_white_24dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/set_wallpaper"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:id="@+id/ib_dewnlaod"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:background="@null"
+            android:src="@drawable/ic_cloud_download_white_24dp"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/ic_more_vert_white_24dp"/>
+
+    </LinearLayout>
+
 
     <ProgressBar
         android:id="@+id/progressBar"

@@ -47,7 +47,7 @@ public class MainPresenterImple implements MainPresenter,Serializable{
 
     public void getHomePageFragmnetDataJson(){
         int[] screenDispaly = Utils.getScreenDispaly(mContext);
-        String url = String.format(Constants.HOMEPAGEJSONURL,screenDispaly[0]+"",screenDispaly[1]+"",1+"");
+        String url = String.format(Constants.HOMEPAGEJSONURL,screenDispaly[0]+"",screenDispaly[1]+"");
         mainModeImple.getHomePageFragmnetDataJson(url, new RefreshListener() {
             @Override
             public <T> void resultListener(T t) {
