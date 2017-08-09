@@ -9,7 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.cgcxy.wallpaper.R;
+import com.android.cgcxy.wallpaper.base.OnClickListener;
 import com.android.cgcxy.wallpaper.bean.EveryDaySubBean;
+import com.android.cgcxy.wallpaper.bean.ImageBeanUrl;
 import com.squareup.picasso.Picasso;
 
 import javax.xml.validation.TypeInfoProvider;
@@ -52,7 +54,7 @@ public class EveryDaySubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (everyDaySubBean!=null){
 
             if (getItemViewType(position)==TYPE_FOOT){
@@ -60,10 +62,25 @@ public class EveryDaySubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             }else if (getItemViewType(position)==TYPE_ITEM){
 
-                EveryDaySubBean.DataBean dataBean = everyDaySubBean.getData().get(position);
+                final EveryDaySubBean.DataBean dataBean = everyDaySubBean.getData().get(position);
                 Picasso.with(mContext).load(dataBean.getImage().getSmall()).placeholder(R.mipmap.image_load).error(R.mipmap.image_erry).into(((MyItemViewHold)holder).imageView);
 
                 ((MyItemViewHold)holder).textView.setText(dataBean.getTags().get(0).getName());
+                ((MyItemViewHold)holder).itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        ImageBeanUrl imageBeanUrl = new ImageBeanUrl();
+                        imageBeanUrl.setBig(dataBean.getImage().getBig());
+                        imageBeanUrl.setDiy(dataBean.getImage().getDiy());
+                        imageBeanUrl.setOriginal(dataBean.getImage().getOriginal());
+                        imageBeanUrl.setVip_original(dataBean.getImage().getVip_original());
+                        imageBeanUrl.setSmall(dataBean.getImage().getSmall());
+
+                        onClickListener.clickListener(v,position,imageBeanUrl);
+                    }
+                });
+
             }
         }
     }
@@ -101,5 +118,10 @@ public class EveryDaySubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public MyFootViewHold(View itemView) {
             super(itemView);
         }
+    }
+
+    public OnClickListener onClickListener;
+    public void setOnClickListener(OnClickListener onClickListener){
+        this.onClickListener=onClickListener;
     }
 }

@@ -86,6 +86,7 @@ public class EverydaySubFragment extends BaseFragment implements ShowView{
         });
 
         adapter = new EveryDaySubAdapter();
+        adapter.setOnClickListener(this);
         gridLayoutManager = new GridLayoutManager(getContext(),3);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(gridLayoutManager);

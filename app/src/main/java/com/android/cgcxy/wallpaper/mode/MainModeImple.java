@@ -39,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.nio.channels.NotYetBoundException;
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ import javax.xml.transform.stream.StreamResult;
  * Created by chuangguo.qi on 2017/7/18.
  */
 
-public class MainModeImple implements MainMode {
+public class MainModeImple implements MainMode{
 
     private static final String TAG = "MainModeImple";
     private Context mContext;

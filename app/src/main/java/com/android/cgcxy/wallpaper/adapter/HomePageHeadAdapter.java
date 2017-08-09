@@ -10,11 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.cgcxy.wallpaper.R;
+import com.android.cgcxy.wallpaper.base.OnClickListener;
 import com.android.cgcxy.wallpaper.bean.HomePageHeadBean;
 import com.android.cgcxy.wallpaper.bean.HompPagerBean;
+import com.android.cgcxy.wallpaper.bean.ImageBeanUrl;
 import com.android.cgcxy.wallpaper.ui.homepageui.HomePageHeadFragment;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,14 +61,14 @@ public class HomePageHeadAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
         if (homePageHeadBean != null) {
 
             if (getItemViewType(position) == HEAD_VIEW) {
 
                 String name = homePageHeadBean.getName();
-                String image = homePageHeadBean.getImage();
+                final String image = homePageHeadBean.getImage();
                 String description = homePageHeadBean.getDescription();
 
                 Picasso.with(mContext).load(image).into(((MyHeadViewHold)holder).imageView);
@@ -74,12 +77,25 @@ public class HomePageHeadAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             } else if (getItemViewType(position) == HEAD_ITEM) {
 
-                HomePageHeadBean.DataBean dataBean = homePageHeadBean.getData().get(position-1);
+                final HomePageHeadBean.DataBean dataBean = homePageHeadBean.getData().get(position-1);
                 String small = dataBean.getImage().getSmall();
-                String[] url = small.split(",");
+                final String[] url = small.split(",");
                // small = url[0] + ",300,300." + url[url.length - 1].split("\\.")[1];
                 Picasso.with(mContext).load(small).placeholder(R.mipmap.image_load).error(R.mipmap.image_erry).into(((MyViewHold) holder).imageView);
                 ((MyViewHold)holder).tv_title.setText(dataBean.getTags().get(1).getName());
+                ((MyViewHold)holder).itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        ImageBeanUrl imageBeanUrl = new ImageBeanUrl();
+                        imageBeanUrl.setBig(dataBean.getImage().getBig());
+                        imageBeanUrl.setDiy(dataBean.getImage().getDiy());
+                        imageBeanUrl.setOriginal(dataBean.getImage().getOriginal());
+                        imageBeanUrl.setVip_original(dataBean.getImage().getVip_original());
+                        imageBeanUrl.setSmall(dataBean.getImage().getSmall());
+                        onClickListener.clickListener(v,position,imageBeanUrl);
+                    }
+                });
             }else if (getItemViewType(position) == HEAD_FOOT){
 
             }
@@ -134,5 +150,10 @@ public class HomePageHeadAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return HEAD_FOOT;
         }
         return HEAD_ITEM;
+    }
+
+    public OnClickListener onClickListener;
+    public void setOnClickListener(OnClickListener onClickListener){
+        this.onClickListener=onClickListener;
     }
 }

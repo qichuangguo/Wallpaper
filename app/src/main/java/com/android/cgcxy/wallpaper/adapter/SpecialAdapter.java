@@ -58,7 +58,7 @@ public class SpecialAdapter extends RecyclerView.Adapter {
                 ((MyItemHold)holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onClickListener.clickListener(v,position);
+                        onClickListener.clickListener(v,position,null);
                     }
                 });
             }

@@ -17,6 +17,7 @@ import com.android.cgcxy.wallpaper.adapter.SpecialAdapter;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
 import com.android.cgcxy.wallpaper.base.Constants;
 import com.android.cgcxy.wallpaper.base.OnClickListener;
+import com.android.cgcxy.wallpaper.bean.ImageBeanUrl;
 import com.android.cgcxy.wallpaper.bean.SpeCialBean;
 import com.android.cgcxy.wallpaper.presenter.MainPresenter;
 import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
@@ -143,7 +144,7 @@ public class SpecialFragment extends BaseFragment implements ShowView ,OnClickLi
     }
 
     @Override
-    public void clickListener(View view, int position) {
+    public void clickListener(View view, int position, ImageBeanUrl imageBeanUrl) {
         getBaseActivity().commitFragment(R.id.fragmeLaout, HomePageHeadFragment.newInstance( specialAdapter.getSpeCialBean().getData().get(position).getDetail(),specialAdapter.getSpeCialBean().getData().get(position).getName()),true);
     }
 }

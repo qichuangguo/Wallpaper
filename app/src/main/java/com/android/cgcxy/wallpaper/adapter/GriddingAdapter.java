@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.base.OnClickListener;
 import com.android.cgcxy.wallpaper.bean.HompPagerBean;
+import com.android.cgcxy.wallpaper.bean.ImageBeanUrl;
 import com.squareup.picasso.Picasso;
 
 import java.util.IllegalFormatCodePointException;
@@ -92,7 +93,7 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (holder.getItemViewType()==TYPE_HEADER) {
 
             }else if (holder.getItemViewType()==TYPE_ITEM) {
-                HompPagerBean.DataBean dataBean = hompPagerBean.getData().get(position-1);
+                final HompPagerBean.DataBean dataBean = hompPagerBean.getData().get(position-1);
                 String small = dataBean.getImage().getSmall();
                 String[] url = small.split(",");
                // small = url[0] + ",200,300." + url[url.length - 1].split("\\.")[1];
@@ -101,7 +102,13 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ((MyViewHole)holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onClickListener.clickListener(v,position);
+                        ImageBeanUrl imageBeanUrl = new ImageBeanUrl();
+                        imageBeanUrl.setBig(dataBean.getImage().getBig());
+                        imageBeanUrl.setDiy(dataBean.getImage().getDiy());
+                        imageBeanUrl.setOriginal(dataBean.getImage().getOriginal());
+                        imageBeanUrl.setVip_original(dataBean.getImage().getVip_original());
+                        imageBeanUrl.setSmall(dataBean.getImage().getSmall());
+                        onClickListener.clickListener(v,position,imageBeanUrl);
                     }
                 });
             }

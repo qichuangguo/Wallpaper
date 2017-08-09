@@ -15,6 +15,7 @@ import com.android.cgcxy.wallpaper.adapter.ClassifyAdapter;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
 import com.android.cgcxy.wallpaper.base.OnClickListener;
 import com.android.cgcxy.wallpaper.bean.ClassifyBean;
+import com.android.cgcxy.wallpaper.bean.ImageBeanUrl;
 import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
 import com.android.cgcxy.wallpaper.ui.homepageui.ClassifySubClassFragment;
 
@@ -69,10 +70,8 @@ public class ClassifyFragment extends BaseFragment implements OnClickListener{
         recycle.setLayoutManager(gridLayoutManager);
 
         classifyAdapter = new ClassifyAdapter();
-        recycle.setAdapter(classifyAdapter);
-
         classifyAdapter.setOnClickListener(this);
-
+        recycle.setAdapter(classifyAdapter);
     }
 
 
@@ -98,7 +97,7 @@ public class ClassifyFragment extends BaseFragment implements OnClickListener{
      * @param position
      */
     @Override
-    public void clickListener(View view, int position) {
+    public void clickListener(View view, int position, ImageBeanUrl imageBeanUrl) {
         ClassifySubClassFragment classFragment = ClassifySubClassFragment.newInstance(datas.get(position).getUrl(),datas.get(position).getName());
         getBaseActivity().commitFragment(R.id.fragmeLaout,classFragment,true);
     }

@@ -1,12 +1,13 @@
 package com.android.cgcxy.wallpaper.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by chuangguo.qi on 2017/7/18.
  */
 
-public class HompPagerBean {
+public class HompPagerBean implements Serializable {
 
 
     private LinkBean link;

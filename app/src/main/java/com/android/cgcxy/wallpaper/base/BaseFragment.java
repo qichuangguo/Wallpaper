@@ -2,6 +2,7 @@ package com.android.cgcxy.wallpaper.base;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,8 +23,10 @@ import android.widget.RelativeLayout;
 import com.android.cgcxy.wallpaper.HomePage;
 import com.android.cgcxy.wallpaper.MainActivity;
 import com.android.cgcxy.wallpaper.R;
+import com.android.cgcxy.wallpaper.bean.ImageBeanUrl;
 import com.android.cgcxy.wallpaper.ui.BrowseFragment;
 
+import com.android.cgcxy.wallpaper.ui.SetWallpaperActivity;
 import com.android.cgcxy.wallpaper.ui.ShowView;
 import com.android.cgcxy.wallpaper.ui.browseui.RankingFragment;
 import com.android.cgcxy.wallpaper.ui.homepageui.classifysub.ClassifySubClassifyFragment;
@@ -31,11 +34,13 @@ import com.android.cgcxy.wallpaper.ui.homepageui.classifysub.ClassifySubNewsFrag
 import com.android.cgcxy.wallpaper.view.MyDialog;
 import com.github.ybq.android.spinkit.style.DoubleBounce;
 
+import java.util.List;
+
 /**
  * Created by chuangguo.qi on 2017/7/18.
  */
 
-public abstract class BaseFragment extends Fragment implements ShowView{
+public abstract class BaseFragment extends Fragment implements ShowView,OnClickListener{
 
     private View mView;
     private BaseActivity baseActivity;
@@ -44,6 +49,7 @@ public abstract class BaseFragment extends Fragment implements ShowView{
     private MyDialog dialog;
     private boolean isInit=false;
     private boolean isLoad=false;
+    private List data;
 
     @Nullable
     @Override
@@ -162,5 +168,12 @@ public abstract class BaseFragment extends Fragment implements ShowView{
     @Override
     public <T> void setNextData(T t) {
 
+    }
+
+    @Override
+    public void clickListener(View view, int position,ImageBeanUrl imageBeanUrl) {
+        Intent intent = new Intent(getBaseActivity(),SetWallpaperActivity.class);
+        intent.putExtra("url",imageBeanUrl.getBig());
+        startActivity(intent);
     }
 }

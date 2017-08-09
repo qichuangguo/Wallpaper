@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.cgcxy.wallpaper.R;
+import com.android.cgcxy.wallpaper.base.OnClickListener;
+import com.android.cgcxy.wallpaper.bean.ImageBeanUrl;
 import com.android.cgcxy.wallpaper.bean.RankingBean;
 import com.squareup.picasso.Picasso;
 
@@ -44,7 +46,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
         if (rankingBean!=null){
             if (getItemViewType(position)==TYPE_FOOT){
@@ -60,6 +62,18 @@ public class RankingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         into(((MyItemViewHold)holder).imageView);
 
                 ((MyItemViewHold)holder).textView.setText(rankingBean.getData().get(position).getTags().get(0).getName());
+                ((MyItemViewHold)holder).itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ImageBeanUrl imageBeanUrl = new ImageBeanUrl();
+                        imageBeanUrl.setBig(rankingBean.getData().get(position).getImage().getBig());
+                        imageBeanUrl.setDiy(rankingBean.getData().get(position).getImage().getDiy());
+                        imageBeanUrl.setOriginal(rankingBean.getData().get(position).getImage().getOriginal());
+                        imageBeanUrl.setVip_original(rankingBean.getData().get(position).getImage().getVip_original());
+                        imageBeanUrl.setSmall(rankingBean.getData().get(position).getImage().getSmall());
+                        onClickListener.clickListener(v,position,imageBeanUrl);
+                    }
+                });
 
             }
         }
@@ -99,5 +113,10 @@ public class RankingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public MyFootViewHold(View itemView) {
             super(itemView);
         }
+    }
+
+    public OnClickListener onClickListener;
+    public void setOnClickListener(OnClickListener onClickListener){
+        this.onClickListener=onClickListener;
     }
 }

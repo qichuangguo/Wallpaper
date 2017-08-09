@@ -25,6 +25,8 @@ import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
 import com.android.cgcxy.wallpaper.ui.ShowView;
 import com.android.cgcxy.wallpaper.utils.Utils;
 
+import java.io.Serializable;
+
 public class MainActivity extends BaseActivity implements ShowView{
 
 

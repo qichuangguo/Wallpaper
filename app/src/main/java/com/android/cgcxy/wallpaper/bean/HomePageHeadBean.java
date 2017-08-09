@@ -1,12 +1,13 @@
 package com.android.cgcxy.wallpaper.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by chuangguo.qi on 2017/7/20.
  */
 
-public class HomePageHeadBean {
+public class HomePageHeadBean implements Serializable {
 
     private TestBean test;
     private String name;

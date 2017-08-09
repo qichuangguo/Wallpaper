@@ -85,8 +85,8 @@ public class ClassifySubClassFragment extends BaseFragment implements ShowView {
         presenterImple = new MainPresenterImple(this,getContext());
 
 
-        classifySubNewsFragment = ClassifySubNewsFragment.newInstance(presenterImple);
-        classifySubClassifyFragment = ClassifySubClassifyFragment.newInstance(presenterImple);
+        classifySubNewsFragment = ClassifySubNewsFragment.newInstance();
+        classifySubClassifyFragment = ClassifySubClassifyFragment.newInstance();
 
     }
 

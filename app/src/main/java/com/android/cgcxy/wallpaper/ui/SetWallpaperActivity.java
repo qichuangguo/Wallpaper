@@ -8,46 +8,27 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.telephony.TelephonyManager;
-import android.util.DisplayMetrics;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
-import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.base.BaseActivity;
-import com.android.cgcxy.wallpaper.base.BaseFragment;
+import com.android.cgcxy.wallpaper.utils.BlurBitmapUtil;
 import com.android.cgcxy.wallpaper.utils.Utils;
 import com.android.cgcxy.wallpaper.view.MyDialog;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
-
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.UUID;
-
-import static android.app.WallpaperManager.FLAG_LOCK;
-import static android.content.pm.ApplicationInfo.FLAG_SYSTEM;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,6 +46,13 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
     private ProgressBar progressBar;
     private Button set_wallpaper;
     private ImageButton ib_dewnlaod;
+    private ImageButton ib_grammaticalization;
+    private LinearLayout ll_bootom;
+    private LinearLayout ll_bootom02;
+    private ImageButton ib_seave;
+    private Button bt_dim;
+    private ImageButton bi_restore;
+    private Bitmap tagBitmap;
 
     @Override
     public int getLayoutId() {
@@ -81,15 +69,22 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
          progressBar = (ProgressBar) findViewById(R.id.progressBar);
          set_wallpaper = (Button) findViewById(R.id.set_wallpaper);
          ib_dewnlaod = (ImageButton) findViewById(R.id.ib_dewnlaod);
+        ib_grammaticalization = (ImageButton) findViewById(R.id.ib_grammaticalization);
+        ll_bootom = (LinearLayout) findViewById(R.id.ll_bootom);
+        ll_bootom02 = (LinearLayout) findViewById(R.id.ll_bootom02);
+        ib_seave = (ImageButton)findViewById(R.id.ib_seave);
+        bt_dim = (Button)findViewById(R.id.bt_dim);
+        bi_restore = (ImageButton)findViewById(R.id.bi_restore);
+        ib_seave.setOnClickListener(this);
+        bt_dim.setOnClickListener(this);
+        bi_restore.setOnClickListener(this);
+        ib_grammaticalization.setOnClickListener(this);
         ib_dewnlaod.setOnClickListener(this);
         set_wallpaper.setOnClickListener(this);
          progressBar.setVisibility(View.GONE);
          dialog = new MyDialog(this);
          dialog.showDialog();
          registerIntentReceivers();
-
-
-
 
     }
 
@@ -118,16 +113,11 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void initView() {
-        if (url!=null) {
-            String[] newUrl = url.split(",");
-           //url = newUrl[0] + ","+ (Utils.getScreenDispaly(this)[0])+","+ (Utils.getScreenDispaly(this)[1]/2)+"." + newUrl[newUrl.length - 1].split("\\.")[1];
-            Log.i(TAG, "initView: "+url);
-        }
-
         ImageRequest imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
             @Override
             public void onResponse(Bitmap bitmap) {
                 SetWallpaperActivity.this.bitmap=bitmap;
+                SetWallpaperActivity.this.tagBitmap=bitmap;
                 imageView.setImageBitmap(bitmap);
                 dialog.dismiss();
             }
@@ -141,33 +131,56 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
         Utils.getUtils().getRequestQueue(this).add(imageRequest);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onClick(View v) {
         int id = v.getId();
         if (id==R.id.set_wallpaper){
             setting(v);
         }else if (id==R.id.ib_dewnlaod){
+            setWallpaper();
+        } else if (id == R.id.ib_grammaticalization) {
+            ll_bootom02.setVisibility(View.VISIBLE);
+            ll_bootom.setVisibility(View.GONE);
 
-            if (bitmap!=null) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        boolean seave = Utils.seave(bitmap, System.currentTimeMillis() + ".jpg");
-                        if (seave){
-                            ib_dewnlaod.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(SetWallpaperActivity.this,"壁纸保存成功",Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    }
-                }).start();
+        }else if (id==R.id.ib_seave){
+            ll_bootom.setVisibility(View.VISIBLE);
+            ll_bootom02.setVisibility(View.GONE);
+            bitmap = tagBitmap;
+            imageView.setImageBitmap(bitmap);
 
-            }
+        }else if (id==R.id.bt_dim){
 
+            Bitmap tagBitmap = BlurBitmapUtil.blurBitmap(SetWallpaperActivity.this, SetWallpaperActivity.this.tagBitmap, 5);
+            imageView.setImageBitmap(tagBitmap);
+
+        }else if (id==R.id.bi_restore){
+            tagBitmap = bitmap;
+            imageView.setImageBitmap(tagBitmap);
         }
     }
+
+    public void setWallpaper (){
+        if (bitmap!=null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    boolean seave = Utils.seave(bitmap, System.currentTimeMillis() + ".jpg");
+                    if (seave){
+                        ib_dewnlaod.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(SetWallpaperActivity.this,"壁纸保存成功",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            }).start();
+
+        }
+
+    }
+
 
     class WallpaperIntentReceiver extends BroadcastReceiver{
         @Override

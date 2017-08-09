@@ -99,6 +99,7 @@ public class ClassifyChildishSubFragment extends BaseFragment implements ShowVie
 
 
         adapter = new ClassifySubNewsAdapter();
+        adapter.setOnClickListener(this);
         recycle.setAdapter(adapter);
 
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
