@@ -14,10 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.android.cgcxy.wallpaper.HomePage;
 import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.bean.TotalBean;
+import com.android.cgcxy.wallpaper.bean.UserBean;
 import com.android.cgcxy.wallpaper.utils.SystemBarTintManager;
 import com.android.cgcxy.wallpaper.view.MyDialog;
+
+import java.util.List;
 
 /**
  * Created by chuangguo.qi on 2017/7/17.
@@ -26,6 +30,12 @@ import com.android.cgcxy.wallpaper.view.MyDialog;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private String TAG="BaseActivity";
+
+    public UserBean getUserBean() {
+        return userBean;
+    }
+
+    public UserBean  userBean;
 
     public TotalBean getTotalBean() {
         return totalBean;
@@ -37,11 +47,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
-
         findView();
         initView();
+    }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Fragment fragmentById = getSupportFragmentManager().findFragmentById(R.id.fragmeLaout);
+        if (fragmentById instanceof HomePage){
+            finish();
+        }
+        Log.i(TAG, "onBackPressed: "+fragmentById);
     }
 
     public abstract void initView();

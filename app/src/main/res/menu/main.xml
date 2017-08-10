@@ -2,13 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group
-
         android:id="@+id/group">
         <item
             android:id="@+id/nav_me"
             android:title="首页"
             android:icon="@mipmap/blue_home_white"
-
             />
         <item
             android:id="@+id/nav_friend"

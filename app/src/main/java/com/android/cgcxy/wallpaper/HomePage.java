@@ -16,13 +16,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.android.cgcxy.wallpaper.adapter.TitleFragmentPagerAdapter;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
+import com.android.cgcxy.wallpaper.base.Constants;
+import com.android.cgcxy.wallpaper.bean.UserBean;
 import com.android.cgcxy.wallpaper.ui.BrowseFragment;
 import com.android.cgcxy.wallpaper.ui.ClassifyFragment;
 import com.android.cgcxy.wallpaper.ui.HomePageFragment;
 import com.android.cgcxy.wallpaper.ui.SearchFragment;
+import com.android.cgcxy.wallpaper.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +41,7 @@ public class HomePage extends BaseFragment {
     private ViewPager viewPager;
     private List<Fragment> fragments = new ArrayList<>();
     private String[] title = new String[]{"首页","分类","专题","搜索"};
+    private TextView tv_name;
 
 
     @Override
@@ -62,6 +67,7 @@ public class HomePage extends BaseFragment {
 
     @Override
     public void initView() {
+
         ((MainActivity) getActivity()).setbarTintEnabled(R.color.toolBar_bg, false);
         toolbar.setTitle(getString(R.string.app_name));
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
@@ -87,13 +93,39 @@ public class HomePage extends BaseFragment {
         };
         actionBarDrawerToggle.syncState();
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
+
+
+        View headerView = navigation_view.getHeaderView(0);
+        tv_name = (TextView) headerView.findViewById(R.id.tv_name);
+
         initData();
+
+        navigation_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                return false;
+            }
+        });
+
+
 
     }
 
 
 
     private void initData() {
+        if (getBaseActivity().getUserBean()!=null){
+            UserBean userBean = getBaseActivity().getUserBean();
+            Log.i(TAG, "initData: "+userBean.getPhonNumber());
+            String name = userBean.getName();
+            if (name!=null&& !name.isEmpty()){
+                tv_name.setText(name);
+            }else {
+                tv_name.setText(userBean.getPhonNumber());
+            }
+        }
+
         fragments.clear();
         fragments.add(new HomePageFragment());
         fragments.add(new ClassifyFragment());

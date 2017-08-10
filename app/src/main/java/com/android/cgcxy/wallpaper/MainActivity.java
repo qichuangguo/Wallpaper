@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.android.cgcxy.wallpaper.base.BaseActivity;
 import com.android.cgcxy.wallpaper.base.Constants;
 import com.android.cgcxy.wallpaper.bean.TotalBean;
+import com.android.cgcxy.wallpaper.bean.UserBean;
 import com.android.cgcxy.wallpaper.presenter.MainPresenter;
 import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
 import com.android.cgcxy.wallpaper.ui.ShowView;
@@ -57,7 +58,7 @@ public class MainActivity extends BaseActivity implements ShowView{
 
     @Override
     public void findView() {
-
+         userBean = (UserBean) Utils.getObjectFromShare(this, Constants.USERBEAN);
 
     }
 

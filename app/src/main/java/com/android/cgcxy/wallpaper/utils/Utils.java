@@ -9,7 +9,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -17,15 +19,22 @@ import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
+import android.widget.Toast;
 
+import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.base.BaseActivity;
 import com.android.cgcxy.wallpaper.base.Constants;
 import com.android.volley.Cache;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.UUID;
 
 /**
@@ -110,6 +119,65 @@ public class Utils {
         return sp.getString(ContentKey, null);
     }
 
+    public static boolean setObjectToShare(Context context, Object object,
+                                       String key) {
+// TODO Auto-generated method stub
+        SharedPreferences share = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        if (object == null) {
+            SharedPreferences.Editor editor = share.edit().remove(key);
+            return editor.commit();
+        }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = null;
+        try {
+            oos = new ObjectOutputStream(baos);
+            oos.writeObject(object);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+       // 将对象放到OutputStream中
+       // 将对象转换成byte数组，并将其进行base64编码
+        String objectStr = new String(Base64.encode(baos.toByteArray(),
+                Base64.DEFAULT));
+        try {
+            baos.close();
+            oos.close();
+        } catch (IOException e) {
+       // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        SharedPreferences.Editor editor = share.edit();
+        // 将编码后的字符串写到base64.xml文件中
+        editor.putString(key, objectStr);
+        return editor.commit();
+    }
+
+    public static Object getObjectFromShare(Context context, String key) {
+        SharedPreferences sharePre = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        try {
+            String wordBase64 = sharePre.getString(key, "");
+             // 将base64格式字符串还原成byte数组
+            if (wordBase64 == null || wordBase64.equals("")) { // 不可少，否则在下面会报java.io.StreamCorruptedException
+                return null;
+            }
+            byte[] objBytes = Base64.decode(wordBase64.getBytes(),
+                    Base64.DEFAULT);
+            ByteArrayInputStream bais = new ByteArrayInputStream(objBytes);
+            ObjectInputStream ois = new ObjectInputStream(bais);
+           // 将byte数组转换成product对象
+            Object obj = ois.readObject();
+            bais.close();
+            ois.close();
+            return obj;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static String getCacheString(RequestQueue requestQueue,String url){
         Cache.Entry entry = requestQueue.getCache().get("0:"+url);
         String cachedResponse="";
@@ -181,6 +249,10 @@ public class Utils {
             }
         }
         return strNetworkType;
+    }
+
+    public static void Toast(Context context,String str){
+        Toast.makeText(context, str,Toast.LENGTH_SHORT).show();
     }
 
 
