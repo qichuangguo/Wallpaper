@@ -3,13 +3,16 @@ package com.android.cgcxy.wallpaper.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -254,6 +257,19 @@ public class Utils {
     public static void Toast(Context context,String str){
         Toast.makeText(context, str,Toast.LENGTH_SHORT).show();
     }
+
+    public static String getFilePathFromContentUri(Uri uri, Context context) {
+        String filePath;
+        String[] filePathColumn = {MediaStore.MediaColumns.DATA};
+        Cursor cursor = context.getContentResolver().query(uri, filePathColumn, null, null, null);
+        if (cursor == null) return null;
+        cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        filePath = cursor.getString(columnIndex);
+        cursor.close();
+        return filePath;
+    }
+
 
 
 }

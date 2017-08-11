@@ -30,6 +30,7 @@
             android:src="@drawable/ic_invert_colors_white_24dp"
             android:layout_height="wrap_content" />
         <ImageButton
+            android:id="@+id/collections"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:background="@null"

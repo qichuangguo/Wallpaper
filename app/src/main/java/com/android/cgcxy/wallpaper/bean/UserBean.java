@@ -1,6 +1,7 @@
 package com.android.cgcxy.wallpaper.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 import cn.bmob.v3.BmobObject;
 
@@ -13,6 +14,34 @@ public class UserBean extends BmobObject implements Serializable {
     private String phonNumber;
     private String name;
     private String password;
+    private String jObject;
+    private List<String> collect;
+
+    public List<String> getCollect() {
+        return collect;
+    }
+
+    public void setCollect(List<String> collect) {
+        this.collect = collect;
+    }
+
+    public String getjObject() {
+        return jObject;
+    }
+
+    public void setjObject(String jObject) {
+        this.jObject = jObject;
+    }
+
+    private UserBeanPersonal userBeanPersonal;
+
+    public UserBeanPersonal getUserBeanPersonal() {
+        return userBeanPersonal;
+    }
+
+    public void setUserBeanPersonal(UserBeanPersonal userBeanPersonal) {
+        this.userBeanPersonal = userBeanPersonal;
+    }
 
     public String getPhonNumber() {
         return phonNumber;
@@ -37,4 +66,21 @@ public class UserBean extends BmobObject implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+
+    public class UserBeanPersonal implements Serializable{
+
+        private String headPortraitUrl;
+
+        public String getHeadPortraitUrl() {
+            return headPortraitUrl;
+        }
+
+        public void setHeadPortraitUrl(String headPortraitUrl) {
+            this.headPortraitUrl = headPortraitUrl;
+        }
+    }
+
 }
+
+

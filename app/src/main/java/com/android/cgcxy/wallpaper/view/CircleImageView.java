@@ -58,6 +58,15 @@ public class CircleImageView extends ImageView {
     private boolean mSetupPending;
     private boolean mBorderOverlay;
 
+    public void setProgress(boolean progress) {
+        isProgress = progress;
+    }
+
+    private boolean isProgress=false;
+    private Paint paint;
+    private Paint paint02;
+    private int curront=0;
+
     public CircleImageView(Context context) {
         super(context);
 
@@ -90,6 +99,18 @@ public class CircleImageView extends ImageView {
             setup();
             mSetupPending = false;
         }
+
+        paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(8);
+        paint.setColor(getResources().getColor(R.color.phon_progress_bom));
+
+        paint02 = new Paint();
+        paint02.setAntiAlias(true);
+        paint02.setStyle(Paint.Style.STROKE);
+        paint02.setStrokeWidth(8);
+        paint02.setColor(getResources().getColor(R.color.phon_progress_top));
     }
 
     @Override
@@ -121,7 +142,21 @@ public class CircleImageView extends ImageView {
         if (mBorderWidth != 0) {
             canvas.drawCircle(getWidth() / 2, getHeight() / 2, mBorderRadius, mBorderPaint);
         }
+
+        if (isProgress){
+            int radius= (int) (mBorderRadius-5);
+            canvas.drawCircle(getWidth() / 2,getHeight() / 2,radius,paint);
+
+            RectF rectF = new RectF(5,5,radius*2+5,radius*2+5);
+            canvas.drawArc(rectF, 0, ((float) curront / 100) * 360, false, paint02);
+        }
+
     }
+
+    public void setProgressSchedule(int curront){
+        this.curront = curront;
+    }
+
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {

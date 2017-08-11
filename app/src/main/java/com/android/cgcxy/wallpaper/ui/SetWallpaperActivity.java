@@ -22,8 +22,10 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.cgcxy.wallpaper.MyApplication;
 import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.base.BaseActivity;
+import com.android.cgcxy.wallpaper.bean.UserBean;
 import com.android.cgcxy.wallpaper.utils.BlurBitmapUtil;
 import com.android.cgcxy.wallpaper.utils.Utils;
 import com.android.cgcxy.wallpaper.view.MyDialog;
@@ -32,6 +34,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,6 +64,7 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
     private Button bt_dim;
     private ImageButton bi_restore;
     private Bitmap tagBitmap;
+    private ImageButton collections;
 
     @Override
     public int getLayoutId() {
@@ -78,7 +87,9 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
          ib_seave = (ImageButton)findViewById(R.id.ib_seave);
          bt_dim = (Button)findViewById(R.id.bt_dim);
          bi_restore = (ImageButton)findViewById(R.id.bi_restore);
+        collections = (ImageButton) findViewById(R.id.collections);
          ib_seave.setOnClickListener(this);
+        collections.setOnClickListener(this);
          bt_dim.setOnClickListener(this);
          bi_restore.setOnClickListener(this);
          ib_grammaticalization.setOnClickListener(this);
@@ -171,6 +182,36 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
             m.postScale(1.1f,1.1f);
             tagBitmap= Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),m,false);
             imageView.setImageBitmap(bitmap);
+        }else if (id==R.id.collections){
+
+            List<String > data;
+            UserBean userBean1 = ((MyApplication) getApplication()).getUserBean();
+            if (userBean1.getCollect()==null){
+                data = new ArrayList<>();
+                userBean1.setCollect(data);
+            }else {
+                data=userBean1.getCollect();
+            }
+            UserBean userBean = new UserBean();
+            if (data.size()>0 && data.contains(url)){
+                Utils.Toast(this,"文件已收藏");
+                return;
+            }
+
+            userBean.setCollect(data);
+
+            userBean.setObjectId(userBean1.getjObject());
+            userBean.update(userBean1.getjObject(), new UpdateListener() {
+                @Override
+                public void done(BmobException e) {
+                    if (e!=null){
+                        Utils.Toast(SetWallpaperActivity.this,"收藏失败");
+                    }else {
+                        Utils.Toast(SetWallpaperActivity.this,"收藏成功");
+                    }
+                }
+            });
+
         }
     }
 

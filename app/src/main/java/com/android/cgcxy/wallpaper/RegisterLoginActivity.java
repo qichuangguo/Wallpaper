@@ -149,6 +149,7 @@ public class RegisterLoginActivity extends BaseActivity implements OnClickListen
                             if (e!=null){
                                 Utils.Toast(RegisterLoginActivity.this,"注册失败");
                             }else {
+                                userBean.setjObject(s);
                                 Utils.setObjectToShare(RegisterLoginActivity.this,userBean, Constants.USERBEAN);
                                 startActivity(new Intent(RegisterLoginActivity.this,MainActivity.class));
                                 Utils.Toast(RegisterLoginActivity.this,"注册成功");

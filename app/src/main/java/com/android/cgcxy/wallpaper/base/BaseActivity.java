@@ -35,6 +35,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         return userBean;
     }
 
+    public void setUserBean(UserBean userBean) {
+        this.userBean = userBean;
+    }
+
     public UserBean  userBean;
 
     public TotalBean getTotalBean() {
@@ -42,6 +46,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public TotalBean totalBean;
+
+    public boolean isLogin() {
+        return isLogin;
+    }
+
+    public void setLogin(boolean login) {
+        isLogin = login;
+    }
+
+    public boolean isLogin=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

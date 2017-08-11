@@ -50,7 +50,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 WindowManager.LayoutParams. FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
         Bmob.initialize(this, "43a99d36aa99a2d51a931213ce23a5ff");
-        if (Utils.getObjectFromShare(this, Constants.USERBEAN)!=null){
+        Object objectFromShare = Utils.getObjectFromShare(this, Constants.USERBEAN);
+        Log.i(TAG, "onCreate: "+objectFromShare);
+        if (objectFromShare!=null){
             startActivity(new Intent(this,MainActivity.class));
             finish();
         }
@@ -107,8 +109,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 }else {
                     if (list!=null && list.size()>0){
                         UserBean userBean = list.get(0);
-                        Utils.setObjectToShare(Login.this,userBean,Constants.USERBEAN);
                         if (userBean.getPassword().equals(paw)){
+                            boolean b = Utils.setObjectToShare(Login.this, userBean, Constants.USERBEAN);
+                            Log.i(TAG, "done: "+b+"+===="+userBean);
                             startActivity(new Intent(Login.this,MainActivity.class));
                             finish();
                         }else {
