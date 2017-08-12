@@ -110,8 +110,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     if (list!=null && list.size()>0){
                         UserBean userBean = list.get(0);
                         if (userBean.getPassword().equals(paw)){
+                            String objectId = userBean.getObjectId();
+                            Log.i(TAG, "done: "+objectId);
+                            userBean.setjObject(objectId);
                             boolean b = Utils.setObjectToShare(Login.this, userBean, Constants.USERBEAN);
-                            Log.i(TAG, "done: "+b+"+===="+userBean);
                             startActivity(new Intent(Login.this,MainActivity.class));
                             finish();
                         }else {

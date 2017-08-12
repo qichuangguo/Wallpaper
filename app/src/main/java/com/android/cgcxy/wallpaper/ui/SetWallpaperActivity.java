@@ -184,20 +184,30 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
             imageView.setImageBitmap(bitmap);
         }else if (id==R.id.collections){
 
-            List<String > data;
+            List<UserBean.CollectUser> data;
             UserBean userBean1 = ((MyApplication) getApplication()).getUserBean();
             if (userBean1.getCollect()==null){
                 data = new ArrayList<>();
-                userBean1.setCollect(data);
             }else {
                 data=userBean1.getCollect();
             }
-            UserBean userBean = new UserBean();
-            if (data.size()>0 && data.contains(url)){
-                Utils.Toast(this,"文件已收藏");
-                return;
-            }
+            if (data.size()>0){
+                for (int i = 0; i < data.size(); i++) {
+                    UserBean.CollectUser collectUser = data.get(i);
+                    String collectUrl = collectUser.getCollectUrl();
+                    if (url.equals(collectUrl)){
+                        Utils.Toast(this,"文件已经收藏过了");
+                        return;
+                    }
 
+                }
+
+            }
+            UserBean userBean = new UserBean();
+            UserBean.CollectUser collectUser = userBean.new CollectUser();
+            collectUser.setCollectUrl(url);
+            data.add(collectUser);
+            userBean1.setCollect(data);
             userBean.setCollect(data);
 
             userBean.setObjectId(userBean1.getjObject());
@@ -206,6 +216,7 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
                 public void done(BmobException e) {
                     if (e!=null){
                         Utils.Toast(SetWallpaperActivity.this,"收藏失败");
+                        Log.i(TAG, "done: "+e.getMessage());
                     }else {
                         Utils.Toast(SetWallpaperActivity.this,"收藏成功");
                     }
