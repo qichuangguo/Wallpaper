@@ -15,6 +15,7 @@
         android:layout_height="match_parent" />
 
     <LinearLayout
+        android:id="@+id/ll_bootom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -22,12 +23,14 @@
         android:background="#5c000000">
 
         <ImageButton
+            android:id="@+id/ib_grammaticalization"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:background="@null"
-            android:src="@drawable/ic_share_white_24dp"
+            android:src="@drawable/ic_invert_colors_white_24dp"
             android:layout_height="wrap_content" />
         <ImageButton
+            android:id="@+id/collections"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:background="@null"
@@ -58,6 +61,42 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_bootom02"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
+        android:background="#5c000000">
+
+        <ImageButton
+            android:id="@+id/ib_seave"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/ic_check_white_24dp"/>
+
+        <Button
+            android:id="@+id/bt_dim"
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:text="点击模糊"
+            android:textColor="#FFFFFF"
+            android:background="@color/toolBar_bg"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/bi_restore"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/ic_autorenew_white_24dp"/>
+
+    </LinearLayout>
+
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -65,5 +104,6 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
 
 </RelativeLayout>

@@ -2,19 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group
-
         android:id="@+id/group">
         <item
             android:id="@+id/nav_me"
-            android:title="首页"
-            android:icon="@mipmap/blue_home_white"
-
+            android:title="个人收藏"
+            android:icon="@mipmap/collect"
             />
-        <item
-            android:id="@+id/nav_friend"
-            android:title="搜索"
-            android:icon="@mipmap/a534281"
-           />
 
     </group>
 

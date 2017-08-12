@@ -3,6 +3,7 @@ package com.android.cgcxy.wallpaper.ui.search;
 
 import android.os.Bundle;
 import android.os.health.TimerStat;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.android.cgcxy.wallpaper.adapter.SearchInputAdapter;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
 import com.android.cgcxy.wallpaper.base.Constants;
 import com.android.cgcxy.wallpaper.base.OnClickListener;
+import com.android.cgcxy.wallpaper.bean.ImageBeanUrl;
 import com.android.cgcxy.wallpaper.bean.SearchInoutBean;
 import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
 import com.android.cgcxy.wallpaper.ui.browseui.EverydaySubFragment;
@@ -118,7 +120,7 @@ public class SearchInputFragment extends BaseFragment implements OnClickListener
     }
 
     @Override
-    public void clickListener(View view, int position) {
+    public void clickListener(View view, int position, ImageBeanUrl imageBeanUrl) {
         EverydaySubFragment everydaySubFragment = EverydaySubFragment.newInstance(searchInoutBean.getTags().get(position).getUrl(),searchInoutBean.getTags().get(position).getName());
         getBaseActivity().commitFragment(R.id.fragmeLaout,everydaySubFragment,true);
     }

@@ -35,12 +35,12 @@ public class ClassifySubNewsFragment extends BaseFragment implements RefreshList
 
 
 
-    public static ClassifySubNewsFragment newInstance(MainPresenterImple mainpresenterImple) {
+    public static ClassifySubNewsFragment newInstance() {
 
         Bundle args = new Bundle();
-        args.putSerializable("Imple",mainpresenterImple);
+        //args.putSerializable("Imple",mainpresenterImple);
         ClassifySubNewsFragment fragment = new ClassifySubNewsFragment();
-        fragment.setArguments(args);
+        //fragment.setArguments(args);
         return fragment;
     }
 
@@ -57,13 +57,14 @@ public class ClassifySubNewsFragment extends BaseFragment implements RefreshList
 
     @Override
     public void initAttach() {
-        mainpresenterImple= (MainPresenterImple) getArguments().getSerializable("Imple");
+        mainpresenterImple= new MainPresenterImple(this,getBaseActivity());
     }
 
 
     @Override
     public void initView() {
         classifySubNewsAdapter = new ClassifySubNewsAdapter();
+        classifySubNewsAdapter.setOnClickListener(this);
         final GridLayoutManager layoutManage = new GridLayoutManager(getContext(),3);
         layoutManage.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override

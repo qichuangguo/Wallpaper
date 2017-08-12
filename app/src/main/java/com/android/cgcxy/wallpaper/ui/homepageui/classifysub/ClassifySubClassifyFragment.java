@@ -13,6 +13,7 @@ import com.android.cgcxy.wallpaper.adapter.ClassifySubAdapter;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
 import com.android.cgcxy.wallpaper.base.OnClickListener;
 import com.android.cgcxy.wallpaper.bean.ClassifySubBean;
+import com.android.cgcxy.wallpaper.bean.ImageBeanUrl;
 import com.android.cgcxy.wallpaper.mode.RefreshListener;
 import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
 import com.android.cgcxy.wallpaper.ui.homepageui.classifysub.classifysub.ClassifyChildishSubFragment;
@@ -24,7 +25,6 @@ public class ClassifySubClassifyFragment extends BaseFragment implements Refresh
 
 
     private static final String TAG = "ClassifySubClassifyFragment";
-    private MainPresenterImple mainpresenterImple;
     private ClassifySubBean classifySubBean;
     private RecyclerView recycle;
     private ClassifySubAdapter classifyAdapter;
@@ -33,12 +33,10 @@ public class ClassifySubClassifyFragment extends BaseFragment implements Refresh
         // Required empty public constructor
     }
 
-    public static ClassifySubClassifyFragment newInstance(MainPresenterImple mainpresenterImple) {
+    public static ClassifySubClassifyFragment newInstance() {
 
         Bundle args = new Bundle();
-        args.putSerializable("Imple", mainpresenterImple);
         ClassifySubClassifyFragment fragment = new ClassifySubClassifyFragment();
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -50,7 +48,7 @@ public class ClassifySubClassifyFragment extends BaseFragment implements Refresh
 
     @Override
     public void initAttach() {
-        mainpresenterImple = (MainPresenterImple) getArguments().getSerializable("Imple");
+
     }
 
     @Override
@@ -92,7 +90,7 @@ public class ClassifySubClassifyFragment extends BaseFragment implements Refresh
     }
 
     @Override
-    public void clickListener(View view, int position) {
+    public void clickListener(View view, int position, ImageBeanUrl imageBeanUrl) {
         ClassifyChildishSubFragment classifyChildishSubFragment = ClassifyChildishSubFragment.newInstance(classifySubBean.getTags().get(position).getUrl(),classifySubBean.getTags().get(position).getName());
         getBaseActivity().commitFragment(R.id.fragmeLaout, classifyChildishSubFragment, true);
     }

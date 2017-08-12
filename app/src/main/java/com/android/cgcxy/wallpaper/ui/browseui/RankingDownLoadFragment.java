@@ -72,6 +72,7 @@ public class RankingDownLoadFragment extends BaseFragment implements ShowView{
     public void initView() {
 
         rankingAdapter = new RankingAdapter();
+        rankingAdapter.setOnClickListener(this);
         recycler.setAdapter(rankingAdapter);
 
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),3);

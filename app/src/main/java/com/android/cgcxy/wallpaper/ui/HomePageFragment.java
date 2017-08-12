@@ -17,6 +17,7 @@ import com.android.cgcxy.wallpaper.adapter.GriddingAdapter;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
 import com.android.cgcxy.wallpaper.base.OnClickListener;
 import com.android.cgcxy.wallpaper.bean.HompPagerBean;
+import com.android.cgcxy.wallpaper.bean.ImageBeanUrl;
 import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
 import com.android.cgcxy.wallpaper.ui.browseui.SpecialFragment;
 import com.android.cgcxy.wallpaper.ui.homepageui.HomePageHeadFragment;
@@ -39,6 +40,7 @@ public class HomePageFragment extends BaseFragment {
     boolean isLoading = false;
     private List<ImageView> imageViewPoint = new ArrayList<>();
     private String TAG = "HomePageFragment";
+    private List<ImageBeanUrl> datas;
 
     public HomePageFragment() {
         // Required empty public constructor
@@ -63,7 +65,7 @@ public class HomePageFragment extends BaseFragment {
 
     @Override
     public void initView() {
-
+        datas = new ArrayList<ImageBeanUrl>();
         final GridLayoutManager gridLayoutManager = new  GridLayoutManager(getActivity(),3);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -81,7 +83,7 @@ public class HomePageFragment extends BaseFragment {
         });
         recyclerView.setLayoutManager(gridLayoutManager);
         griddingAdapter = new GriddingAdapter(getContext());
-
+        griddingAdapter.setOnclick(this);
         recyclerView.setAdapter(griddingAdapter);
 
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -105,18 +107,6 @@ public class HomePageFragment extends BaseFragment {
                 lastVisibleItem = gridLayoutManager.findLastVisibleItemPosition();
             }
         });
-
-        griddingAdapter.setOnclick(new OnClickListener() {
-            @Override
-            public void clickListener(View view, int position) {
-
-                Intent intent = new Intent(getBaseActivity(),SetWallpaperActivity.class);
-                intent.putExtra("url",griddingAdapter.getHompPagerBean().getData().get(position-1).getImage().getBig());
-                startActivity(intent);
-
-            }
-        });
-
 
     }
 

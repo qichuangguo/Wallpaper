@@ -41,7 +41,7 @@ public class SearchInputAdapter extends RecyclerView.Adapter<SearchInputAdapter.
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickListener.clickListener(v,position);
+                    onClickListener.clickListener(v,position,null);
                 }
             });
         }

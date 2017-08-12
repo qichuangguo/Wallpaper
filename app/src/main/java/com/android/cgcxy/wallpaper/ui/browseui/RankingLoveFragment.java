@@ -71,6 +71,7 @@ public class RankingLoveFragment extends BaseFragment implements ShowView {
 
 
         rankingAdapter = new RankingAdapter();
+        rankingAdapter.setOnClickListener(this);
         recycler.setAdapter(rankingAdapter);
 
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),3);

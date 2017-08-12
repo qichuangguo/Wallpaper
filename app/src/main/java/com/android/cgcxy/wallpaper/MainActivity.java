@@ -1,26 +1,16 @@
 package com.android.cgcxy.wallpaper;
 
-import android.accessibilityservice.AccessibilityService;
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.Window;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.android.cgcxy.wallpaper.base.BaseActivity;
 import com.android.cgcxy.wallpaper.base.Constants;
 import com.android.cgcxy.wallpaper.bean.TotalBean;
-import com.android.cgcxy.wallpaper.presenter.MainPresenter;
+import com.android.cgcxy.wallpaper.bean.UserBean;
 import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
 import com.android.cgcxy.wallpaper.ui.ShowView;
 import com.android.cgcxy.wallpaper.utils.Utils;
@@ -55,7 +45,12 @@ public class MainActivity extends BaseActivity implements ShowView{
 
     @Override
     public void findView() {
-
+         userBean = (UserBean) Utils.getObjectFromShare(this, Constants.USERBEAN);
+        if (userBean != null) {
+            setLogin(true);
+            ((MyApplication)getApplication()).setUserBean(userBean);
+            ((MyApplication)getApplication()).setLogin(true);
+        }
 
     }
 

@@ -8,46 +8,38 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.telephony.TelephonyManager;
-import android.util.DisplayMetrics;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
-import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.cgcxy.wallpaper.MyApplication;
 import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.base.BaseActivity;
-import com.android.cgcxy.wallpaper.base.BaseFragment;
+import com.android.cgcxy.wallpaper.bean.UserBean;
+import com.android.cgcxy.wallpaper.utils.BlurBitmapUtil;
 import com.android.cgcxy.wallpaper.utils.Utils;
 import com.android.cgcxy.wallpaper.view.MyDialog;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.UUID;
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
-import static android.app.WallpaperManager.FLAG_LOCK;
-import static android.content.pm.ApplicationInfo.FLAG_SYSTEM;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,6 +57,14 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
     private ProgressBar progressBar;
     private Button set_wallpaper;
     private ImageButton ib_dewnlaod;
+    private ImageButton ib_grammaticalization;
+    private LinearLayout ll_bootom;
+    private LinearLayout ll_bootom02;
+    private ImageButton ib_seave;
+    private Button bt_dim;
+    private ImageButton bi_restore;
+    private Bitmap tagBitmap;
+    private ImageButton collections;
 
     @Override
     public int getLayoutId() {
@@ -81,15 +81,24 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
          progressBar = (ProgressBar) findViewById(R.id.progressBar);
          set_wallpaper = (Button) findViewById(R.id.set_wallpaper);
          ib_dewnlaod = (ImageButton) findViewById(R.id.ib_dewnlaod);
-        ib_dewnlaod.setOnClickListener(this);
-        set_wallpaper.setOnClickListener(this);
+         ib_grammaticalization = (ImageButton) findViewById(R.id.ib_grammaticalization);
+         ll_bootom = (LinearLayout) findViewById(R.id.ll_bootom);
+         ll_bootom02 = (LinearLayout) findViewById(R.id.ll_bootom02);
+         ib_seave = (ImageButton)findViewById(R.id.ib_seave);
+         bt_dim = (Button)findViewById(R.id.bt_dim);
+         bi_restore = (ImageButton)findViewById(R.id.bi_restore);
+        collections = (ImageButton) findViewById(R.id.collections);
+         ib_seave.setOnClickListener(this);
+        collections.setOnClickListener(this);
+         bt_dim.setOnClickListener(this);
+         bi_restore.setOnClickListener(this);
+         ib_grammaticalization.setOnClickListener(this);
+         ib_dewnlaod.setOnClickListener(this);
+         set_wallpaper.setOnClickListener(this);
          progressBar.setVisibility(View.GONE);
          dialog = new MyDialog(this);
          dialog.showDialog();
          registerIntentReceivers();
-
-
-
 
     }
 
@@ -118,12 +127,6 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void initView() {
-        if (url!=null) {
-            String[] newUrl = url.split(",");
-           //url = newUrl[0] + ","+ (Utils.getScreenDispaly(this)[0])+","+ (Utils.getScreenDispaly(this)[1]/2)+"." + newUrl[newUrl.length - 1].split("\\.")[1];
-            Log.i(TAG, "initView: "+url);
-        }
-
         ImageRequest imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
             @Override
             public void onResponse(Bitmap bitmap) {
@@ -131,7 +134,11 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
                 imageView.setImageBitmap(bitmap);
                 dialog.dismiss();
             }
-        },Utils.getScreenDispaly(this)[0], Utils.getScreenDispaly(this)[1], ImageView.ScaleType.CENTER_CROP, Bitmap.Config.ARGB_8888, new Response.ErrorListener() {
+        },
+                Utils.getScreenDispaly(this)[0],
+                Utils.getScreenDispaly(this)[1],
+                ImageView.ScaleType.CENTER_CROP,
+                Bitmap.Config.ARGB_8888, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Log.i(TAG, "onErrorResponse: "+volleyError.getMessage());
@@ -141,33 +148,95 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
         Utils.getUtils().getRequestQueue(this).add(imageRequest);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onClick(View v) {
         int id = v.getId();
         if (id==R.id.set_wallpaper){
             setting(v);
         }else if (id==R.id.ib_dewnlaod){
+            setWallpaper();
+        } else if (id == R.id.ib_grammaticalization) {
 
-            if (bitmap!=null) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        boolean seave = Utils.seave(bitmap, System.currentTimeMillis() + ".jpg");
-                        if (seave){
-                            ib_dewnlaod.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(SetWallpaperActivity.this,"壁纸保存成功",Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    }
-                }).start();
+            Matrix m = new Matrix();
+            m.postScale(1.1f,1.1f);
+            tagBitmap= Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),m,false);
 
+            ll_bootom02.setVisibility(View.VISIBLE);
+            ll_bootom.setVisibility(View.GONE);
+
+        }else if (id==R.id.ib_seave){
+            ll_bootom.setVisibility(View.VISIBLE);
+            ll_bootom02.setVisibility(View.GONE);
+            bitmap = tagBitmap;
+            imageView.setImageBitmap(bitmap);
+
+        }else if (id==R.id.bt_dim){
+
+            tagBitmap = BlurBitmapUtil.blurBitmap(SetWallpaperActivity.this, SetWallpaperActivity.this.tagBitmap,10);
+            imageView.setImageBitmap(tagBitmap);
+
+        }else if (id==R.id.bi_restore){
+            tagBitmap=null;
+            Matrix m = new Matrix();
+            m.postScale(1.1f,1.1f);
+            tagBitmap= Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),m,false);
+            imageView.setImageBitmap(bitmap);
+        }else if (id==R.id.collections){
+
+            List<String > data;
+            UserBean userBean1 = ((MyApplication) getApplication()).getUserBean();
+            if (userBean1.getCollect()==null){
+                data = new ArrayList<>();
+                userBean1.setCollect(data);
+            }else {
+                data=userBean1.getCollect();
             }
+            UserBean userBean = new UserBean();
+            if (data.size()>0 && data.contains(url)){
+                Utils.Toast(this,"文件已收藏");
+                return;
+            }
+
+            userBean.setCollect(data);
+
+            userBean.setObjectId(userBean1.getjObject());
+            userBean.update(userBean1.getjObject(), new UpdateListener() {
+                @Override
+                public void done(BmobException e) {
+                    if (e!=null){
+                        Utils.Toast(SetWallpaperActivity.this,"收藏失败");
+                    }else {
+                        Utils.Toast(SetWallpaperActivity.this,"收藏成功");
+                    }
+                }
+            });
 
         }
     }
+
+
+    public void setWallpaper (){
+        if (bitmap!=null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    boolean seave = Utils.seave(bitmap, System.currentTimeMillis() + ".jpg");
+                    if (seave){
+                        ib_dewnlaod.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(SetWallpaperActivity.this,"壁纸保存成功",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            }).start();
+
+        }
+
+    }
+
 
     class WallpaperIntentReceiver extends BroadcastReceiver{
         @Override
@@ -177,14 +246,17 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mWallpaperReceiver!=null) {
+            getApplication().unregisterReceiver(mWallpaperReceiver);
+        }
+    }
+
     private void registerIntentReceivers(){
         if(mWallpaperReceiver == null){
             mWallpaperReceiver = new WallpaperIntentReceiver();
-            /**
-             * 注册的时候，指定IntentFilter，这样改BroadcastReciver就是接收壁纸更换的Broadcast的了
-             */
-           // IntentFilter filter = new IntentFilter();
-           // filter.addAction("android.intent.action.LOCK_WALLPAPER_CHANGED");
             IntentFilter filter = new IntentFilter(Intent.ACTION_WALLPAPER_CHANGED);
             getApplication().registerReceiver(mWallpaperReceiver, filter);
         }

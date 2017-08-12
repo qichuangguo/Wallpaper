@@ -108,6 +108,7 @@ public class HomePageHeadFragment extends BaseFragment implements ShowView {
             }
         });
         adapter = new HomePageHeadAdapter();
+        adapter.setOnClickListener(this);
         recycle.setAdapter(adapter);
 
         recycle.setOnScrollListener(new RecyclerView.OnScrollListener() {

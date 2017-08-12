@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.cgcxy.wallpaper.R;
+import com.android.cgcxy.wallpaper.base.OnClickListener;
+import com.android.cgcxy.wallpaper.bean.ImageBeanUrl;
 import com.android.cgcxy.wallpaper.bean.LuckGiveBean;
 import com.squareup.picasso.Picasso;
 
@@ -38,13 +40,26 @@ public class LuckGiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (luckGiveBean!=null){
 
-            LuckGiveBean.DataBean dataBean = luckGiveBean.getData().get(position);
+            final LuckGiveBean.DataBean dataBean = luckGiveBean.getData().get(position);
             Picasso.with(mContext).load(dataBean.getImage().getSmall()).placeholder(R.mipmap.image_load).error(R.mipmap.image_erry).into( ((MyItemHold)holder).imageView);
 
             ((MyItemHold) holder).textView.setText(dataBean.getTags().get(0).getName());
+            ((MyItemHold) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ImageBeanUrl imageBeanUrl = new ImageBeanUrl();
+                    imageBeanUrl.setBig(dataBean.getImage().getBig());
+                    imageBeanUrl.setDiy(dataBean.getImage().getDiy());
+                    imageBeanUrl.setOriginal(dataBean.getImage().getOriginal());
+                    imageBeanUrl.setVip_original(dataBean.getImage().getVip_original());
+                    imageBeanUrl.setSmall(dataBean.getImage().getSmall());
+                    onClickListener.clickListener(v,position,imageBeanUrl);
+                }
+            });
+
         }
     }
 
@@ -65,5 +80,10 @@ public class LuckGiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             imageView= (ImageView) itemView.findViewById(R.id.imageView);
             textView = (TextView) itemView.findViewById(R.id.tv_title);
         }
+    }
+
+    public OnClickListener onClickListener;
+    public void setOnClickListener(OnClickListener onClickListener){
+        this.onClickListener=onClickListener;
     }
 }

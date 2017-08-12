@@ -45,7 +45,7 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.MyView
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickListener.clickListener(v,position);
+                    onClickListener.clickListener(v,position,null);
                 }
             });
         }

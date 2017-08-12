@@ -88,6 +88,7 @@ public class LuckGiveFragment extends BaseFragment implements ShowView{
         });
 
         adapter = new LuckGiveAdapter();
+        adapter.setOnClickListener(this);
         recyclerView.setAdapter(adapter);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),3);
         recyclerView.setLayoutManager(gridLayoutManager);
