@@ -13,6 +13,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +33,7 @@ import com.android.cgcxy.wallpaper.view.MyDialog;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.StringRequest;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -78,6 +80,11 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
          imageView = (ImageView) findViewById(R.id.imageView);
          wallpaperManager = WallpaperManager.getInstance(this);
          wallpaperManager.forgetLoadedWallpaper();
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int desiredMinimumWidth = dm.widthPixels;
+        int desiredMinimumHeight = dm.heightPixels;
+         wallpaperManager.suggestDesiredDimensions(desiredMinimumWidth*2, desiredMinimumHeight);
          progressBar = (ProgressBar) findViewById(R.id.progressBar);
          set_wallpaper = (Button) findViewById(R.id.set_wallpaper);
          ib_dewnlaod = (ImageButton) findViewById(R.id.ib_dewnlaod);
@@ -135,9 +142,9 @@ public class SetWallpaperActivity extends BaseActivity implements View.OnClickLi
                 dialog.dismiss();
             }
         },
-                Utils.getScreenDispaly(this)[0],
-                Utils.getScreenDispaly(this)[1],
-                ImageView.ScaleType.CENTER_CROP,
+                0,
+               0,
+                ImageView.ScaleType.FIT_XY,
                 Bitmap.Config.ARGB_8888, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {

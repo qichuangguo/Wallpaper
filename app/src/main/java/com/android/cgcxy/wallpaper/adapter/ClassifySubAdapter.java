@@ -23,11 +23,11 @@ import java.util.List;
 
 public class ClassifySubAdapter extends RecyclerView.Adapter<ClassifySubAdapter.MyViewHold> {
 
-    private List<ClassifySubBean.TagsBeanX> datas;
+    private List<ClassifySubBean> datas;
     private Context mContext;
     private OnClickListener onClickListener;
 
-    public void setData(List<ClassifySubBean.TagsBeanX> datas) {
+    public void setData(List<ClassifySubBean> datas) {
         this.datas = datas;
     }
 
@@ -42,14 +42,14 @@ public class ClassifySubAdapter extends RecyclerView.Adapter<ClassifySubAdapter.
     public void onBindViewHolder(MyViewHold holder, final int position) {
         if (datas != null && datas.size() > 0) {
 
-            holder.tv_title.setText(datas.get(position).getName());
+          /*  holder.tv_title.setText(datas.get(position).getName());
             Picasso.with(mContext).load(datas.get(position).getImage()).placeholder(R.mipmap.image_load).into(holder.imageView);
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onClickListener.clickListener(v,position,null);
                 }
-            });
+            });*/
         }
     }
 

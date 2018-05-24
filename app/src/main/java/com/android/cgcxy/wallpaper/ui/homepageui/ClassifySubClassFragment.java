@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.adapter.TitleFragmentPagerAdapter;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
+import com.android.cgcxy.wallpaper.base.Constants;
 import com.android.cgcxy.wallpaper.bean.ClassifySubBean;
 import com.android.cgcxy.wallpaper.mode.RefreshListener;
 import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
@@ -31,12 +32,12 @@ import java.util.List;
 public class ClassifySubClassFragment extends BaseFragment implements ShowView {
 
 
-    private static final String TAG ="ClassifySubClassFragment" ;
+    private static final String TAG ="ClassifySubClass" ;
     private String url;
     private Toolbar toolbar;
     private String name;
     private TabLayout tabLayout;
-    private String title[] = new String[]{"最新","子分类"};
+    private String title[] = new String[]{"最新","热门"};
     private ViewPager viewPager;
     private List<Fragment> fragments = new ArrayList<>();
     private MainPresenterImple presenterImple;
@@ -44,12 +45,14 @@ public class ClassifySubClassFragment extends BaseFragment implements ShowView {
     private TitleFragmentPagerAdapter adapter;
     private ClassifySubNewsFragment classifySubNewsFragment;
     private ClassifySubClassifyFragment classifySubClassifyFragment;
+    private String id;
 
-    public static ClassifySubClassFragment newInstance(String url,String name) {
+    public static ClassifySubClassFragment newInstance(String url,String name,String id) {
 
         Bundle args = new Bundle();
         args.putString("url",url);
         args.putString("name",name);
+        args.putString("id",id);
 
         ClassifySubClassFragment fragment = new ClassifySubClassFragment();
         fragment.setArguments(args);
@@ -66,9 +69,6 @@ public class ClassifySubClassFragment extends BaseFragment implements ShowView {
     @Override
     public void findView() {
 
-
-        Log.i(TAG, "findView: "+url);
-
         toolbar = findViewById(R.id.toolbar);
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewpager);
@@ -80,10 +80,9 @@ public class ClassifySubClassFragment extends BaseFragment implements ShowView {
         Bundle arguments = getArguments();
         url = arguments.getString("url");
         name = arguments.getString("name");
+        id = arguments.getString("id");
 
-        Log.i(TAG, "initAttach: ");
         presenterImple = new MainPresenterImple(this,getContext());
-
 
         classifySubNewsFragment = ClassifySubNewsFragment.newInstance();
         classifySubClassifyFragment = ClassifySubClassifyFragment.newInstance();
@@ -94,14 +93,11 @@ public class ClassifySubClassFragment extends BaseFragment implements ShowView {
     protected void lazyLoad() {
         super.lazyLoad();
         presenterImple.getClassifySubJsonData(url);
+
     }
 
     @Override
     public void initView() {
-
-        Log.i(TAG, "initView: "+classifySubBean);
-
-
 
         toolbar.setTitle(name);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
@@ -134,14 +130,14 @@ public class ClassifySubClassFragment extends BaseFragment implements ShowView {
             @Override
             public void onPageSelected(int position) {
                 Fragment fragment = fragments.get(position);
-                Log.i(TAG, "onPageSelected: ========"+classifySubBean);
-                if (classifySubBean!=null) {
+
+                /*if (classifySubBean!=null) {
                     if (fragment instanceof ClassifySubClassifyFragment) {
-                        ((ClassifySubClassifyFragment) fragment).getData(classifySubBean);
+                        ((ClassifySubClassifyFragment) fragment).getData(id);
                     }else if (fragment instanceof ClassifySubNewsFragment){
-                        ((ClassifySubNewsFragment) fragment).getData(classifySubBean);
+                        ((ClassifySubNewsFragment) fragment).getData(classifySubBean,url);
                     }
-                }
+                }*/
             }
 
             @Override
@@ -156,13 +152,13 @@ public class ClassifySubClassFragment extends BaseFragment implements ShowView {
     public <T> void setData(T t) {
         super.setData(t);
         classifySubBean = (ClassifySubBean) t;
-        classifySubNewsFragment.getData(classifySubBean);
-        classifySubClassifyFragment.getData(classifySubBean);
+        classifySubNewsFragment.getData(classifySubBean,url);
+        classifySubClassifyFragment.getData(id);
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public <T> void setNextData(T t) {
-        classifySubNewsFragment.resultListener(t);
+
     }
 }

@@ -13,12 +13,14 @@ import android.view.ViewGroup;
 import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.adapter.ClassifyAdapter;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
+import com.android.cgcxy.wallpaper.base.Constants;
 import com.android.cgcxy.wallpaper.base.OnClickListener;
 import com.android.cgcxy.wallpaper.bean.ClassifyBean;
 import com.android.cgcxy.wallpaper.bean.ImageBeanUrl;
 import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
 import com.android.cgcxy.wallpaper.ui.homepageui.ClassifySubClassFragment;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,7 +33,7 @@ public class ClassifyFragment extends BaseFragment implements OnClickListener{
     private String TAG="ClassifyFragment";
     private RecyclerView recycle;
     private ClassifyAdapter classifyAdapter;
-    private List<ClassifyBean> datas;
+    private ClassifyBean datas;
 
     public ClassifyFragment() {
         // Required empty public constructor
@@ -78,10 +80,9 @@ public class ClassifyFragment extends BaseFragment implements OnClickListener{
     @Override
     public <T> void setData(T t) {
         super.setData(t);
-        datas = (List<ClassifyBean>) t;
-        classifyAdapter.setData(datas);
+        classifyAdapter.setData((ClassifyBean) t);
         classifyAdapter.notifyDataSetChanged();
-        Log.i(TAG, "setData: "+ datas.size());
+        datas = (ClassifyBean) t;
     }
 
 
@@ -98,7 +99,7 @@ public class ClassifyFragment extends BaseFragment implements OnClickListener{
      */
     @Override
     public void clickListener(View view, int position, ImageBeanUrl imageBeanUrl) {
-        ClassifySubClassFragment classFragment = ClassifySubClassFragment.newInstance(datas.get(position).getUrl(),datas.get(position).getName());
+        ClassifySubClassFragment classFragment = ClassifySubClassFragment.newInstance(String.format(Constants.categoryDetails,datas.getRes().getCategory().get(position).getId()),datas.getRes().getCategory().get(position).getName(),datas.getRes().getCategory().get(position).getId());
         getBaseActivity().commitFragment(R.id.fragmeLaout,classFragment,true);
     }
 }

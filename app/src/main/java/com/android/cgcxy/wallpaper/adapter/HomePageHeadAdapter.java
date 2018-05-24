@@ -10,11 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.cgcxy.wallpaper.R;
+import com.android.cgcxy.wallpaper.base.Constants;
 import com.android.cgcxy.wallpaper.base.OnClickListener;
 import com.android.cgcxy.wallpaper.bean.HomePageHeadBean;
 import com.android.cgcxy.wallpaper.bean.HompPagerBean;
 import com.android.cgcxy.wallpaper.bean.ImageBeanUrl;
+import com.android.cgcxy.wallpaper.bean.RankingBean;
 import com.android.cgcxy.wallpaper.ui.homepageui.HomePageHeadFragment;
+import com.android.cgcxy.wallpaper.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -67,9 +70,9 @@ public class HomePageHeadAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             if (getItemViewType(position) == HEAD_VIEW) {
 
-                String name = homePageHeadBean.getName();
-                final String image = homePageHeadBean.getImage();
-                String description = homePageHeadBean.getDescription();
+                String name = homePageHeadBean.getRes().getAlbum().getName();
+                final String image = homePageHeadBean.getRes().getAlbum().getLcover();
+                String description = homePageHeadBean.getRes().getAlbum().getDesc();
 
                 Picasso.with(mContext).load(image).into(((MyHeadViewHold)holder).imageView);
                 ((MyHeadViewHold)holder).textView.setText(description);
@@ -77,22 +80,18 @@ public class HomePageHeadAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             } else if (getItemViewType(position) == HEAD_ITEM) {
 
-                final HomePageHeadBean.DataBean dataBean = homePageHeadBean.getData().get(position-1);
-                String small = dataBean.getImage().getSmall();
-                final String[] url = small.split(",");
-               // small = url[0] + ",300,300." + url[url.length - 1].split("\\.")[1];
+                final HomePageHeadBean.ResBean.WallpaperBean wallpaperBean = homePageHeadBean.getRes().getWallpaper().get(position - 1);
+                String small = wallpaperBean.getThumb();
                 Picasso.with(mContext).load(small).placeholder(R.mipmap.image_load).error(R.mipmap.image_erry).into(((MyViewHold) holder).imageView);
-                ((MyViewHold)holder).tv_title.setText(dataBean.getTags().get(1).getName());
                 ((MyViewHold)holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
                         ImageBeanUrl imageBeanUrl = new ImageBeanUrl();
-                        imageBeanUrl.setBig(dataBean.getImage().getBig());
-                        imageBeanUrl.setDiy(dataBean.getImage().getDiy());
-                        imageBeanUrl.setOriginal(dataBean.getImage().getOriginal());
-                        imageBeanUrl.setVip_original(dataBean.getImage().getVip_original());
-                        imageBeanUrl.setSmall(dataBean.getImage().getSmall());
+                        imageBeanUrl.setBig(String.format(Constants.maxImageLoadUrl,wallpaperBean.getId(), Utils.getScreenDispaly(mContext)[0]*2+"x"+Utils.getScreenDispaly(mContext)[1]));
+                        imageBeanUrl.setDiy(wallpaperBean.getPreview());
+                        imageBeanUrl.setOriginal(wallpaperBean.getThumb());
+                        imageBeanUrl.setVip_original(wallpaperBean.getWp());
                         onClickListener.clickListener(v,position,imageBeanUrl);
                     }
                 });
@@ -104,8 +103,8 @@ public class HomePageHeadAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        if (homePageHeadBean != null && homePageHeadBean.getData().size() > 0) {
-            return homePageHeadBean.getData().size() + 2;
+        if (homePageHeadBean != null && homePageHeadBean.getRes().getWallpaper().size() > 0) {
+            return homePageHeadBean.getRes().getWallpaper().size() + 2;
         }
         return 0;
     }

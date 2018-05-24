@@ -102,8 +102,9 @@ public class MainModeImple implements MainMode{
             @Override
             public void onResponse(String s) {
 
-                List<ClassifyBean> listFromJSON = getListFromJSON(s, ClassifyBean[].class);
-                refreshListener.resultListener(listFromJSON);
+                Gson gson = new Gson();
+                ClassifyBean classifyBean = gson.fromJson(s, ClassifyBean.class);
+                refreshListener.resultListener(classifyBean);
 
             }
         }, new Response.ErrorListener() {
@@ -159,7 +160,7 @@ public class MainModeImple implements MainMode{
                 Gson gson = new Gson();
                 Log.i(TAG, "onResponse: ======");
                 HomePageHeadBean homePageHeadBean = gson.fromJson(s, HomePageHeadBean.class);
-                Log.i(TAG, "onResponse: "+homePageHeadBean.getData().size());
+                Log.i(TAG, "onResponse: "+homePageHeadBean.getRes().getWallpaper().size());
                 refreshListener.resultListener(homePageHeadBean);
             }
         }, new Response.ErrorListener() {
@@ -174,15 +175,27 @@ public class MainModeImple implements MainMode{
 
     @Override
     public void getClassifySubJsonData(String url, final RefreshListener refreshListener) {
-        Log.i(TAG, "getClassifySubJsonData: "+url);
+
         MyStringRequest stringRequest = new MyStringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
 
                 Gson gson = new Gson();
                 ClassifySubBean classifySubBean = gson.fromJson(s, ClassifySubBean.class);
+                if (!Constants.adult) {
+                    if (classifySubBean != null && classifySubBean.getRes().getVertical().size() > 0) {
+                        List<ClassifySubBean.ResBean.VerticalBean> vertical = classifySubBean.getRes().getVertical();
+                        for (int i = 0; i <vertical.size() ; i++) {
+                            ClassifySubBean.ResBean.VerticalBean bean = vertical.get(i);
+                            if (bean.isXr()) {
+                                classifySubBean.getRes().getVertical().remove(bean);
+                                i--;
+                            }
+                        }
+
+                    }
+                }
                 refreshListener.resultListener(classifySubBean);
-                Log.i(TAG, "onResponse: ======");
 
             }
         }, new Response.ErrorListener() {
@@ -203,6 +216,19 @@ public class MainModeImple implements MainMode{
             public void onResponse(String s) {
                 Gson gson = new Gson();
                 ClassifySubBean classifySubBean = gson.fromJson(s, ClassifySubBean.class);
+                if (!Constants.adult) {
+                    if (classifySubBean != null && classifySubBean.getRes().getVertical().size() > 0) {
+                        List<ClassifySubBean.ResBean.VerticalBean> vertical = classifySubBean.getRes().getVertical();
+                        for (int i = 0; i <vertical.size() ; i++) {
+                            ClassifySubBean.ResBean.VerticalBean bean = vertical.get(i);
+                            if (bean.isXr()) {
+                                classifySubBean.getRes().getVertical().remove(bean);
+                                i--;
+                            }
+                        }
+
+                    }
+                }
                 refreshListener.resultListener(classifySubBean);
 
             }

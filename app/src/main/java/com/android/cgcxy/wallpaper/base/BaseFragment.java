@@ -159,7 +159,7 @@ public abstract class BaseFragment extends Fragment implements ShowView,OnClickL
 
     @Override
     public <T> void setData(T t) {
-        Log.i(TAG, "setData: "+dialog.isShowing());
+
         if (dialog!=null && dialog.isShowing()) {
             dialog.dismiss();
         }

@@ -21,11 +21,11 @@ import java.util.List;
 
 public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.MyViewHold> {
 
-    private List<ClassifyBean> datas;
+    private ClassifyBean datas;
     private Context mContext;
     private OnClickListener onClickListener;
 
-    public void setData(List<ClassifyBean> datas) {
+    public void setData(ClassifyBean datas) {
         this.datas = datas;
     }
 
@@ -38,10 +38,10 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.MyView
 
     @Override
     public void onBindViewHolder(MyViewHold holder, final int position) {
-        if (datas != null && datas.size() > 0) {
+        if (datas != null && datas.getRes().getCategory().size() > 0) {
 
-            holder.tv_title.setText(datas.get(position).getName());
-            Picasso.with(mContext).load(datas.get(position).getIcon()).placeholder(R.mipmap.image_load).into(holder.imageView);
+            holder.tv_title.setText(datas.getRes().getCategory().get(position).getName());
+            Picasso.with(mContext).load(datas.getRes().getCategory().get(position).getCover()).placeholder(R.mipmap.image_load).into(holder.imageView);
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -53,8 +53,8 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.MyView
 
     @Override
     public int getItemCount() {
-        if (datas != null && datas.size() > 0) {
-            return datas.size();
+        if (datas != null && datas.getRes().getCategory().size() > 0) {
+            return datas.getRes().getCategory().size();
         }
         return 0;
     }

@@ -1,8 +1,6 @@
 package com.android.cgcxy.wallpaper.adapter;
 
 import android.content.Context;
-import android.graphics.Paint;
-import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
@@ -12,18 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.TextView;
 
+import com.android.cgcxy.wallpaper.HomePage;
 import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.base.OnClickListener;
+import com.android.cgcxy.wallpaper.bean.HeadBean;
 import com.android.cgcxy.wallpaper.bean.HompPagerBean;
 import com.android.cgcxy.wallpaper.bean.ImageBeanUrl;
 import com.squareup.picasso.Picasso;
 
-import java.util.IllegalFormatCodePointException;
 import java.util.List;
-import java.util.logging.Handler;
 
 /**
  * Created by chuangguo.qi on 2017/7/18.
@@ -40,8 +37,15 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private HompPagerBean hompPagerBean;
     private Context mContext;
     private static final int TYPE_HEADER = 1, TYPE_ITEM = 2,TYPE_FOOT=3;
-    private List<ImageView> imageViews;
+    private List<HeadBean> imageViews;
     private List<ImageView> imageViewPoint;
+    private List<String> headerString;
+    TextView titleView;
+
+    public void setHeaderString(List<String> headerString) {
+        this.headerString = headerString;
+    }
+
 
     public GriddingAdapter(Context context) {
 
@@ -54,13 +58,13 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             this.hompPagerBean = hompPagerBean;
         }else {
 
-            this.hompPagerBean.getData().addAll(hompPagerBean.getData());
+            this.hompPagerBean.getRes().getVertical().addAll(hompPagerBean.getRes().getVertical());
         }
     }
 
 
 
-    public void setHandData(List<ImageView> imageViews){
+    public void setHandData(List<HeadBean> imageViews){
         this.imageViews=imageViews;
     }
 
@@ -93,21 +97,17 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (holder.getItemViewType()==TYPE_HEADER) {
 
             }else if (holder.getItemViewType()==TYPE_ITEM) {
-                final HompPagerBean.DataBean dataBean = hompPagerBean.getData().get(position-1);
-                String small = dataBean.getImage().getSmall();
-                String[] url = small.split(",");
-               // small = url[0] + ",200,300." + url[url.length - 1].split("\\.")[1];
+                final HompPagerBean.ResBean.VerticalBean verticalBean = hompPagerBean.getRes().getVertical().get(position - 1);
+                String small = verticalBean.getThumb();
                 Picasso.with(mContext).load(small).placeholder(R.mipmap.image_load).error(R.mipmap.image_erry).into(((MyViewHole)holder).imageView);
-                ((MyViewHole)holder).tv_title.setText(dataBean.getTags().get(0).getName());
                 ((MyViewHole)holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ImageBeanUrl imageBeanUrl = new ImageBeanUrl();
-                        imageBeanUrl.setBig(dataBean.getImage().getBig());
-                        imageBeanUrl.setDiy(dataBean.getImage().getDiy());
-                        imageBeanUrl.setOriginal(dataBean.getImage().getOriginal());
-                        imageBeanUrl.setVip_original(dataBean.getImage().getVip_original());
-                        imageBeanUrl.setSmall(dataBean.getImage().getSmall());
+                        imageBeanUrl.setBig(verticalBean.getImg());
+                        imageBeanUrl.setDiy(verticalBean.getPreview());
+                        imageBeanUrl.setOriginal(verticalBean.getThumb());
+                        imageBeanUrl.setVip_original(verticalBean.getWp());
                         onClickListener.clickListener(v,position,imageBeanUrl);
                     }
                 });
@@ -118,7 +118,7 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         if (hompPagerBean!=null) {
-            return hompPagerBean.getData().size()+2;
+            return hompPagerBean.getRes().getVertical().size() + 2;
         }
         return 0;
     }
@@ -140,10 +140,12 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private LinearLayout linerLayout;
         private final ViewPageAdapter viewPageAdapter;
 
+
         public MyViewPager(View itemView) {
             super(itemView);
             viewPager= (ViewPager) itemView.findViewById(R.id.viewpager);
             linerLayout = (LinearLayout) itemView.findViewById(R.id.linerLayout);
+            titleView = (TextView) itemView.findViewById(R.id.titleView);
             viewPageAdapter = new ViewPageAdapter();
             viewPager.setAdapter(viewPageAdapter);
             if (imageViewPoint!=null && imageViewPoint.size()>0){
@@ -153,6 +155,7 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
 
             }
+            titleView.setText(imageViews.get(0).getTitle());
             setViewPagerChangLiner(viewPager);
 
         }
@@ -193,13 +196,15 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            container.addView(imageViews.get(position));
-            return imageViews.get(position);
+            HeadBean headBean = imageViews.get(position);
+            container.addView(headBean.getImageView());
+            return imageViews.get(position).getImageView();
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView(imageViews.get(position));
+            HeadBean headBean = imageViews.get(position);
+            container.removeView(headBean.getImageView());
         }
     }
 
@@ -219,6 +224,10 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         if (position!=i){
                             imageViewPoint.get(i).setImageResource(R.drawable.cricle_shape1);
                         }
+                    }
+
+                    if (titleView!=null){
+                        titleView.setText(imageViews.get(position).getTitle());
                     }
                 }
 

@@ -134,13 +134,13 @@ public class HomePage extends BaseFragment {
         popupView.findViewById(R.id.libraryPictour).setOnClickListener(onclick);
         popupView.findViewById(R.id.photograph).setOnClickListener(onclick);
         popupView.findViewById(R.id.cancel).setOnClickListener(onclick);
-        if (getBaseActivity().isLogin()){
+       /* if (getBaseActivity().isLogin()){
             UserBean userBean = getBaseActivity().getUserBean();
             if (userBean.getUserBeanPersonal()!=null && userBean.getUserBeanPersonal().getHeadPortraitUrl()!=null) {
                 String headPortraitUrl = userBean.getUserBeanPersonal().getHeadPortraitUrl();
                 Picasso.with(getContext()).load(headPortraitUrl).placeholder(R.mipmap.hand).error(R.mipmap.hand).into(circleImageView);
             }
-        }
+        }*/
         //头像
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override

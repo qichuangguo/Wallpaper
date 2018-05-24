@@ -37,9 +37,10 @@ public class MainPresenterImple implements MainPresenter,Serializable{
     private ShowView showView;
     private Context mContext;
     private HompPagerBean hompPagerBean;
-
     private final MainModeImple mainModeImple;
     private HomePageHeadBean headBean;
+
+
 
     public MainPresenterImple(ShowView showView, Context context){
         this.showView=showView;
@@ -48,8 +49,8 @@ public class MainPresenterImple implements MainPresenter,Serializable{
     }
 
     public void getHomePageFragmnetDataJson(){
-       String  url = ((BaseActivity)mContext).getTotalBean().getHome();
-        mainModeImple.getHomePageFragmnetDataJson(url, new RefreshListener() {
+
+        mainModeImple.getHomePageFragmnetDataJson(Constants.HomePage, new RefreshListener() {
             @Override
             public <T> void resultListener(T t) {
                 MainPresenterImple.this.hompPagerBean= (HompPagerBean) t;
@@ -63,8 +64,9 @@ public class MainPresenterImple implements MainPresenter,Serializable{
         },true);
     }
 
-    public void getHomePageFragmentNextDatajson(){
-        mainModeImple.getHomePageFragmnetDataJson(hompPagerBean.getLink().getNext(), new RefreshListener() {
+    public void getHomePageFragmentNextDatajson(int index){
+        String url = Constants.HomePage+String.format(Constants.HomePageParameter,index*30,Utils.getUUid(mContext));
+        mainModeImple.getHomePageFragmnetDataJson(url, new RefreshListener() {
             @Override
             public <T> void resultListener(T t) {
                 MainPresenterImple.this.hompPagerBean= (HompPagerBean) t;
@@ -80,9 +82,8 @@ public class MainPresenterImple implements MainPresenter,Serializable{
     }
 
     public void getClassifyFragmnetDatajson(){
-        //String url = String.format(Constants.CLASSIFYJSONURL,Utils.getScreenDispaly(mContext)[0],Utils.getScreenDispaly(mContext)[1]);
-       String url = ((BaseActivity)mContext).getTotalBean().getBrowse().get(2).getApi();
-        mainModeImple.getClassifyFragmentJsonData(url, new RefreshListener() {
+
+        mainModeImple.getClassifyFragmentJsonData(Constants.categoryUrl, new RefreshListener() {
             @Override
             public <T> void resultListener(T t) {
                 showView.setData(t);
@@ -127,9 +128,8 @@ public class MainPresenterImple implements MainPresenter,Serializable{
         });
     }
 
-    public void getHomePageNextHeadJsonData(){
+    public void getHomePageNextHeadJsonData(String url){
 
-        String url = headBean.getLink().getNext();
         mainModeImple.getHomePageHeadJsonData(url, new RefreshListener() {
             @Override
             public <T> void resultListener(T t) {
@@ -160,6 +160,22 @@ public class MainPresenterImple implements MainPresenter,Serializable{
             }
         });
     }
+
+    public void getClassifySubHotJsonData(String url){
+
+        mainModeImple.getClassifySubJsonData(url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                showView.setData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+    }
+
 
     public void getClassifyNestSubJsonData(String url){
         mainModeImple.getClassifyNestSubJsonData(url, new RefreshListener() {

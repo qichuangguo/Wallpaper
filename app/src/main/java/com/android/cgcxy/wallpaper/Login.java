@@ -49,14 +49,17 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN ,
                 WindowManager.LayoutParams. FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
-        Bmob.initialize(this, "43a99d36aa99a2d51a931213ce23a5ff");
+        startActivity(new Intent(this,MainActivity.class));
+        finish();
+       /* Bmob.initialize(this, "43a99d36aa99a2d51a931213ce23a5ff");
         Object objectFromShare = Utils.getObjectFromShare(this, Constants.USERBEAN);
         Log.i(TAG, "onCreate: "+objectFromShare);
         if (objectFromShare!=null){
             startActivity(new Intent(this,MainActivity.class));
             finish();
-        }
-        initView();
+        }*/
+        //initView();
+
     }
 
     private void initView() {

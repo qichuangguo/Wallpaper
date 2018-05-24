@@ -35,6 +35,7 @@ public class HomePageHeadFragment extends BaseFragment implements ShowView {
     private boolean isLoading = false;
     private GridLayoutManager gridLayoutManager;
     private MainPresenterImple presenter;
+    private int index=0;
 
     public static HomePageHeadFragment newInstance(String url, String tilte) {
 
@@ -121,7 +122,7 @@ public class HomePageHeadFragment extends BaseFragment implements ShowView {
                 Log.i(TAG, "onScrollStateChanged: lastVisibleItem:" + lastVisibleItem + "::" + adapter.getItemCount() + "::" + isLoading);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount() && !isLoading) {
                     isLoading = true;
-                    presenter.getHomePageNextHeadJsonData();
+                    presenter.getHomePageNextHeadJsonData(url+"&skip="+index*30);
                     Log.i(TAG, "onScrollStateChanged: ");
                 }
             }
@@ -142,6 +143,7 @@ public class HomePageHeadFragment extends BaseFragment implements ShowView {
         HomePageHeadBean headBean = (HomePageHeadBean) t;
         adapter.setData(headBean);
         adapter.notifyDataSetChanged();
+        index++;
         // Log.i(TAG, "setData: "+headBean.getData().size());
 
     }
@@ -149,8 +151,9 @@ public class HomePageHeadFragment extends BaseFragment implements ShowView {
     @Override
     public <T> void setNextData(T t) {
         HomePageHeadBean headBean = (HomePageHeadBean) t;
-        adapter.getHomePageHeadBean().getData().addAll(headBean.getData());
+        adapter.getHomePageHeadBean().getRes().getWallpaper().addAll(headBean.getRes().getWallpaper());
         adapter.notifyDataSetChanged();
+        index++;
         isLoading = false;
     }
 }

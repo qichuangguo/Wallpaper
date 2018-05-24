@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.android.cgcxy.wallpaper.HomePage;
+import com.android.cgcxy.wallpaper.MainActivity;
 import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.bean.TotalBean;
 import com.android.cgcxy.wallpaper.bean.UserBean;
@@ -68,11 +69,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Fragment fragmentById = getSupportFragmentManager().findFragmentById(R.id.fragmeLaout);
-        if (fragmentById instanceof HomePage){
-            finish();
+
+        if (this instanceof MainActivity) {
+            int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
+            if (backStackEntryCount==0) {
+                  finish();
+            }
         }
-        Log.i(TAG, "onBackPressed: "+fragmentById);
+
     }
 
     public abstract void initView();

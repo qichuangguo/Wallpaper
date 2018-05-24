@@ -26,15 +26,9 @@ public class MainActivity extends BaseActivity implements ShowView{
         getPermissions("android.permission.WRITE_EXTERNAL_STORAGE",101);
         getPermissions("android.permission.READ_EXTERNAL_STORAGE",102);
         MainPresenterImple mainPresenterImple = new MainPresenterImple(this,this);
-        String url = String.format(Constants.TOTALURL,
-                Utils.getUUid(this),
-                Utils.getScreenDispaly(this)[0],
-                Utils.getScreenDispaly(this)[1],
-                Utils.getScreenDispaly(this)[0],
-                Utils.getScreenDispaly(this)[1],
-                android.os.Build.BRAND+"("+android.os.Build.MODEL+")",Utils.getDeviceId(this),Utils.GetNetworkType(this));
-        mainPresenterImple.getTotalUrl(url);
-        Log.i(TAG, "initView: "+url);
+
+        //mainPresenterImple.getTotalUrl(Constants.HomePage);
+
     }
 
     @Override
@@ -45,12 +39,13 @@ public class MainActivity extends BaseActivity implements ShowView{
 
     @Override
     public void findView() {
-         userBean = (UserBean) Utils.getObjectFromShare(this, Constants.USERBEAN);
-        if (userBean != null) {
+        // userBean = (UserBean) Utils.getObjectFromShare(this, Constants.USERBEAN);
+        //if (userBean != null) {
             setLogin(true);
-            ((MyApplication)getApplication()).setUserBean(userBean);
+         //   ((MyApplication)getApplication()).setUserBean(userBean);
             ((MyApplication)getApplication()).setLogin(true);
-        }
+       // }
+        commitFragment(R.id.fragmeLaout,new HomePage(),true);
 
     }
 
@@ -58,7 +53,7 @@ public class MainActivity extends BaseActivity implements ShowView{
     public <T> void setData(T t) {
         totalBean= (TotalBean) t;
         Log.i(TAG, "setData: "+totalBean.getHome());
-        commitFragment(R.id.fragmeLaout,new HomePage(),true);
+
     }
 
     @Override

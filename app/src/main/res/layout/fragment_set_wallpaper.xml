@@ -1,18 +1,23 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-   >
+    android:clipToPadding="false">
 
     <!-- TODO: Update blank fragment layout -->
-    <ImageView
-         android:scaleType="fitXY"
-        android:id="@+id/imageView"
+
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"/>
+
+    </HorizontalScrollView>
+
 
     <LinearLayout
         android:id="@+id/ll_bootom"

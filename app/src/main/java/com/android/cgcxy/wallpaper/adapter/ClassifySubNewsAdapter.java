@@ -13,6 +13,7 @@ import com.android.cgcxy.wallpaper.R;
 import com.android.cgcxy.wallpaper.base.OnClickListener;
 import com.android.cgcxy.wallpaper.bean.ClassifySubBean;
 import com.android.cgcxy.wallpaper.bean.ImageBeanUrl;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -50,23 +51,16 @@ public class ClassifySubNewsAdapter extends RecyclerView.Adapter{
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        if (classifySubBean!=null && classifySubBean.getData().size()>0){
+        if (classifySubBean!=null && classifySubBean.getRes().getVertical().size()>0){
             if (getItemViewType(position)==TYPE_ITEM){
-
-                String small = classifySubBean.getData().get(position).getImage().getSmall();
-                String[] url = small.split(",");
-               // small = url[0] + ",200,300." + url[url.length - 1].split("\\.")[1];
+                String small = classifySubBean.getRes().getVertical().get(position).getThumb();
                 Picasso.with(mContext).load(small).placeholder(R.mipmap.image_load).error(R.mipmap.image_erry).into(((MyItemViewHold)holder).imageView);
-                ((MyItemViewHold)holder).tv_title.setText(classifySubBean.getName());
                 ((MyItemViewHold)holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ImageBeanUrl imageBeanUrl = new ImageBeanUrl();
-                        imageBeanUrl.setBig(classifySubBean.getData().get(position).getImage().getBig());
-                        imageBeanUrl.setDiy(classifySubBean.getData().get(position).getImage().getDiy());
-                        imageBeanUrl.setOriginal(classifySubBean.getData().get(position).getImage().getOriginal());
-                        imageBeanUrl.setVip_original(classifySubBean.getData().get(position).getImage().getVip_original());
-                        imageBeanUrl.setSmall(classifySubBean.getData().get(position).getImage().getSmall());
+                        imageBeanUrl.setBig(classifySubBean.getRes().getVertical().get(position).getImg());
+                        imageBeanUrl.setDiy(classifySubBean.getRes().getVertical().get(position).getThumb());
                         onClickListener.clickListener(v,position,imageBeanUrl);
                     }
                 });
@@ -79,8 +73,8 @@ public class ClassifySubNewsAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
-        if (classifySubBean!=null && classifySubBean.getData().size()>0) {
-            return classifySubBean.getData().size() + 1;
+        if (classifySubBean!=null && classifySubBean.getRes().getVertical().size()>0) {
+            return classifySubBean.getRes().getVertical().size() + 1;
         }else {
             return 0;
         }

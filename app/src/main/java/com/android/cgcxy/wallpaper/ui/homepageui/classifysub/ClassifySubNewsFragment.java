@@ -21,7 +21,7 @@ import com.android.cgcxy.wallpaper.ui.ShowView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ClassifySubNewsFragment extends BaseFragment implements RefreshListener {
+public class ClassifySubNewsFragment extends BaseFragment  {
 
 
     private static final String TAG = "ClassifySubNewsFragment";
@@ -31,16 +31,14 @@ public class ClassifySubNewsFragment extends BaseFragment implements RefreshList
     private MainPresenterImple mainpresenterImple;
     private ClassifySubBean classifySubBeanS;
     private ClassifySubBean classifySubBean;
-    private String nextUrl="";
+    private int index;
+    private String url;
 
 
 
     public static ClassifySubNewsFragment newInstance() {
 
-        Bundle args = new Bundle();
-        //args.putSerializable("Imple",mainpresenterImple);
         ClassifySubNewsFragment fragment = new ClassifySubNewsFragment();
-        //fragment.setArguments(args);
         return fragment;
     }
 
@@ -86,12 +84,10 @@ public class ClassifySubNewsFragment extends BaseFragment implements RefreshList
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem +1 == classifySubNewsAdapter.getItemCount() && !isLoading) {
-                    mainpresenterImple.getClassifyNestSubJsonData(nextUrl);
+                    mainpresenterImple.getClassifyNestSubJsonData(url+"&skip="+index*30);
                     isLoading = true;
 
-                    Log.i(TAG, "onScrollStateChanged: ");
                 }
             }
 
@@ -107,28 +103,26 @@ public class ClassifySubNewsFragment extends BaseFragment implements RefreshList
 
 
 
-    public void getData(ClassifySubBean classifySubBean){
+    public void getData(ClassifySubBean classifySubBean,String url){
        this.classifySubBeanS = classifySubBean;
-        nextUrl = classifySubBeanS.getLink().getNext();
+       this.url = url;
         if (classifySubNewsAdapter!=null) {
             classifySubNewsAdapter.setData(classifySubBean);
             classifySubNewsAdapter.notifyDataSetChanged();
-            Log.i(TAG, "getData: " + classifySubBean.getData().size());
+            index++;
         }
     }
 
-
     @Override
-    public <T> void resultListener(T t) {
+    public <T> void setNextData(T t) {
+        super.setNextData(t);
         classifySubBean = (ClassifySubBean) t;
-        classifySubNewsAdapter.getClassifySubBean().getData().addAll(classifySubBean.getData());
-        nextUrl = classifySubBean.getLink().getNext();
+        classifySubNewsAdapter.getClassifySubBean().getRes().getVertical().addAll(classifySubBean.getRes().getVertical());
         classifySubNewsAdapter.notifyDataSetChanged();
+        index++;
         isLoading=false;
     }
 
-    @Override
-    public <E> void onError(E e) {
 
-    }
+
 }

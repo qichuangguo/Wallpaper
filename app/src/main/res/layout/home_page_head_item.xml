@@ -18,12 +18,12 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
-        android:scaleType="fitXY"/>
+        android:scaleType="centerCrop"/>
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/textView"
         android:gravity="center"
         android:layout_width="0dp"
