@@ -28,15 +28,13 @@ import android.widget.TextView;
 import com.android.cgcxy.wallpaper.adapter.TitleFragmentPagerAdapter;
 import com.android.cgcxy.wallpaper.base.BaseFragment;
 import com.android.cgcxy.wallpaper.base.Constants;
-import com.android.cgcxy.wallpaper.bean.HompPagerBean;
 import com.android.cgcxy.wallpaper.bean.UserBean;
-import com.android.cgcxy.wallpaper.ui.BrowseFragment;
+import com.android.cgcxy.wallpaper.ui.LandscapeWallpaperFragment;
 import com.android.cgcxy.wallpaper.ui.ClassifyFragment;
 import com.android.cgcxy.wallpaper.ui.HomePageFragment;
 import com.android.cgcxy.wallpaper.ui.SearchFragment;
 import com.android.cgcxy.wallpaper.utils.Utils;
 import com.android.cgcxy.wallpaper.view.CircleImageView;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -179,7 +177,7 @@ public class HomePage extends BaseFragment {
         fragments.clear();
         fragments.add(new HomePageFragment());
         fragments.add(new ClassifyFragment());
-        fragments.add(new BrowseFragment());
+        fragments.add(new LandscapeWallpaperFragment());
         fragments.add(new SearchFragment());
         viewPager.setOffscreenPageLimit(4);
 

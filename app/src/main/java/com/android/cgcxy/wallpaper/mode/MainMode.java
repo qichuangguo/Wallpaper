@@ -1,5 +1,7 @@
 package com.android.cgcxy.wallpaper.mode;
 
+import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
+
 /**
  * Created by chuangguo.qi on 2017/7/18.
  */
@@ -21,4 +23,5 @@ public interface MainMode {
     void getLabelSearchJsonData(String url,RefreshListener refreshListener);
     void getSearchInputJsonData(String url,RefreshListener refreshListener);
     void getTotalUrl(String url, RefreshListener refreshListener);
+    void getNetWorkData(MainPresenterImple.RequestSource requestSource,String url, RefreshListener refreshListener);
 }

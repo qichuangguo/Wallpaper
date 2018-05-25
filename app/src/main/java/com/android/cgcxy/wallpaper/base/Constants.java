@@ -21,7 +21,13 @@ public interface Constants {
      String categoryDetails=categoryUrl+"/%s"+"/vertical?limit=30&adult=false&first=0&order=new";
      String categoryDetailsHot=categoryUrl+"/%s"+"/vertical?limit=30&adult=false&first=0&order=hot";
 
-     //String adult="?adult=false";
+     //http://service.aibizhi.adesk.com/v3/wallpaper
+     //limit=30&adult=false&first=1&order=hot
+
+     String wallpaperUrl = mainUrl+"v3/wallpaper";
+     String wallpaperParam="?limit=30&adult=false&first=1&order=hot";
+
+
      boolean adult=false;
 
      String USERBEAN="userBean";

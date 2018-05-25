@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.android.cgcxy.wallpaper.base.OnClickListener;
 import com.android.cgcxy.wallpaper.bean.HeadBean;
 import com.android.cgcxy.wallpaper.bean.HompPagerBean;
 import com.android.cgcxy.wallpaper.bean.ImageBeanUrl;
+import com.android.cgcxy.wallpaper.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -33,7 +35,6 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public HompPagerBean getHompPagerBean() {
         return hompPagerBean;
     }
-
     private HompPagerBean hompPagerBean;
     private Context mContext;
     private static final int TYPE_HEADER = 1, TYPE_ITEM = 2,TYPE_FOOT=3;
@@ -104,7 +105,13 @@ public class GriddingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     @Override
                     public void onClick(View v) {
                         ImageBeanUrl imageBeanUrl = new ImageBeanUrl();
-                        imageBeanUrl.setBig(verticalBean.getImg());
+                        String rule = verticalBean.getRule();
+                        if (!TextUtils.isEmpty(rule)){
+                            String  url  = verticalBean.getPreview()+rule.replaceAll("\\$<Width>", Utils.getScreenDispaly(mContext)[0]+"").replaceAll("\\$<Height>",Utils.getScreenDispaly(mContext)[1]+"");
+                            imageBeanUrl.setBig(url);
+                        }else {
+                            imageBeanUrl.setBig(verticalBean.getImg());
+                        }
                         imageBeanUrl.setDiy(verticalBean.getPreview());
                         imageBeanUrl.setOriginal(verticalBean.getThumb());
                         imageBeanUrl.setVip_original(verticalBean.getWp());

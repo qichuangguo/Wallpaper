@@ -26,6 +26,7 @@ import com.google.gson.annotations.Until;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.net.URL;
 
 /**
  * Created by chuangguo.qi on 2017/7/18.
@@ -39,6 +40,9 @@ public class MainPresenterImple implements MainPresenter,Serializable{
     private HompPagerBean hompPagerBean;
     private final MainModeImple mainModeImple;
     private HomePageHeadBean headBean;
+    public enum RequestSource{
+        LandscapeWallpaper
+    }
 
 
 
@@ -220,6 +224,36 @@ public class MainPresenterImple implements MainPresenter,Serializable{
             }
         });
     }
+
+    public void getNetworkBeanData(RequestSource requestSource,String url){
+        mainModeImple.getNetWorkData(requestSource, url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                showView.setData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+    }
+
+    public void getNextNetworkBeanData(RequestSource requestSource,String url){
+        mainModeImple.getNetWorkData(requestSource, url, new RefreshListener() {
+            @Override
+            public <T> void resultListener(T t) {
+                showView.setNextData(t);
+            }
+
+            @Override
+            public <E> void onError(E e) {
+
+            }
+        });
+    }
+
+
 
     public void getSpeCialJsonData(String url){
 

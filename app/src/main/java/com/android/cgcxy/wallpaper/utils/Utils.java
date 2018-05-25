@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -271,5 +272,19 @@ public class Utils {
     }
 
 
+    public static String  bitMapUrlSplice(Context mContent, String img, String rule, int width, int height) {
+        if (!TextUtils.isEmpty(rule)) {
+            return img + rule.replaceAll("\\$<Width>", width + "").replaceAll("\\$<Height>", height + "");
+        }else {
+            return img;
+        }
+    }
 
+    public static String  bitMapUrlSplice(Context mContent, String img, String rule) {
+        if (!TextUtils.isEmpty(rule)) {
+            return img + rule.replaceAll("\\$<Width>", Utils.getScreenDispaly(mContent)[0] + "").replaceAll("\\$<Height>", Utils.getScreenDispaly(mContent)[1] + "");
+        }else {
+            return img;
+        }
+    }
 }

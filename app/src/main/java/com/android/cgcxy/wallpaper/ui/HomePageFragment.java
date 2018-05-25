@@ -92,7 +92,7 @@ public class HomePageFragment extends BaseFragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                Log.i(TAG, "onScrollStateChanged: lastVisibleItem:" + lastVisibleItem + "::" + griddingAdapter.getItemCount() + "::" + isLoading);
+
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == griddingAdapter.getItemCount() && !isLoading) {
                     mainPresenterImple.getHomePageFragmentNextDatajson(index);
                     isLoading = true;

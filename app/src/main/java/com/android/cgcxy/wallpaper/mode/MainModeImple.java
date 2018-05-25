@@ -12,6 +12,7 @@ import com.android.cgcxy.wallpaper.bean.EveryDaySubBean;
 import com.android.cgcxy.wallpaper.bean.EveryDaybean;
 import com.android.cgcxy.wallpaper.bean.HomePageHeadBean;
 import com.android.cgcxy.wallpaper.bean.HompPagerBean;
+import com.android.cgcxy.wallpaper.bean.LandsCapeWallpaperBean;
 import com.android.cgcxy.wallpaper.bean.LuckGiveBean;
 import com.android.cgcxy.wallpaper.bean.RankingBean;
 import com.android.cgcxy.wallpaper.bean.SearchBean;
@@ -19,6 +20,7 @@ import com.android.cgcxy.wallpaper.bean.SearchInoutBean;
 import com.android.cgcxy.wallpaper.bean.SearchLabelBean;
 import com.android.cgcxy.wallpaper.bean.SpeCialBean;
 import com.android.cgcxy.wallpaper.bean.TotalBean;
+import com.android.cgcxy.wallpaper.presenter.MainPresenterImple;
 import com.android.cgcxy.wallpaper.utils.MyJsonObjectRequest;
 import com.android.cgcxy.wallpaper.utils.MyStringRequest;
 import com.android.cgcxy.wallpaper.utils.Utils;
@@ -430,6 +432,32 @@ public class MainModeImple implements MainMode{
         stringRequest.setShouldCache(false);
         requestQueue.add(stringRequest);
     }
+
+    @Override
+    public void getNetWorkData(final MainPresenterImple.RequestSource requestSource, final String url, final RefreshListener refreshListener) {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+
+                if (requestSource==MainPresenterImple.RequestSource.LandscapeWallpaper){
+                    Gson gson = new Gson();
+                    LandsCapeWallpaperBean landsCapeWallpaperBean = gson.fromJson(s, LandsCapeWallpaperBean.class);
+                    refreshListener.resultListener(landsCapeWallpaperBean);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+
+        stringRequest.setShouldCache(false);
+        requestQueue.add(stringRequest);
+
+    }
+
+
 
 
     public  <T> List<T> getListFromJSON(String json, Class<T[]> type) {
